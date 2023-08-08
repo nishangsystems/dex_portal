@@ -210,7 +210,7 @@ class HomeController extends Controller
             $data['aux_programs'] = \App\Models\Program::where('type', 'auxiliary')->get();
             $data['degrees'] = Degree::all();
             $data['degree'] = $application->degree_id == null ? null : $data['degrees']->where('id', $application->degree_id)->first();
-            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION FOR DOUALA-BONABERI" : "APPLICATION FOR DOUALA-BONABERI";
+            $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION" : "APPLICATION";
             return view('student.online.fill_form', $data);
         } catch (\Throwable $th) {
             //throw $th;
@@ -446,7 +446,7 @@ class HomeController extends Controller
             $data['title'] = $title;
 
             // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
-            return view('student.online.form_dawnloadable', $data);
+            // return view('student.online.form_dawnloadable', $data);
             $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
             $filename = $title.' - '.$application->name.'.pdf';
             return $pdf->download($filename);

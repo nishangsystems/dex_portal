@@ -230,7 +230,7 @@
                                 <input type="text" class="form-control text-primary"  name="secondary_school" value="{{ $application->secondary_school }}" required>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.exam_center') }}</label>
                             <div class="">
                                 <input type="text" class="form-control text-primary"  name="secondary_exam_center" value="{{ $application->secondary_exam_center }}" required>
@@ -247,7 +247,7 @@
                             <div class="">
                                 <select type="text" class="form-control text-primary"  name="secondary_exam_year" required>
                                     <option></option>
-                                    @for($i = 1970; $i < 2200; $i++)
+                                    @for($i = 2000; $i < (int)(now()->format('Y'))+1; $i++)
                                         <option value="{{ $i.'/'.$i+1 }}" {{ $application->secondary_exam_year == ($i.'/'.$i+1) ? 'selected' : '' }}>{{ $i.'/'.$i+1 }}</option>
                                     @endfor
                                 </select>
@@ -259,7 +259,7 @@
                                     <tr class="text-capitalize">
                                         <th class="text-center border-0" colspan="5">
                                             <div class="d-flex justify-content-end py-2 w-100">
-                                                <span class="btn btn-sm px-4 py-1 btn-secondary rounded" onclick="addTraining()">{{ __('text.word_add') }}</span>
+                                                <span class="btn btn-sm px-4 py-1 btn-primary rounded" onclick="addTraining()">add subject</span>
                                             </div>
                                         </th>
                                     </tr>
@@ -286,27 +286,27 @@
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.high_school_attended') }}</label>
                             <div class="">
-                                <input type="text" class="form-control text-primary"  name="high_school" value="{{ $application->high_school }}" required>
+                                <input type="text" class="form-control text-primary"  name="high_school" value="{{ $application->high_school }}">
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.exam_center') }}</label>
                             <div class="">
-                                <input type="text" class="form-control text-primary"  name="high_school_exam_center" value="{{ $application->high_school_exam_center }}" required>
+                                <input type="text" class="form-control text-primary"  name="high_school_exam_center" value="{{ $application->high_school_exam_center }}">
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-2">
                             <label class="text-secondary  text-capitalize">{{ __('text.candidate_number') }}</label>
                             <div class="">
-                                <input type="text" class="form-control text-primary"  name="high_school_candidate_number" value="{{ $application->high_school_candidate_number }}" required>
+                                <input type="text" class="form-control text-primary"  name="high_school_candidate_number" value="{{ $application->high_school_candidate_number }}">
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-2">
                             <label class="text-secondary  text-capitalize">{{ __('text.academic_year') }}</label>
                             <div class="">
-                                <select type="text" class="form-control text-primary"  name="high_school_exam_year" required>
+                                <select type="text" class="form-control text-primary"  name="high_school_exam_year">
                                     <option></option>
-                                    @for($i = 1970; $i < 2200; $i++)
+                                    @for($i = 2000; $i < (int)(now()->format('Y'))+1; $i++)
                                         <option value="{{ $i.'/'.$i+1 }}" {{ $application->high_school_exam_year == ($i.'/'.$i+1) ? 'selected' : '' }}>{{ $i.'/'.$i+1 }}</option>
                                     @endfor
                                 </select>
@@ -318,7 +318,7 @@
                                     <tr class="text-capitalize">
                                         <th class="text-center border-0" colspan="6">
                                             <div class="d-flex justify-content-end py-2 w-100">
-                                                <span class="btn btn-sm px-4 py-1 btn-secondary rounded" onclick="addEmployment()">{{ __('text.word_add') }}</span>
+                                                <span class="btn btn-sm px-4 py-1 btn-primary rounded" onclick="addEmployment()">add subject</span>
                                             </div>
                                         </th>
                                     </tr>
@@ -634,7 +634,7 @@
                         
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 mt-5 d-flex justify-content-center text-uppercase">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
-                            <a href="{{ route('student.home') }}" class="px-4 py-1 btn btn-lg btn-success">{{ __('text.pay_later') }}</a>
+                            {{-- <a href="{{ route('student.home') }}" class="px-4 py-1 btn btn-lg btn-success">{{ __('text.pay_later') }}</a> --}}
                             <button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.word_submit') }}</button>
                         </div>
                     </div>
@@ -704,11 +704,12 @@
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
             let html = `<tr class="text-capitalize">
                             <td class="border">
-                                <select class="form-control text-primary"  name="gce_ol_record[subject][${key}]" required>
+                                <select class="form-control text-primary"  name="gce_ol_record[subject][${key}]" required onchange="check_specify(event)">
                                     <option>subject</option>
                                     @foreach (\App\Models\Subject::orderBy('name', 'ASC')->get() as $subj)
                                         <option value="{{ $subj->name }}">{{ $subj->name }}</option>
                                     @endforeach
+                                    <option value="__SPECIFY__">SUBJECT NOT FOUND</option>
                                 <select>
                             </td>
                             <td class="border">
@@ -724,6 +725,14 @@
             $('#previous_trainings').append(html);
         } 
 
+        let check_specify = function(event){
+            if(event.target.value == '__SPECIFY__'){
+                let name = $(event.target).attr('name');
+                let html = `<input class="form-control text-primary text-uppercase"  placeholder="specify subject"  name="${name}" required>`;
+                $(event.target).parent().html(html);
+            }
+        }
+
         let dropTraining = function(event){
             let training = $(event.target).parent().parent();
             // let training = $('#previous_trainings').children().last();
@@ -736,11 +745,12 @@
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
             let html = `<tr class="text-capitalize">
                             <td class="border">
-                                <select class="form-control text-primary"  name="gce_al_record[subject][${key}]" required>
+                                <select class="form-control text-primary"  name="gce_al_record[subject][${key}]" required onchange="check_specify(event)">
                                     <option>subject</option>
                                     @foreach (\App\Models\Subject::orderBy('name', 'ASC')->get() as $subj)
                                         <option value="{{ $subj->name }}">{{ $subj->name }}</option>
                                     @endforeach
+                                    <option value="__SPECIFY__">SUBJECT NOT FOUND</option>
                                 </select>
                             </td>
                             <td class="border">
