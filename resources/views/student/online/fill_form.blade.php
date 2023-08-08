@@ -222,7 +222,7 @@
                 <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [4, $application->id]) }}">
                     @csrf
                     <div class="py-2 row bg-light border-top shadow">
-                        <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 3: {{ __('text.accademic_records') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->name ?? '' }} PROGRAM</span></h4>
+                        <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 3: {{ __('text.academic_records') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->name ?? '' }} PROGRAM</span></h4>
                         <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;"> {{ __('text.GCE_OL_or_equivalent') }} </h4>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.secondary_school_attended') }}</label>
@@ -282,7 +282,7 @@
                         </div>
 
 
-                        <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.GCE_AL_BACC_or_equivalnet') }}</h4>
+                        <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.GCE_AL_BACC_or_equivalent') }}</h4>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.high_school_attended') }}</label>
                             <div class="">
@@ -419,7 +419,7 @@
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.id_card_number') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.ID_card_number') }}</label>
                                 <div class="">
                                     <label class="form-control text-primary border-0 ">{{ $application->id_card_number ?? '' }}</label>
                                 </div>
@@ -489,7 +489,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-4 col-lg-3">
-                                <label class="text-secondary  text-capitalize">{{ __('text.qord_guardian') }}</label>
+                                <label class="text-secondary  text-capitalize">{{ __('text.word_guardian') }}</label>
                                 <div class="">
                                     <label class="form-control text-primary border-0">{{ $application->guardian ?? '' }}</label>
                                 </div>
@@ -526,8 +526,8 @@
                             </div>
 
                         <!-- STAGE 3 -->
-                            <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 3: {{ __('text.accademic_records') }} : <a href="{{ route('student.application.start', [3, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 3</a></h4>
-                            <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.gce_ol_or_equivalent') }}</h4>
+                            <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 3: {{ __('text.academic_records') }} : <a href="{{ route('student.application.start', [3, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 3</a></h4>
+                            <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.GCE_OL_or_equivalent') }}</h4>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                                 <label class="text-secondary  text-capitalize">{{ __('text.secondary_school_attended') }}</label>
                                 <div class="">
@@ -571,7 +571,7 @@
                                 </table>
                             </div>
 
-                            <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.gce_al_bac_or_equivalent') }}</h4>
+                            <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.GCE_AL_BACC_or_equivalent') }}</h4>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                                 <label class="text-secondary  text-capitalize">{{ __('text.high_school_attended') }}</label>
                                 <div class="">

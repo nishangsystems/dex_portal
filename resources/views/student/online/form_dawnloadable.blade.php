@@ -144,4 +144,24 @@
             </div>
         </div> 
     </div>
+    <div class="py-2">
+        <div class="bg-white px-3 py-1">
+            <h4 class="text-uppercase py-1" style="font-weight: 700;">school/programme chosen</h4>
+            <div style="display: flex; flex-wrap: wrap;">
+                <h4 style="text-transform: uppercase; font-weight: 700; padding-block: 0.3rem;" class="border-top border-bottom border-2 text-primary w-100 text-center">school of business management</h4>
+                <div class="w-50 border-left border-right border-2">
+                    <table>
+                        <thead class="border-top border-bottom border-2">
+                            <th class="border-left border-right"></th>
+                            <th class="border-left border-right">HND</th>
+                            <th class="border-left border-right">B.TECH</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div> 
+    </div>
 @endsection
