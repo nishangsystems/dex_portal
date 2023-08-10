@@ -23,7 +23,7 @@
                     </div>
                 </form>
                 @break
-            @case('18')
+            @case(18)
                 <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [1, $application->id]) }}">
                     @csrf
                     <div class="px-5 py-5 border-top shadow bg-light" style="font-size: 2rem; font-weight: 700;">
@@ -389,7 +389,6 @@
                     @csrf
                     <div class="py-2 row text-capitalize bg-light">
                         <!-- hidden field for submiting application form -->
-                        <input type="hidden" value="1" name="submitted">
                         <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 5: {{ __('text.preview_and_submit_form_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->name ?? '' }} PROGRAM</span></h4>
                         
                         <!-- STAGE 1 PREVIEW -->
@@ -635,7 +634,7 @@
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 mt-5 d-flex justify-content-center text-uppercase">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
                             {{-- <a href="{{ route('student.home') }}" class="px-4 py-1 btn btn-lg btn-success">{{ __('text.pay_later') }}</a> --}}
-                            <button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.word_submit') }}</button>
+                            <button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.save_and_continue') }}</button>
                         </div>
                     </div>
                 </form>
@@ -645,11 +644,11 @@
                 <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
                     @csrf
                     <div class="py-2 row bg-light border-top shadow">
-                        
+                        <input type="hidden" value="1" name="submitted">
                         <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
                             <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
-                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ $degree->amount }} CFA for application fee
-                                </div>
+                                {{-- <div class="py-4 text-info text-center ">You are about to make a payment of {{ $degree->amount }} CFA for application fee
+                                </div> --}}
                                 <div class="py-3">
                                     <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment') }} (<span class="text-danger">{{ __('text.without_country_code') }}</span>)</label>
                                     <div class="">
@@ -657,9 +656,9 @@
                                     </div>
                                 </div>
                                 <div class="py-3">
-                                    <label class="text-secondary text-capitalize">{{ __('text.word_amount') }} </label>
+                                    <label class="text-secondary text-capitalize">Transaction ID </label>
                                     <div class="">
-                                        <input readonly type="text" class="form-control text-primary"  name="amount" value="{{ $degree->amount }}">
+                                        <input type="text" min="10" max="10" class="form-control text-primary"  name="transaction_id" value="{{ $application->transaction_id }}">
                                     </div>
                                 </div>
                                 <div class="py-5 d-flex justify-content-center">

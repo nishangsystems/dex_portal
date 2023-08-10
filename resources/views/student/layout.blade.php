@@ -110,32 +110,10 @@
 
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav d-flex flex-nowrap" style="">
-                <li class="grenn dropdown-modal">
-                    <a data-toggle="dropdown" class="dropdown-toggle text-white font-weight-bold text-capitalize" href="#" id="navbarDropdownMenuLink" style="background-color: {{$bg2}};">
-                        {{ Config::get('languages')[Session::has('appLocale') ? Session::get('appLocale') : App::getLocale()] }}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    @foreach (Config::get('languages') as $lang => $language)
-                        @if ($lang != Session::get('appLocale'))
-                                <a class="dropdown-item" href="{{ route('lang.switch', $lang) }}"> {{$language}}</a>
-                        @endif
-                    @endforeach
-                    </div>
-                </li>
-                <li class="grenn dropdown-modal">
-                    <a data-toggle="dropdown" class="dropdown-toggle text-white font-weight-bold" id="bg_primary_1" style="background-color: {{$bg2}};">
-                        Batch : {{ \App\Models\Batch::find(Session::get('mode', \App\Helpers\Helpers::instance()->getCurrentAccademicYear()))->name ?? ''}}
-                        <i class="ace-icon fa fa-caret-down"></i>
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        @foreach(\App\Models\Batch::orderBy('name')->get() as $batch)
-                            <li>
-                                <a href="{{ route('mode',$batch->id) }}">{{$batch->name}}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </li>
+                <li class="grenn"><a class="text-white font-weight-bold text-capitalize" href={{ route('student.application.start', 0) }} style="background-color: {{$bg2}};">APPLY NOW</a></li>
+                <li class="grenn"><a class="text-white font-weight-bold text-capitalize" href={{ route('student.application.submit') }} style="background-color: {{$bg2}};">SUBMIT</a></li>
+                <li class="grenn"><a class="text-white font-weight-bold text-capitalize" href={{ route('student.application.form.download') }} style="background-color: {{$bg2}};">DOWNLOAD</a></li>
+                
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle" id="bg_primary_2" style="background-color: {{$bg2}};">
                         <img class="nav-user-photo" src="{{asset('assets/images/avatars/user.jpg')}}"

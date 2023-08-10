@@ -187,7 +187,7 @@ class HomeController extends Controller
     {
         try {
 
-            if(auth('student')->user()->applicationForms()->where('submitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
+            if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('submitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
                 return back()->with('error', "You are allowed to submit only one application form per year");
             }
 
@@ -259,9 +259,12 @@ class HomeController extends Controller
                 # code...
                 
                 $validity = Validator::make($request->all(), [
-                    "secondary_school"=>'required', "secondary_exam_center"=>'required', "secondary_candidate_number"=>'required',
-                    "secondary_exam_year"=>'required', "gce_ol_record"=>'required', "high_school"=>'required', "high_school_exam_center"=>'required',
-                    "high_school_candidate_number"=>'required', "high_school_exam_year"=>'required', "gce_al_record"=>'required'
+                    // "high_school"=>'string', 
+                    // "high_school_exam_center"=>,
+                    // "high_school_candidate_number"=>'required', 
+                    // "high_school_exam_year"=>'required', 
+                    // "gce_al_record"=>'required'
+                    "secondary_school"=>'required', "secondary_exam_center"=>'required', "secondary_candidate_number"=>'required', "secondary_exam_year"=>'required', "gce_ol_record"=>'required', 
                 ]);
                 break;
                 
@@ -273,7 +276,11 @@ class HomeController extends Controller
                 break;
                 
             case 6:
-                $validity = Validator::make($request->all(), ['submitted'=>'required']);
+                return redirect(route('student.application.start', [$step, $application_id]));
+                # code...
+                break;
+            case 7:
+                $validity = Validator::make($request->all(), ['momo_number'=>'required', 'transaction_id'=>'required|size:10', 'submitted'=>'required']);
                 # code...
                 break;
             
@@ -298,7 +305,7 @@ class HomeController extends Controller
                 // return $data;
             }
             $data_p2 = [];
-            $e_data = $request->gce_al_record;
+            $e_data = $request->gce_al_record??null;
             if($e_data != null){
                 foreach ($e_data['subject'] as $key => $value) {
                     $data_p2[] = ['subject'=>$value, 'grade'=>$e_data['grade'][$key]];
@@ -308,14 +315,21 @@ class HomeController extends Controller
             }
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
+        }elseif($step == 7){
+            if(ApplicationForm::where('transaction_id', $request->transaction_id)->count() > 0){
+                return back()->with('error', 'Transaction ID already exist.');
+            }
+            $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+            $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
+            return redirect(route('student.application.form.download', $application_id));
         }
         else{
-            $data = $request->all();
+            // $data = $request->all();
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
         $step = $request->step;
-        if($step == 6){return redirect(route('student.application.form.download', $application_id));}
+        
         return redirect(route('student.application.start', [$step, $application_id]));
     }
 
@@ -431,7 +445,7 @@ class HomeController extends Controller
         # code...
         $data['title'] = "Download Application Form";
         $data['_this'] = $this;
-        $data['applications'] = auth('student')->user()->applicationForms->where('submitted', true);
+        $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id')->where('submitted', true);
         return view('student.online.download_form', $data);
     }
 
@@ -446,10 +460,10 @@ class HomeController extends Controller
             $data['title'] = $title;
 
             // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
-            // return view('student.online.form_dawnloadable', $data);
+            return view('student.online.form_dawnloadable', $data);
             $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
             $filename = $title.' - '.$application->name.'.pdf';
-            return $pdf->download($filename);
+            return $pdf->render();
         }catch(Throwable $th){
             if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
         }

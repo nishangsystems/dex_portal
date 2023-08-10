@@ -11,6 +11,7 @@ use App\Models\ClassSubject;
 use App\Models\Config;
 use App\Models\EntryQualification;
 use App\Models\Level;
+use App\Models\Program;
 use App\Models\ProgramLevel;
 use App\Models\School;
 use App\Models\SchoolUnits;
@@ -1419,4 +1420,35 @@ class ProgramController extends Controller
         return view('admin.student.finance_general', $data);
     }
 
+    public function downlaod_applications()
+    {
+        # code...
+        $data['title'] = "Download Application List";
+        $data['programs'] = Program::all();
+        return view('admin.student.download_forms', $data);
+    }
+
+    public function download_forms(Request $request, $prog_id = null){
+        $fname = '__'.time().'_'.random_int(100000, 999999).'.csv';
+        $filename = public_path('uploads/applications');
+        $file = $filename.'/'.$fname;
+        $file_writer = fopen($file, 'w');
+        $headings = ['Name', 'Date of Birth','Gender', 'Nationality', 'Phone number', 'Program'];
+        fputcsv($file_writer, $headings, ',');
+        $data = ApplicationForm::where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+        if($prog_id != null){
+            $data = $data->where('program', $prog_id);
+        }
+        foreach ($data as $key => $appl) {
+            # code...
+            fputcsv($file_writer, [
+                $appl->name, "{$appl->dob}", $appl->gender, $appl->nationality, "{$appl->phone}", $appl->_program->name
+            ]);
+        }
+        fclose($file_writer);
+        $first = $data->first();
+        $name = $prog_id == null ? ("ALL APPLIVATIONS FOR ".substr($first->year->name??'', 0, 4)).'.csv' : ($first->_program->type.' - '.$first->_program->name." ALL APPLIVATIONS FOR ".substr($first->year->name??'', 0, 4)).'.csv';
+        return response()->download($file, $name);
+
+    }
 }

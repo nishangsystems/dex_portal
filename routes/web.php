@@ -196,6 +196,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('print_form/{id?}', [ProgramController::class, 'print_application_form'])->name('print_form');
         Route::get('edit/{id?}', [ProgramController::class, 'edit_application_form'])->name('update');
         Route::post('edit/{id?}', [ProgramController::class, 'update_application_form']);
+        Route::get('download/{program_id?}', [ProgramController::class, 'downlaod_applications'])->name('download');
+        Route::post('download/{program_id?}', [ProgramController::class, 'download_forms']);
         Route::get('admit/{id?}', [ProgramController::class, 'admit_application_form'])->name('admit');
         Route::post('admit/{id?}', [ProgramController::class, 'admit_student']);
         Route::get('uncompleted/{id?}', [ProgramController::class, 'uncompleted_application_form'])->name('uncompleted');

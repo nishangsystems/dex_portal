@@ -12,6 +12,10 @@ class Program extends Model
     protected $table = 'programs';
     protected $fillable = ['name'];
 
-
+    public function applications()
+    {
+        # code...
+        return $this->hasMany(ApplicationForm::class, 'program');
+    }
 
 }

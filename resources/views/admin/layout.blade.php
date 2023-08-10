@@ -119,28 +119,6 @@
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav d-flex flex-nowrap" style="">
 
-                <li class="light-blue">
-                    <span>
-                        <span class="nav-user-photo fa fa-globe"></span>
-                        <span>
-                            <small class="text-capitalize text-white">
-                                {{\Auth::user()->campus_id ? \App\Models\Campus::find(\Auth::user()->campus_id)->name : 'campus'}}
-                            </small>
-						</span>
-                    </span>
-                </li>
-                <li class="grenn dropdown-modal">
-                    <a data-toggle="dropdown" class="dropdown-toggle text-white font-weight-bold text-capitalize" href="#" id="navbarDropdownMenuLink" style="background-color: {{$bg2}};">
-                        {{ Config::get('languages')[Session::has('appLocale') ? Session::get('appLocale') : App::getLocale()] }}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    @foreach (Config::get('languages') as $lang => $language)
-                        @if ($lang != Session::get('appLocale'))
-                                <a class="dropdown-item" href="{{ route('lang.switch', $lang) }}"> {{$language}}</a>
-                        @endif
-                    @endforeach
-                    </div>
-                </li>
                 <li class="grenn dropdown-modal">
                     <a data-toggle="dropdown" class="dropdown-toggle text-white font-weight-bold text-capitalize" id="bg_primary_1"  style="background-color: {{$bg2}};">
                       {{\App\Models\Batch::find(\App\Helpers\Helpers::instance()->getCurrentAccademicYear())->name}}
@@ -296,9 +274,9 @@
                         <b class="arrow"></b>
                     </li> --}}
                     <li>
-                        <a href="{{route('admin.applications.print_form')}}" class="text-capitalize">
+                        <a href="{{route('admin.applications.download')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.print_form')}}
+                            download applications
                         </a>
 
                         <b class="arrow"></b>
@@ -312,33 +290,9 @@
                         <b class="arrow"></b>
                     </li>
                     <li>
-                        <a href="{{route('admin.applications.admit')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.admit_student')}}
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    {{-- <li>
-                        <a href="{{route('admin.applications.distant')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.distant_applicant')}}
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li> --}}
-                    <li>
                         <a href="{{route('admin.applications.uncompleted')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.word_uncompleted')}}
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    <li>
-                        <a href="{{route('admin.applications.admission_letter')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.admission_letters')}}
                         </a>
 
                         <b class="arrow"></b>
