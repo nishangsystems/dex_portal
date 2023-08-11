@@ -1050,29 +1050,10 @@ class ProgramController extends Controller
 
         # code...
         // return $this->api_service->campuses();
-        $data['campuses'] = json_decode($this->api_service->campuses())->data;
         $data['application'] = ApplicationForm::find($id);
 
-        if($data['application']->degree_id != null){
-            $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
-        }
-        if($data['application']->campus_id != null){
-            $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
-        }
-        if($data['application']->degree_id != null){
-            $data['certs'] = json_decode($this->api_service->certificates())->data;
-        }
-        if($data['application']->entry_qualification != null){
-            $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
-            $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
-        }
-        if($data['application']->program_first_choice != null){
-            $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
-            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
-            // return $data;
-        }
         
-        $data['title'] = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+        $data['title'] = "EDIT APPLICATION FORM FOR ".$data['application']->degree->name;
         return view('admin.student.edit_form', $data);
         
     }
@@ -1084,7 +1065,7 @@ class ProgramController extends Controller
             return back()->with('error', $validity->errors()->first());
         }
 
-        $data = ['name'=>$request->name];
+        $data = ['name'=>$request->name, 'program'=>$request->program];
         ApplicationForm::find($id)->update($data);
         return back()->with('success', __('text.word_done'));
     }
@@ -1105,20 +1086,8 @@ class ProgramController extends Controller
         // return $this->api_service->campuses();
         $data['application'] = ApplicationForm::find($id);
 
-        if($data['application']->degree_id != null){
-            $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
-        }
-        if($data['application']->entry_qualification != null){
-            $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
-            $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
-        }
-        if($data['application']->program_first_choice != null){
-            $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
-            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
-            // return $data;
-        }
-        
-        $data['title'] = "INCOMPLETE APPLICATION FORM ".( array_key_exists('degree', $data) ? "FOR ".$data['degree']->name : null);
+
+        $data['title'] = "INCOMPLETE APPLICATION FORM FOR ".$data['application']->degree->name??'';
         return view('admin.student.show_form', $data);
     }
 

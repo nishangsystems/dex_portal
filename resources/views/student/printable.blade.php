@@ -74,7 +74,7 @@
 
 <body class="no-skin">
     <div class="" style="background-color: transparent;">
-        <img src="{{ asset('assets/images/header2.jpeg') }}" class="w-100 h-auto">
+        <img src="{{ asset('assets/images/header2.png') }}" class="w-100 h-auto">
         {{-- <img src="{{\App\Helpers\Helpers::instance()->getHeader()}}" class="w-100 h-auto"> --}}
         <div class="text-center text-black h3 py-2">{{$title ?? ''}}</div>
         @yield('section')
