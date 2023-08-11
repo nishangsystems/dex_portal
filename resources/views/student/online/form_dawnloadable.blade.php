@@ -63,7 +63,7 @@
     <div class="py-2 mt-4">
         <div class="bg-white px-3 py-1 d-flex justify-content-between">
             <h4 class="text-uppercase py-1 w-100" style="font-weight: 700;">personal details</h4>
-            <div class="text-capitalize py-1 mx-1 my-2 px-3 rounded border" style="width: 90%; display: inline-block;"><span class="text-secondary" style="font-weight: 700;">name (as on birth certificate)<span> : <span class="text-dark" style="font-weight: 700;">{{ $application->name }}<span></div>
+            <div class="text-capitalize py-1 mx-1 my-2 px-3 rounded border" style="width: 94%; display: inline-block;"><span class="text-secondary" style="font-weight: 700;">name (as on birth certificate)<span> : <span class="text-dark" style="font-weight: 700;">{{ $application->name }}<span></div>
             <div class="text-capitalize py-1 mx-1 my-2 px-3 rounded border" style="width: 29%; display: inline-block;"><span class="text-secondary" style="font-weight: 700;">date of birth<span> : <span class="text-dark" style="font-weight: 700;">{{ $application->dob }}<span></div>
             <div class="text-capitalize py-1 mx-1 my-2 px-3 rounded border" style="width: 28%; display: inline-block;"><span class="text-secondary" style="font-weight: 700;">place of birth<span> : <span class="text-dark" style="font-weight: 700;">{{ $application->pob }}<span></div>
             <div class="text-capitalize py-1 mx-1 my-2 px-3 rounded border" style="width: 28%; display: inline-block;"><span class="text-secondary" style="font-weight: 700;">sex<span> : <span class="text-dark" style="font-weight: 700;">{{ $application->gender }}<span></div>
@@ -101,9 +101,11 @@
                             <tr>
                                 <th class="border border-2 border-dark text-center text-uppercase" colspan="5">GCE O/L or equivalent</th>
                             </tr>
-                            <th class="border-left border-right border-2 border-dark">Subject attempted</th>
-                            <th class="border-left border-right border-2 border-dark">Grade</th>
-                            <th class="border-left border-right w-25 text-center" colspan="3">School where the qualification was earned</th>
+                            <tr>
+                                <th class="border-left border-right border-2 border-dark">Subject attempted</th>
+                                <th class="border-left border-right border-2 border-dark">Grade</th>
+                                <th class="border-left border-right w-25 text-center" colspan="3">School where the qualification was earned</th>
+                            </tr>
                         </thead>
                         <tbody style="font-size: 1.3rem">
                             @php $k = 0; @endphp
@@ -134,22 +136,14 @@
                                     @endswitch
                                 </tr>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="bg-white px-3 py-1 d-flex justify-content-between">
-                <div class="text-capitalize my-2 p-0 rounded border w-100" style="width: 100%; display: inline-block;">
-                    <table >
-                        <thead class="text-dark border border-2 border-dark py-3" style="font-weight: 700; font-size: 1.6rem;">
                             <tr>
                                 <th class="border border-2 border-dark text-center text-uppercase" colspan="5">GCE A/L or equivalent</th>
                             </tr>
-                            <th class="border-left border-right border-2 border-dark">Subject attempted</th>
-                            <th class="border-left border-right border-2 border-dark">Grade</th>
-                            <th class="border-left border-right w-25 text-center" colspan="3">School where the qualification was earned</th>
-                        </thead>
-                        <tbody style="font-size: 1.3rem">
+                            <tr>
+                                <th class="border-left border-right border-2 border-dark">Subject attempted</th>
+                                <th class="border-left border-right border-2 border-dark">Grade</th>
+                                <th class="border-left border-right w-25 text-center" colspan="3">School where the qualification was earned</th>
+                            </tr>
                             @php $k = 0; @endphp
                             @foreach (json_decode($application->gce_al_record) as $rec)
                                 @php $k++; @endphp
@@ -182,7 +176,16 @@
                     </table>
                 </div>
             </div>
-            
+            {{-- <div class="bg-white px-3 py-1 d-flex justify-content-between">
+                <div class="text-capitalize my-2 p-0 rounded border w-100" style="width: 100%; display: inline-block;">
+                    <table >
+                        <thead class="text-dark border border-2 border-dark py-3" style="font-weight: 700; font-size: 1.6rem;">
+                        </thead>
+                        <tbody style="font-size: 1.3rem">
+                        </tbody>
+                    </table>
+                </div>
+            </div> --}}
         </div> 
     </div>
     <div class="py-2">
@@ -200,18 +203,16 @@
         <div class="bg-white px-3 py-1">
             <h4 class="text-uppercase py-1" style="font-weight: 700;">Source of information</h4>
             <h5>Where did you learn of admission into HIMS Buea.</h5>
-            <table>
+            <label class="border fs-4 text-center w-100 " style="font-weight : 600; padding: 0.5rem 1rem;">{{ $application->referer }}</label>
+            {{-- <table>
                 <thead>
-                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ $application->referer == 'POSTER OR NEWS PAPER' ? 'checked' : '' }}>POSTER OR NEWS PAPER</th>
-                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ $application->referer == 'FLYER OR BANNER' ? 'checked' : '' }}>FLYER OR BANNER</th>
-                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ $application->referer == 'HIMS STUDENT OR EX-STUDENT' ? 'checked' : '' }}>HIMS STUDENT OR EX-STUDENT</th>
-                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ $application->referer == 'HIMS STAFF' ? 'checked' : '' }}>HIMS STAFF</th>
-                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ $application->referer == 'INTERNET OR ADVERTISEMENT' ? 'checked' : '' }}>INTERNET OR ADVERTISEMENT</th>
-                    @if (!in_array($application->referer, ['INTERNET OR ADVERTISEMENT', 'HIMS STAFF', 'HIMS STUDENT OR EX-STUDENT', 'FLYER OR BANNER', 'POSTER OR NEWS PAPER']))
-                        Other: <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem; text-decoration: underline;">{{ $application->referer }}</th>
-                    @endif
+                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ ($application->referer == 'POSTER OR NEWS PAPER') ? 'checked' : '' }}>POSTER OR NEWS PAPER</th>
+                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ ($application->referer == 'FLYER OR BANNER') ? 'checked' : '' }}>FLYER OR BANNER</th>
+                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ ($application->referer == 'HIMS STUDENT OR EX-STUDENT') ? 'checked' : '' }}>HIMS STUDENT OR EX-STUDENT</th>
+                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ ($application->referer == 'HIMS STAFF') ? 'checked' : '' }}>HIMS STAFF</th>
+                    <th class="border fs-4" style="font-weight : 600; padding: 0.5rem 1rem;"><input type="checkbox" style="height: 1.5rem; width: 1.5rem; margin-right: 1rem" {{ ($application->referer == 'INTERNET OR ADVERTISEMENT') ? 'checked' : '' }}>INTERNET OR ADVERTISEMENT</th>
                 </thead>
-            </table>
+            </table> --}}
         </div> 
     </div>
     <div class="py-2">
@@ -220,18 +221,51 @@
             <div style="display: flex; flex-wrap: wrap; margin-block: 0.7rem">
                 <table class="w-100 border rounded my-4">
                     <thead>
-                        <tr><th colspan="5" style="text-transform: uppercase; font-weight: 700; padding-block: 0.4rem; width: 100%;" class="border-top border-bottom border-2 text-primary w-100 text-center my-0">school of business management</th></tr>
                         <tr>
-                            <th class="border"></th>
-                            <th class="border">HND</th>
-                            <th class="border">B.TECH</th>
-                            <th class="border"></th>
-                            <th class="border">BBA</th>
+                            <th class="border">SCHOOL</th>
+                            <th class="border">DEGREE</th>
+                            <th class="border">PROGRAM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-top border-bottom py-2">
+                            <td class="border-left border-right py-4">{{ $application->_program->type }}</td>
+                            <td class="border-left border-right py-4">{{ $application->degree->name }}</td>
+                            <td class="border-left border-right py-4">{{ $application->_program->name }}</td>
+                        </tr>
+                        <tr  class="border-top border-bottom border-dark py-2">
+                            <td colspan="2" class="text-capitalize py-1 px-3 border" >
+                                <h4 class="text-uppercase py-1" style="font-weight: 700;">student admission number:</h4>
+                                <label  class="form-control w-75 mx-auto"></label>
+                            </td>
+                            <td class="text-capitalize py-1 px-3 border">
+                                <div class="text-center py-3">
+                                    <h6>signature</h6> __________________________
+                                </div>
+                                <div class="text-center py-3">
+                                    <h6>date</h6> __________________________
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            <div>
+        </div>
+    </div>
+    {{-- <div class="py-2">
+        <div class="bg-white px-3 py-1">
+            <h4 class="text-uppercase py-1" style="font-weight: 700;">school/programme chosen</h4>
+            <div style="display: flex; flex-wrap: wrap; margin-block: 0.7rem">
+                <table class="w-100 border rounded my-4">
+                    <thead>
+                        <tr>
+                            <th class="border">SCHOOL</th>
+                            <th class="border">DEGREE</th>
+                            <th class="border">PROGRAM</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php
-                            //{{-- business management hnd and btech programs --}}
                             $hnd_progs = \App\Models\Degree::where('name', 'HND')->first()->programs()->where('type', 'BUSINESS MANAGEMENT')->get();
                             $btech_progs = \App\Models\Degree::where('name', 'B.TECH')->first()->programs()->where('type', 'BUSINESS MANAGEMENT')->get();
                             $hnd_btech_programs = $hnd_progs->whereIn('id', $btech_progs->pluck('id')->toArray())->toArray();
@@ -317,27 +351,18 @@
                 </table>
             </div>
         </div> 
-    </div>
-    <div class="py-2">
+    </div> --}}
+    {{-- <div class="py-2">
         <div class="bg-white w-100 px-3 py-1">
             <table>
+                    
                 <thead>
-                    <tr class="w-100 d-flex" style="display: flex; margin-block: 0.7rem">
-                        <td class="text-capitalize py-1 mx-1 my-2 px-3 rounded border w-50" >
-                            <h4 class="text-uppercase py-1" style="font-weight: 700;">student admission number:</h4>
-                            <label  class="form-control w-75 mx-auto"></label>
-                        </td>
-                        <td class="text-capitalize py-1 mx-1 my-2 px-3 rounded border w-50">
-                            <div class="text-center py-3">
-                                <h6>signature</h6> __________________________
-                            </div>
-                            <div class="text-center py-3">
-                                <h6>date</h6> __________________________
-                            </div>
-                        </td>
-                    </tr>
+                    <th></th>
+                    <th></th>
                 <thead>
+                <tbody>
+                </tbody>
             </table>
         </div> 
-    </div>
+    </div> --}}
 @endsection

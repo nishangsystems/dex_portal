@@ -254,10 +254,10 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-12 py-2">
-                            <table class="border">
+                            <table class="border table-responsive">
                                 <thead>
                                     <tr class="text-capitalize">
-                                        <th class="text-center border-0" colspan="5">
+                                        <th class="text-center border-0" colspan="3">
                                             <div class="d-flex justify-content-end py-2 w-100">
                                                 <span class="btn btn-sm px-4 py-1 btn-primary rounded" onclick="addTraining()">add subject</span>
                                             </div>
@@ -265,7 +265,7 @@
                                     </tr>
                                     <tr class="text-capitalize">
                                         <th class="text-center border">{{ __('text.subject_attempted') }}</th>
-                                        <th class="text-center border">{{ __('text.word_grade') }}</th>
+                                        <th class="text-center border" style="width: 3rem;">{{ __('text.word_grade') }}</th>
                                         <th class="text-center border"></th>
                                     <tr>
                                 </thead>
@@ -313,10 +313,10 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-12 py-2">
-                            <table class="border">
+                            <table class="border table-responsive">
                                 <thead>
                                     <tr class="text-capitalize">
-                                        <th class="text-center border-0" colspan="6">
+                                        <th class="text-center border-0" colspan="3">
                                             <div class="d-flex justify-content-end py-2 w-100">
                                                 <span class="btn btn-sm px-4 py-1 btn-primary rounded" onclick="addEmployment()">add subject</span>
                                             </div>
@@ -324,7 +324,7 @@
                                     </tr>
                                     <tr class="text-capitalize">
                                         <th class="text-center border">{{ __('text.subject_attempted') }}</th>
-                                        <th class="text-center border">{{ __('text.word_grade') }}</th>
+                                        <th class="text-center border" style="width: 3rem;">{{ __('text.word_grade') }}</th>
                                         <th class="text-center border"></th>
                                     <tr>
                                 </thead>
@@ -714,7 +714,7 @@
                             <td class="border">
                                 <select class="form-control text-primary"  name="gce_ol_record[grade][${key}]" required value="">
                                     <option>grade</option>
-                                    @foreach (['A', 'B', 'C', 'D', 'E', 'F', 'U', 'COMPENSATORY'] as $grd)
+                                    @foreach (['A', 'B', 'C'] as $grd)
                                         <option value="{{ $grd }}">{{ $grd }}</option>
                                     @endforeach
                                 </select>
@@ -755,7 +755,7 @@
                             <td class="border">
                                 <select class="form-control text-primary"  name="gce_al_record[grade][${key}]" required>
                                     <option>grade</option>
-                                    @foreach (['A', 'B', 'C', 'D', 'E', 'F', 'U', 'COMPENSATORY'] as $grd)
+                                    @foreach (['A', 'B', 'C', 'D', 'E'] as $grd)
                                         <option value="{{ $grd }}">{{ $grd }}</option>
                                     @endforeach
                                 </select>

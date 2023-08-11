@@ -52,7 +52,7 @@ class StudentController extends Controller
     {
         $curent_year = Helpers::instance()->getCurrentAccademicYear();
         $data['title'] = 'Manage Students';
-        $data['school_units'] = DB::table('school_units')->where('parent_id', 0)->get()->toArray();
+        // $data['school_units'] = DB::table('school_units')->where('parent_id', 0)->get()->toArray();
         $data['years'] = $this->years;
         // $data['students'] = DB::table('students')->whereYear('students.created_at', $curent_year)->get()->toArray();
         $data['students'] = Students::all();

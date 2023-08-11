@@ -1096,23 +1096,17 @@ class ProgramController extends Controller
             $data['title'] = "Uncompleted Application Forms";
             $data['_this'] = $this;
             $data['action'] = __('text.word_show');
+            $data['bypass'] = 'bypass form';
             $data['applications'] = ApplicationForm::whereNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             // return $data;
             return view('admin.student.applications', $data);
         }
 
         // return $this->api_service->campuses();
-        $data['campuses'] = json_decode($this->api_service->campuses())->data;
         $data['application'] = ApplicationForm::find($id);
 
         if($data['application']->degree_id != null){
             $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
-        }
-        if($data['application']->campus_id != null){
-            $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
-        }
-        if($data['application']->degree_id != null){
-            $data['certs'] = json_decode($this->api_service->certificates())->data;
         }
         if($data['application']->entry_qualification != null){
             $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
@@ -1124,7 +1118,7 @@ class ProgramController extends Controller
             // return $data;
         }
         
-        $data['title'] = "INCOMPLETE APPLICATION FORM ".( array_key_exists('degree', $data) ? "FOR ".$data['degree']->deg_name : null);
+        $data['title'] = "INCOMPLETE APPLICATION FORM ".( array_key_exists('degree', $data) ? "FOR ".$data['degree']->name : null);
         return view('admin.student.show_form', $data);
     }
 
@@ -1369,12 +1363,10 @@ class ProgramController extends Controller
     {
         # code...
         // create a relatively null transaction for the student
-        $data = ['request_id'=>auth()->id(), 'amount'=>0, 'currency_code'=>'_____', 'purpose'=>'_____', 'mobile_wallet_number'=>'_______', 'transaction_ref'=>'_______', 'app_id'=>'_______', 'transaction_id'=>'_________', 'transaction_time'=>now()->toDateTimeString(), 'payment_method'=>'______', 'payer_user_id'=>'_________', 'payer_name'=>'_________', 'payer_account_id'=>'________', 'merchant_fee'=>0, 'merchant_account_id'=>'___________', 'net_amount_recieved'=>0];
-        $transaction = new Transaction($data);
-        $transaction->save();
+        
 
         $application = ApplicationForm::find($id);
-        $application->update(['transaction_id'=>$transaction->id]);
+        $application->update(['transaction_id'=>-1000000000, 'submitted'=>1]);
         return redirect(route('admin.applications.uncompleted'))->with('success', __('text.word_done'));
     }
 
