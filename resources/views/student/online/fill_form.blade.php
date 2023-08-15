@@ -254,27 +254,27 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-12 py-2">
-                            <table class="border table-responsive">
+                            <table class="border table-responsive container-fluid">
                                 <thead>
                                     <tr class="text-capitalize">
                                         <th class="text-center border-0" colspan="3">
-                                            <div class="d-flex justify-content-end py-2 w-100">
-                                                <span class="btn btn-sm px-4 py-1 btn-primary rounded" onclick="addTraining()">add subject</span>
+                                            <div class="d-flex justify-content-start py-2 w-100">
+                                                <span class="btn btn-sm px-4 py-1 btn-primary rounded" onclick="addTraining()">add subject</span> <br><span style="text-transform: lowercase; color: skyblue; font-weight: 600;">scroll right for more</span>
                                             </div>
                                         </th>
                                     </tr>
                                     <tr class="text-capitalize">
+                                        <th class="text-center border"></th>
                                         <th class="text-center border">{{ __('text.subject_attempted') }}</th>
                                         <th class="text-center border" style="width: 3rem;">{{ __('text.word_grade') }}</th>
-                                        <th class="text-center border"></th>
                                     <tr>
                                 </thead>
                                 <tbody id="previous_trainings">
                                     @foreach (json_decode($application->gce_ol_record)??[] as $key=>$record)
                                         <tr class="text-capitalize">
+                                            <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropTraining(event)">{{ __('text.word_drop') }}</span></td>
                                             <td class="border"><input class="form-control text-primary"  name="gce_ol_record[subject][$key]" required value="{{ $record->subject }}"></td>
                                             <td class="border"><input class="form-control text-primary"  name="gce_ol_record[grade][$key]" required value="{{ $record->grade }}"></td>
-                                            <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropTraining(event)">{{ __('text.word_drop') }}</span></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -313,27 +313,27 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-12 py-2">
-                            <table class="border table-responsive">
+                            <table class="border table-responsive container-fluid">
                                 <thead>
                                     <tr class="text-capitalize">
                                         <th class="text-center border-0" colspan="3">
-                                            <div class="d-flex justify-content-end py-2 w-100">
-                                                <span class="btn btn-sm px-4 py-1 btn-primary rounded" onclick="addEmployment()">add subject</span>
+                                            <div class="d-flex justify-content-start py-2 w-100">
+                                                <span class="btn btn-sm px-4 py-1 btn-primary rounded" onclick="addEmployment()">add subject</span> <br><span style="text-transform: lowercase; color: skyblue; font-weight: 600;">scroll right for more</span>
                                             </div>
                                         </th>
                                     </tr>
                                     <tr class="text-capitalize">
+                                        <th class="text-center border"></th>
                                         <th class="text-center border">{{ __('text.subject_attempted') }}</th>
                                         <th class="text-center border" style="width: 3rem;">{{ __('text.word_grade') }}</th>
-                                        <th class="text-center border"></th>
                                     <tr>
                                 </thead>
                                 <tbody id="employments">
                                     @foreach (json_decode($application->gce_al_record)??[] as $key=>$record)
                                         <tr class="text-capitalize">
+                                            <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropEmployment(event)">{{ __('text.word_drop') }}</span></td>
                                             <td class="border"><input class="form-control text-primary"  name="gce_al_record[subject][$key]" required value="{{ $record->subject }}"></td>
                                             <td class="border"><input class="form-control text-primary"  name="gce_al_record[grade][$key]" required value="{{ $record->grade }}"></td>
-                                            <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropEmployment(event)">{{ __('text.word_drop') }}</span></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -647,7 +647,7 @@
                         <input type="hidden" value="1" name="submitted">
                         <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
                             <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
-                                <div class="py-4 text-success text-center ">You are about to make a payment of {{ $application->degree->amount }} CFA for application fee
+                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ $application->degree->amount }} CFA for application fee
                                 </div>
                                 <div class="py-4 text-secondary text-center ">To Pay: 
                                     <div>Dial <span class="text-dark" style="font-weight:700;">*126*4*309082*amount#</span>. Merchant Name: <span class="text-dark" style="font-weight:700;">Higher Institute of Management Studies (HIMS-Buea)</span></div>
@@ -707,6 +707,7 @@
         let addTraining = function(){
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
             let html = `<tr class="text-capitalize">
+                            <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropTraining(event)">{{ __('text.word_drop') }}</span></td>
                             <td class="border">
                                 <select class="form-control text-primary"  name="gce_ol_record[subject][${key}]" required onchange="check_specify(event)">
                                     <option>subject</option>
@@ -724,7 +725,6 @@
                                     @endforeach
                                 </select>
                             </td>
-                            <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropTraining(event)">{{ __('text.word_drop') }}</span></td>
                         </tr>`;
             $('#previous_trainings').append(html);
         } 
@@ -748,6 +748,7 @@
         let addEmployment = function(){
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
             let html = `<tr class="text-capitalize">
+                            <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropEmployment(event)">{{ __('text.word_drop') }}</span></td>
                             <td class="border">
                                 <select class="form-control text-primary"  name="gce_al_record[subject][${key}]" required onchange="check_specify(event)">
                                     <option>subject</option>
@@ -765,7 +766,6 @@
                                     @endforeach
                                 </select>
                             </td>
-                            <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropEmployment(event)">{{ __('text.word_drop') }}</span></td>
                         </tr>`;
             $('#employments').append(html);
         } 

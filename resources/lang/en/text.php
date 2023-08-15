@@ -916,7 +916,7 @@ return [
     'entry_qualification'=>'entry qualification',
     'where_did_you_hear_about_us'=>'where did you hear about us',
     'region_of_origin'=>'region of origin',
-    'momo_number_used_in_payment'=>'momo / orange money number used in payment',
+    'momo_number_used_in_payment'=>'momo number used in payment',
     'save_and_continue'=>'save and continue',
     'pay_later'=>'pay later',
     'last_attended_high_school'=>'last attended high school',
