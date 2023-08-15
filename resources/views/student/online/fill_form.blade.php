@@ -647,8 +647,13 @@
                         <input type="hidden" value="1" name="submitted">
                         <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
                             <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
-                                {{-- <div class="py-4 text-info text-center ">You are about to make a payment of {{ $degree->amount }} CFA for application fee
-                                </div> --}}
+                                <div class="py-4 text-success text-center ">You are about to make a payment of {{ $application->degree->amount }} CFA for application fee
+                                </div>
+                                <div class="py-4 text-secondary text-center ">To Pay: 
+                                    <div>Dial <span class="text-dark" style="font-weight:700;">*126*4*309082*amount#</span>. Merchant Name: <span class="text-dark" style="font-weight:700;">Higher Institute of Management Studies (HIMS-Buea)</span></div>
+                                    <div>Get the <span class="text-dark" style="font-weight:700;">transaction ID</span> and <span class="text-dark" style="font-weight:700;">Number used in Paying</span> input in the form below and send</div>
+                                </div>
+                                
                                 <div class="py-3">
                                     <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment') }} (<span class="text-danger">{{ __('text.without_country_code') }}</span>)</label>
                                     <div class="">
