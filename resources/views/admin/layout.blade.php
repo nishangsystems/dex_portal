@@ -233,7 +233,7 @@
 
                         <b class="arrow"></b>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{route('admin.admission.programs.config')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.certificate_programs')}}
@@ -248,7 +248,7 @@
                         </a>
 
                         <b class="arrow"></b>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
             @endif
@@ -297,14 +297,14 @@
 
                         <b class="arrow"></b>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{route('admin.applications.change_program')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.change_program')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{route('admin.students.index')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
