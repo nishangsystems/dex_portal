@@ -19,9 +19,9 @@
                     @foreach ($applications as $appl)
                         <tr class="border-bottom">
                             <td class="border-left border-right">{{ $k++ }}</td>
-                            <td class="border-left border-right">{{ $appl->name??null }}</td>
-                            <td class="border-left border-right">{{ $appl->email??null }}</td>
-                            <td class="border-left border-right">{{ $appl->phone??null }}</td>
+                            <td class="border-left border-right">{{ $appl->name == null ? $appl->student->name : $appl->name }}</td>
+                            <td class="border-left border-right">{{ $appl->email == null ? $appl->student->email : $appl->email }}</td>
+                            <td class="border-left border-right">{{ $appl->phone == null ? $appl->student->phone : $appl->phone }}</td>
                             <td class="border-left border-right">{{ $appl->degree->name??null }}</td>
                             <td class="border-left border-right">{{ $appl->_program->name??null }}</td>
                             <td class="border-left border-right">
