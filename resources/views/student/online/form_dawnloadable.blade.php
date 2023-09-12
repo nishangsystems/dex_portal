@@ -233,12 +233,12 @@
                             <td class="border-left border-right py-4">{{ $application->degree->name }}</td>
                             <td class="border-left border-right py-4">{{ $application->_program->name }}</td>
                         </tr>
-                        <tr  class="border-top border-bottom border-dark py-2">
-                            <td colspan="2" class="text-capitalize py-1 px-3 border" >
+                        <tr  class="py-2">
+                            <td colspan="2" class="text-capitalize py-1 px-3" >
                                 <h4 class="text-uppercase py-1" style="font-weight: 700;">student admission number:</h4>
                                 <label  class="form-control w-75 mx-auto"></label>
                             </td>
-                            <td class="text-capitalize py-1 px-3 border">
+                            <td class="text-capitalize py-1 px-3">
                                 <div class="text-center py-3">
                                     <h6>signature</h6> __________________________
                                 </div>

@@ -26,6 +26,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use SebastianBergmann\Environment\Console;
+use Throwable;
 
 class ProgramController extends Controller
 {
@@ -1014,27 +1015,43 @@ class ProgramController extends Controller
             return view('admin.student.applications', $data);
         }
 
-        $application = ApplicationForm::find($id);
-        $data['campuses'] = json_decode($this->api_service->campuses())->data;
-        $data['application'] = ApplicationForm::find($id);
-        $data['degree'] = collect(json_decode($this->api_service->degrees())->data??[])->where('id', $data['application']->degree_id)->first();
-        $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
-        $data['certs'] = json_decode($this->api_service->certificates())->data;
+        // $application = ApplicationForm::find($id);
+        // // $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        // $data['application'] = ApplicationForm::find($id);
+        // $data['degree'] = $application->degree;
+        // // $data['campus'] = $application->;
+        // $data['certs'] = json_decode($this->api_service->certificates())->data;
         
-        $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
-        $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
-        $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
-        $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+        // $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+        // $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+        // $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
+        // $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
         
-        // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-        $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
-        $data['title'] = $title;
+        // // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
+        // $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
+        // $data['title'] = $title;
 
-        if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
-        // return view('student.online.form_dawnloadable', $data);
-        $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
-        $filename = $title.' - '.$application->name.'.pdf';
-        return $pdf->download($filename);
+        // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
+        // // return view('student.online.form_dawnloadable', $data);
+        // $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
+        // $filename = $title.' - '.$application->name.'.pdf';
+        // return $pdf->download($filename);
+
+        try{
+            $application = ApplicationForm::find($id);
+            $data['application'] = $application;
+            
+            $title = "APPLICATION FORM FOR ".$application->degree->name;
+            $data['title'] = $title;
+
+            // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
+            // return view('student.online.form_dawnloadable', $data);
+            $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
+            $filename = $title.' - '.$application->name.'.pdf';
+            return $pdf->download($filename);
+        }catch(Throwable $th){
+            if(in_array(null, array_values($data))){ return back()->with('message', $th->getMessage());}
+        }
     }
 
     public function edit_application_form(Request $request, $id = null)
@@ -1100,7 +1117,7 @@ class ProgramController extends Controller
     {
         # code...
         if($id == null){
-            $data['title'] = "Uncompleted Application Forms";
+            $data['title'] = "Download Application Form";
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 1)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
@@ -1118,9 +1135,9 @@ class ProgramController extends Controller
         $data['fee2_dateline'] = $config->fee2_latest_date??'';
         $data['help_email'] = $config->help_email??"admission@slui.org";
         
-        $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first();
-        $data['program'] = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first();
-        // return view('admin.student.admission_letter', $data);
+        // $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first();
+        $data['program'] = Program::find($appl->program);
+        return view('admin.student.admission_letter', $data);
         $pdf = Pdf::loadView('admin.student.admission_letter', $data);
 
         return $pdf->download("Admission_Letter_{$appl->matric}.pdf");
