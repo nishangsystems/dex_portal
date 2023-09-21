@@ -170,7 +170,7 @@
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}</label>
                             <div class="">
-                                <input type="email" class="form-control text-primary"  name="email" value="{{ auth('student')->user()->email }}" required readonly>
+                                <input type="email" class="form-control text-primary"  name="email" value="{{ auth('student')->user()->email }}" required {{ auth('student')->user()->email != null ? 'readonly' : '' }}>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-5">
@@ -719,7 +719,7 @@
                             </td>
                             <td class="border">
                                 <select class="form-control text-primary"  name="gce_ol_record[grade][${key}]" required value="">
-                                    <option>grade</option>
+                                    <option></option>
                                     @foreach (['A', 'B', 'C'] as $grd)
                                         <option value="{{ $grd }}">{{ $grd }}</option>
                                     @endforeach
@@ -760,7 +760,7 @@
                             </td>
                             <td class="border">
                                 <select class="form-control text-primary"  name="gce_al_record[grade][${key}]" required>
-                                    <option>grade</option>
+                                    <option></option>
                                     @foreach (['A', 'B', 'C', 'D', 'E'] as $grd)
                                         <option value="{{ $grd }}">{{ $grd }}</option>
                                     @endforeach

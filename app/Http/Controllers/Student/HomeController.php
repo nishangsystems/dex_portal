@@ -420,7 +420,7 @@ class HomeController extends Controller
         
         // check if application is open now
         if(!(Helpers::instance()->application_open())){
-            return redirect(route('student.home'))->with('error', 'Application closed for '.Helpers::instance()->getYear()->name);
+            return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Helpers::instance()->getYear())->name);
         }
         $applications = auth('student')->user()->currentApplicationForms()->where('submitted', 0)->get();
         $data['title'] = "Submit Application";
