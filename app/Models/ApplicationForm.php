@@ -17,6 +17,21 @@ class ApplicationForm extends Model
         'candidate_declaration', 'parent_declaration', 'degree_id', 'admitted', 'submitted', 'momo_number', 'transaction_id'
     ];
 
+    public function can_submit()
+    {
+        # code...
+        return !in_array(null, [
+            $this->degree_id, $this->name, $this->dob, $this->pob, $this->gender, $this->id_card_number, 
+            $this->id_date_of_issue, $this->id_place_of_issue, $this->nationality, $this->region, 
+            $this->country_of_birth, $this->referer, $this->phone, $this->residence, $this->email, 
+            $this->guardian, $this->guardian_phone, $this->guardian_address, $this->sponsor, 
+            $this->sponsor_phone, $this->sponsor_address, $this->secondary_school, $this->secondary_exam_center, 
+            $this->secondary_candidate_number, $this->secondary_exam_year, $this->gce_ol_record, 
+            $this->high_school, $this->high_school_exam_center, $this->high_school_candidate_number, 
+            $this->high_school_exam_year, $this->gce_al_record, $this->program
+        ]);
+    }
+
     public function student()
     {
         # code...
