@@ -997,5 +997,14 @@ return [
     'word_guardian'=>'guardian',
     'program_choice'=>'program choice',
     'complete_form'=>'complete form',
+    'program_change_report'=>'program change report',
+    'application_bypass_report'=>'application bypass report',
+    'platform_bypass_report'=>'platform bypass report',
+    'application_statistics'=>'application statistics',
+    'admission_statistics'=>'admission statistics',
+    'platform_bypass'=>'platform bypass',
+    'application_bypass'=>'application bypass',
+    'current_program'=>'current program',
+    'new_program'=>'new program',
     ''
 ];

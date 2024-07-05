@@ -1061,19 +1061,19 @@ class ProgramController extends Controller
             $data['title'] = "Edit Student Information";
             $data['_this'] = $this;
             $data['action'] = __('text.word_edit');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
 
         # code...
-        // return $this->api_service->campuses();
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         $data['application'] = ApplicationForm::find($id);
-
         
         $data['title'] = "EDIT APPLICATION FORM FOR ".$data['application']->degree->name;
         return view('admin.student.edit_form', $data);
         
     }
+
     public function update_application_form(Request $request, $id)
     {
         # code...
@@ -1083,7 +1083,11 @@ class ProgramController extends Controller
         }
 
         $data = ['name'=>$request->name, 'program'=>$request->program];
-        ApplicationForm::find($id)->update($data);
+        $application = ApplicationForm::find($id);
+        $application->update($data);
+        if($application->admitted == 1){
+            $this->api_service->update_student($application->matric, ['name'=>$request->name,]);
+        }
         return back()->with('success', __('text.word_done'));
     }
 
@@ -1094,7 +1098,7 @@ class ProgramController extends Controller
             $data['title'] = "Uncompleted Application Forms";
             $data['_this'] = $this;
             $data['action'] = __('text.word_show');
-            $data['bypass'] = 'bypass form';
+            // $data['bypass'] = 'bypass form';
             $data['applications'] = ApplicationForm::whereNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             // return $data;
             return view('admin.student.applications', $data);
@@ -1154,15 +1158,16 @@ class ProgramController extends Controller
             return view('admin.student.applications', $data);
         }
         if(!$request->has('matric') or ($request->matric == null)){
-            // 
+            // dd($request->matric);
             // GENERATE MATRICULE
             $application = ApplicationForm::find($id);
             if(($programs = json_decode($this->api_service->programs())->data) != null){
-                $program = collect($programs)->where('id', $application->program_first_choice)->first()??null;
+                $program = collect($programs)->where('id', $application->program)->first()??null;
                 if($program != null){
                     // dd($program);
                     $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
                     $prefix = $program->prefix??null;//3 char length
+                    $suffix = $program->suffix??null;//3 char length
                     $max_count = '';
                     if($prefix == null){
                         return back()->with('error', 'Matricule generation prefix not set.');
@@ -1172,18 +1177,24 @@ class ProgramController extends Controller
                     if($max_matric == null){
                         $max_count = 0;
                     }else{
-                        $max_count = intval(substr($max_matric, strlen($prefix)+4));
+                        $max_count = intval(substr($max_matric, -3));
                     }
-                    $next_count = substr('0000'.($max_count+1), -4);
-                    $student_matric = $prefix.'/'.$year.'/'.$next_count;
 
+                    NEXT_MATRIC:
+                    $next_count = substr('000'.(++$max_count), -3);
+                    $student_matric = $prefix.$year.$suffix.$next_count;
+                    // dd($student_matric);
                     if(ApplicationForm::where('matric', $student_matric)->where('id', '!=', $id)->count() == 0){
                         $data['title'] = "Student Admission";
                         $data['application'] = $application;
                         $data['program'] = $program;
                         $data['matricule'] = $student_matric;
-                        $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
+                        $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->first();
+                        // dd($data);
                         return view('admin.student.confirm_admission', $data);
+                    }else{
+                        # code...
+                        goto NEXT_MATRIC;
                     }
                     return back()->with('error', 'Failed to generate matricule');
                 }
@@ -1194,21 +1205,43 @@ class ProgramController extends Controller
 
     public function admit_student(Request $request, $id)
     {
-        # code...
+
+        
         $validity = Validator::make($request->all(), ['matric'=>'required']);
-        if($validity->fails()){return back()->with('error', 'Missing matricule');}
+        if($validity->fails()){
+            return back()->with('error', 'Missing matricule');
+        }
         $application = ApplicationForm::find($id);
-        // dd($application->toJson());
-        // (new ApplicationForm())-
-        
-        
+
+        // dd($application);
         // POST STUDENT TO SCHOOL SYSTEM
-        $application->matric = $request->matric;
-        $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
+        // $application->update(['matric' => $request->matric]);
+
+        // dd($request->matric);
+        $student_data = [
+            'name'=>$application->name??null, 
+            'email'=>$application->email??null, 
+            'phone'=>$application->phone??null,
+            'address'=>$application->residence??null, 
+            'gender'=>$application->gender??null,
+            'matric'=>$request->matric??null, 
+            'dob'=>$application->dob??null, 
+            'pob'=>$application->pob??null,
+            'year_id'=>$application->year_id??null,
+            'campus_id'=>$application->campus_id??null, 
+            'admission_batch_id'=>$application->year_id??null,
+            'fee_payer_name'=>$application->fee_payer_name??null, 
+            'program_first_choice'=>$application->program??null, 
+            'region'=>$application->_region->name??null,
+            'fee_payer_tel'=>$application->fee_payer_tel??null, 
+            'division'=>$application->_division->name??null,
+            'level'=>$application->level??null
+        ];
+        $resp = json_decode($this->api_service->store_student($student_data))->data??null;
         // dd($resp);
         if($resp != null and !is_string($resp)){
-            if($resp->status ==1){
-                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
+           if($resp->status == 1){
+                $application->update(['matric'=>$request->matric, 'admitted'=>1, 'admitted_at'=>now()]);
 
                 // Send sms/email notification
                 $phone_number = $application->phone;
@@ -1219,18 +1252,22 @@ class ProgramController extends Controller
                     $phone_number = '237'.$phone_number;
                 }
                 // dd($phone_number);
-                $message="You have been admitted into ST. LOUIS UNIVERSITY INSTITUTE today ".now()->format(DATE_RFC2822)." with registration number $application->matric";
+                $message="Congratulations {$application->name}. You have been admitted into ".($chool_name??"BUIB")." for {$application->year->name} . Access your admission portal at https://apply.buibsystems.org to download your admission letter";
                 $sent = $this->sendSMS($phone_number, $message);
 
+                // Send student admission letter to email
+                // $this->send_admission_letter($application->id);
+
                 return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
-            }else
-            return back()->with('error', $resp);
-        }else{return back()->with('error', $resp);}
+           }else
+           return back()->with('error', $resp);
+       }else{
+           return back()->with('error', $resp);
+       }
 
 
 
     }
-
 
     public function application_form_change_program(Request $request, $id = null)
     {
@@ -1256,13 +1293,13 @@ class ProgramController extends Controller
         if($data['application']->degree_id != null){
             $data['certs'] = json_decode($this->api_service->certificates())->data;
         }
+        $data['programs'] = json_decode($this->api_service->programs())->data;
         if($data['application']->entry_qualification != null){
-            $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
             $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
         }
-        if($data['application']->program_first_choice != null){
-            $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
-            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+        if($data['application']->program != null){
+            $data['program'] = collect($data['programs'])->where('id', $data['application']->program)->first();
+            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program)->first();
             // return $data;
         }
         if($data['application']->level != null){
@@ -1276,7 +1313,7 @@ class ProgramController extends Controller
     public function change_program(Request $request, $id)
     {
         # code...
-        $validity = Validator::make($request->all(), ['current_program'=>'required', 'new_program'=>'required', 'level'=>'required']);
+        $validity = Validator::make($request->all(), ['new_program'=>'required', 'level'=>'required']);
         if($validity->fails()){
             return back()->with('error', $validity->errors()->first());
         }
@@ -1428,5 +1465,29 @@ class ProgramController extends Controller
         $name = $prog_id == null ? ("ALL APPLIVATIONS FOR ".substr($first->year->name??'', 0, 4)).'.csv' : ($first->_program->type.' - '.$first->_program->name." ALL APPLIVATIONS FOR ".substr($first->year->name??'', 0, 4)).'.csv';
         return response()->download($file, $name);
 
+    }
+
+    public function application_bypass_report(Request $request){
+        $data['title'] = "Application Bypass Report";
+        $degrees = collect(json_decode($this->api_service->degrees())->data);
+        $programs = collect(json_decode($this->api_service->programs())->data);
+        $data['bypasses'] = \App\Models\TranzakTransaction::where(['payment_method'=>'BYPASS'])->join('application_forms', ['application_forms.transaction_id'=>'tranzak_transactions.id'])
+            ->where(['application_forms.year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['application_forms.*', 'tranzak_transactions.merchant_account_id as user_id', 'tranzak_transactions.transaction_ref'])->distinct()->get()->each(function($rec)use($degrees, $programs){
+                $rec->degree_name = optional($degrees->where('id', $rec->degree_id)->first())->deg_name??'';
+                $rec->program_name = optional($programs->where('id', $rec->program)->first())->name??'';
+                $rec->user = optional(\App\Models\User::find($rec->user_id))->name??'';
+                $rec->reason = str_replace('_', ' ', $rec->transaction_ref);
+            });
+        
+        return view('admin.report.application_bypass', $data);
+    }
+
+    public function platform_bypass_report(Request $request){
+        $data['title'] = "Platform Charges Bypass Report";
+        $data['bypasses'] = \App\Models\Charge::where(['charges.type'=>'PLATFORM'])->where('charges.transaction_id', '<=', 0)->where('charges.year_id', Helpers::instance()->getCurrentAccademicYear())
+            ->join('students', ['students.id'=>'charges.student_id'])->select(['students.*', 'charges.financialTransactionId'])
+            ->distinct()->get()->each(function($rec){
+                $rec->reason = str_replace('_', ' ', $rec->financialTransactionId);
+            });
     }
 }

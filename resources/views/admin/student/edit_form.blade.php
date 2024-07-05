@@ -240,10 +240,10 @@
                     <div class="col-sm-12 col-md-6 col-lg-6">
                         <label class="text-secondary text-capitalize">{{ __('text.word_program') }}</label>
                         <div class="">
-                            <select class="form-control text-primary" name="program">
+                            <select class="form-control text-primary" name="program" {{ $application->admitted == 1 ? 'disabled' : '' }}>
                                 <option></option>
-                                @foreach ($application->degree->programs as $prog)
-                                    <option value="{{ $prog->id }}" {{ $application->program == $prog->id ? 'selected' : ''}}>{{ $prog->name.' (SCHOOL OF '.$prog->type.')' }}</option>
+                                @foreach ($programs as $prog)
+                                    <option value="{{ $prog->id }}" {{ $application->program == $prog->id ? 'selected' : ''}}>{{ $prog->name }}</option>
                                 @endforeach
                             </select>
                             {{-- <label class="form-control text-primary border-0">{{ $application->_program->name ?? '' }}</label> --}}

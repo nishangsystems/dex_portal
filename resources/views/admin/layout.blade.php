@@ -297,14 +297,30 @@
 
                         <b class="arrow"></b>
                     </li>
-                    {{-- <li>
+                    <li>
+                        <a href="{{route('admin.applications.admit')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.admit_student')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
                         <a href="{{route('admin.applications.change_program')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.change_program')}}
                         </a>
 
                         <b class="arrow"></b>
-                    </li> --}}
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.admission_letter')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.admission_letters')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
                     <li>
                         <a href="{{route('admin.students.index')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -359,8 +375,6 @@
                             </li>
                         </ul>
                     </li>
-                </ul>
-                <ul class="submenu">
                     <li>
                         <a href="#" class="dropdown-toggle text-capitalize">
                             <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
@@ -382,6 +396,30 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="{{route('admin.applications.finance.general')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.program_change_report')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.reports.application_bypass')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.application_bypass_report')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.reports.platform_bypass')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.platform_bypass_report')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
                 </ul>
             </li>
             @endif
@@ -398,59 +436,22 @@
                 <b class="arrow"></b>
 
                 <ul class="submenu">
-                    @if (\Auth::user()->hasPermissionTo('manage_student_statistics'))
                     <li>
-                        <a href="{{route('admin.stats.students')}}" class="text-capitalize">
+                        <a href="{{ route('admin.stats.admission') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.student_statistics')}}
+                            {{__('text.admission_statistics')}}
                         </a>
                         <b class="arrow"></b>
                     </li>
-                    @endif
-                    @if (\Auth::user()->hasPermissionTo('__________manage_result_statistics'))
                     <li>
-                        <a href="{{route('admin.stats.results')}}" class="text-capitalize">
+                        <a href="{{ route('admin.stats.application') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.results_statistics')}}
+                            {{__('text.application_statistics')}}
                         </a>
 
                         <b class="arrow"></b>
                     </li>
-                    @endif
-                    @if (\Auth::user()->hasPermissionTo('manage_finance_statistics'))
-                     <li>
-                        <a href="{{route('admin.stats.fees')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.fee_statistics')}}
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li>
-                        <a href="{{route('admin.stats.income')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                           {{__('text.income_statistics')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li>
-                        <a href="{{route('admin.stats.expenditure')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                           {{__('text.expenditure_statistics')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li>
-                        <a href="{{route('admin.stats.ie_report')}}" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                           {{__('text.IE_report')}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-                    @endif
+                    
                 </ul>
             </li>
             @endif
@@ -490,12 +491,30 @@
         
             
             <li>
+                <a href="{{ route('admin.bypass.application') }}" class="text-capitalize">
+                    <i  style="color: {{$bg1}};" class="fa fa-key menu-icon   "></i>
+                    {{__('text.application_bypass')}}
+                </a>
+                <b class="arrow"></b>
+            </li>
+        
+            
+            <li>
+                <a href="{{ route('admin.bypass.platform') }}" class="text-capitalize">
+                    <i  style="color: {{$bg1}};" class="fa fa-key menu-icon   "></i>
+                    {{__('text.platform_bypass')}}
+                </a>
+                <b class="arrow"></b>
+            </li>
+            
+            <li>
                 <a href="{{route('admin.reset_password')}}" class="text-capitalize">
                     <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
                     {{__('text.reset_password')}}
                 </a>
                 <b class="arrow"></b>
             </li>
+        
 
             <li>
                 <a onclick="event.preventDefault(); document.getElementById('logout-form').submit();"

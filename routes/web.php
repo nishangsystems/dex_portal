@@ -183,6 +183,14 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::post('charges/set', 'Admin\HomeController@save_charges')->name('charges.save');
 
     // APPLICATION PLATFORM ROUTES ONLY
+
+    Route::prefix('xbypass')->name('bypass.')->group(function(){
+        Route::get('xapplication/{application_id?}', [AdminHomeController::class, '__application_bypass'])->name('application');
+        Route::post('xapplication/{application_id?}', [AdminHomeController::class, '__save_application_bypass']);
+        Route::get('xplatform/{student_id?}', [AdminHomeController::class, '__platform_bypass'])->name('platform');
+        Route::post('xplatform/{student_id?}', [AdminHomeController::class, '__save_platform_bypass']);
+    });
+
     Route::get('admission/campus/degrees/{cid?}', [ProgramController::class, 'config_degrees'])->name('admission.campus.degrees');
     Route::post('admission/campus/degrees/{cid?}', [ProgramController::class, 'set_config_degrees']);
     Route::get('admission/open/{id?}', [ProgramController::class, 'open_admission'])->name('admission.open');
@@ -216,7 +224,17 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('degree/{degree?}', [ProgramController::class, 'applicants_report_by_degree'])->name('applicants.by_degree');
         Route::get('program/{program?}', [ProgramController::class, 'applicants_report_by_program'])->name('applicants.by_program');
         Route::get('finance/general', [ProgramController::class, 'finance_report_general'])->name('applicants.by_program');
+        Route::get('application/bypass', [ProgramController::class, 'application_bypass_report'])->name('application_bypass');
+        Route::get('platform/bypass', [ProgramController::class, 'platform_bypass_report'])->name('platform_bypass');
     });
+    Route::prefix('stats')->name('stats.')->group(function(){
+        Route::get('application', [AdminHomeController::class, 'application_statistics'])->name('application');
+        Route::get('admission', [AdminHomeController::class, 'admission_statistics'])->name('admission');
+    });
+
+    Route::get('search_student', [AdminHomeController::class, '_search_student'])->name('search_student');
+
+    Route::get('campus/program/levels/{campus_id}/{program_id}', [Controller::class, 'campusProgramLevels'])->name('campus.program.levels');
 });
 
 

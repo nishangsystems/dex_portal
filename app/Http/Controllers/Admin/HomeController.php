@@ -488,4 +488,129 @@ class HomeController  extends Controller
             return back()->with('success', __('text.word_done'));
         }
     }
+
+    public function application_statistics(Request $request)
+    {
+        # code...
+        $data['title'] = "Application Statistics";
+        $filter = $request->filter??null;
+        if($filter != null)
+        $data['title'] = "Application Statistics Filtered By ".$filter;
+        switch($filter){
+            case 'program':
+                $programs = collect(json_decode($this->api_service->programs())->data);
+                $data['programs'] = \App\Models\ApplicationForm::where(['submitted'=>1, 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'program', DB::raw("COUNT(*) as count")])
+                    ->groupBy('program')->distinct()->get()->each(function($rec)use($programs){
+                        $prog = $programs->where('id', $rec->program)->first();
+                        $rec->filter_name = optional($prog)->name??null;
+                    });
+                
+                return view('admin.statistics.application', $data);
+                break;
+            default:
+                // filter by degree
+                $degrees = collect(json_decode($this->api_service->degrees())->data);
+                $data['programs'] = \App\Models\ApplicationForm::where(['submitted'=>1, 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'degree_id', DB::raw("COUNT(*) as count")])
+                    ->groupBy('degree_id')->distinct()->get()->each(function($rec)use($degrees){
+                        $deg = $degrees->where('id', $rec->degree_id)->first();
+                        $rec->filter_name = optional($deg)->deg_name??null;
+                    });
+
+                return view('admin.statistics.application', $data);
+                break;
+        } 
+    }
+
+    public function admission_statistics(Request $request)
+    {
+        # code...
+        $data['title'] = "Admission Statistics";
+        $filter = $request->filter??null;
+        if($filter != null)
+        $data['title'] = "Admission Statistics Filtered By ".$filter;
+        switch($filter){
+            case 'program':
+                $programs = collect(json_decode($this->api_service->programs())->data);
+                $data['programs'] = \App\Models\ApplicationForm::where(['admitted'=>1, 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'program', DB::raw("COUNT(*) as count")])
+                    ->groupBy('program')->distinct()->get()->each(function($rec)use($programs){
+                        $prog = $programs->where('id', $rec->program)->first();
+                        $rec->filter_name = optional($prog)->name??null;
+                    });
+                
+                return view('admin.statistics.admission', $data);
+                break;
+            default:
+                // filter by degree
+                $degrees = collect(json_decode($this->api_service->degrees())->data);
+                $data['programs'] = \App\Models\ApplicationForm::where(['admitted'=>1, 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'degree_id', DB::raw("COUNT(*) as count")])
+                    ->groupBy('degree_id')->distinct()->get()->each(function($rec)use($degrees){
+                        $deg = $degrees->where('id', $rec->degree_id)->first();
+                        $rec->filter_name = optional($deg)->deg_name??null;
+                    });
+
+                return view('admin.statistics.admission', $data);
+                break;
+        } 
+    }
+
+    public function __application_bypass(Request $request, $application_id = null)
+    {
+        # code...
+        $data['title'] = "Bypass Application Fee";
+        $data['_this'] = $this;
+        $data['applications'] = \App\Models\ApplicationForm::whereNull('transaction_id')->whereNotNull('degree_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+        if($application_id != null){
+            $data['application'] = \App\Models\ApplicationForm::find($application_id);
+        }
+        return view('admin.student.bypass_application_fee', $data);
+    }
+
+    public function __save_application_bypass(Request $request, $application_id)
+    {
+        # code...
+        $validity = validator($request->all(), ['bypass_reason'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+        $data = ['request_id'=>rand(10000000000, 1000000000000), 'amount'=>0, 'currency_code'=>'---', 'purpose'=>'PLATFORM', 'mobile_wallet_number'=>'0000000000', 'transaction_ref'=>str_replace(' ', '_', $request->bypass_reason??'------'), 'app_id'=>0, 'transaction_id'=>-1000000000, 'transaction_time'=>now(), 'payment_method'=>'BYPASS', 'payer_user_id'=>0, 'payer_name'=>'---', 'payer_account_id'=>0, 'merchant_fee'=>0, 'merchant_account_id'=>auth()->id(), 'net_amount_recieved'=>0];
+        $transaction = \App\Models\TranzakTransaction::create($data);
+        $application = \App\Models\ApplicationForm::find($application_id);
+        $application->update(['transaction_id'=>$transaction->id, 'submitted'=>1]);
+        return redirect()->to(route('admin.bypass.application'))->with('success', "Done");
+        
+    }
+
+    public function __platform_bypass(Request $request, $student_id = null)
+    {
+        # code...
+        $data['title'] = "Bypass Platform Charges";
+        if($student_id != null){
+            $data['student'] = \App\Models\Students::find($student_id);
+            $data['title'] = "Bypass Platform Charges For ".$data['student']->name??'';
+        }
+        // dd($request->route());
+        return view('admin.student.bypass_platform', $data);
+    }
+
+    public function __save_platform_bypass(Request $request, $student_id = null)
+    {
+        # code...
+        // dd($request->all());
+        $validity = validator($request->all(), ['reason'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+        $plcharge = \App\Models\PlatformCharge::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+        $data = ['student_id'=>$student_id, 'year_id'=>Helpers::instance()->getCurrentAccademicYear(), 'amount'=>$plcharge->yearly_amount??0, 'financialTransactionId'=>str_replace(' ', '_', $request->reason), 'item_id'=>$plcharge->id??0, 'transaction_id'=>-1000000000, 'used'=>1, 'type'=>'PLATFORM'];
+        $charge = \App\Models\Charge::create($data);
+        return redirect()->to(route('admin.bypass.platform'))->with('success', "Done");
+    }
+
+    public function _search_student(Request $request)
+    {
+        # code...
+        $search_key = $request->key??'';
+        
+        return Students::where('name', 'LIKE', "%{$search_key}%")->orWhere('email', 'LIKE', "%{$search_key}%")->orWhere('phone', 'LIKE', "%{$search_key}%")->take(15)->get();
+    }
 }
