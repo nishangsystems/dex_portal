@@ -779,7 +779,7 @@ class HomeController extends Controller
                     $data = ['student_id'=>$pending->student_id, 'year_id'=>$pending->year_id, 'type'=>$pending->purpose, 'item_id'=>$pending->payment_id, 'amount'=>$transaction_instance->amount, 'financialTransactionId'=>$transaction_instance->transaction_id, 'used'=>1];
                     $instance = new \App\Models\Charge($data);
                     $instance->save();
-                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($pending->purpose??'')." for ".($transaction_instance->year->name??'')." HIMS UNIVERSITY INSTITUTE.";
+                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($pending->purpose??'')." for ".($transaction_instance->year->name??'')." HIMS.";
                     $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
                     
                     ($pending = \App\Models\PendingTranzakTransaction::where('requestId', $request->requestId)->first()) != null ? $pending->delete() : null;
