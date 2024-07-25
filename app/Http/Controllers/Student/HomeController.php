@@ -211,7 +211,7 @@ class HomeController extends Controller
                 $application->year_id = Helpers::instance()->getCurrentAccademicYear();
                 $application->save();
             }
-            if($application->degree_id != null and $application->tranzak_transaction->payment_id != $application->degree_id and $step != 0 ){
+            if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 0 ){
                 $data['step'] = 6;
             }
             $data['certificates'] = collect(json_decode($this->api_service->certificates())->data);
@@ -304,7 +304,7 @@ class HomeController extends Controller
         }
         // return $request->all();
         $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
-        if($application->degree_id != null and $application->tranzak_transaction->payment_id != $application->degree_id and $step != 7){
+        if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 7){
             goto SKIP;
         }
 
