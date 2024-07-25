@@ -111,7 +111,8 @@ class Controller extends BaseController
         $account = new Students($request->all());
         $account->password = Hash::make($request->password);
         $account->save();
-        return redirect(route('login'))->with('success', 'Account successfully created');
+        auth('student')->login($account);
+        return redirect(route('student.home'))->with('success', 'Account successfully created');
     }
 
     public function reset_password(Request $request, $id= null)
