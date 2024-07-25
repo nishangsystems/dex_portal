@@ -50,7 +50,7 @@ class SMSConfig
     private $username = "nishang";
     private $password = "Nish@237";
     private $messageType = "0";
-    private $smsSenderName = "St Louis"; //- Max Length of 11 if alphanumeric.
+    private $smsSenderName = "HIMS"; //- Max Length of 11 if alphanumeric.
     private $smsApiBaseUrl = "https://api.rmlconnect.net/bulksms/bulksms?";
 
     /**
