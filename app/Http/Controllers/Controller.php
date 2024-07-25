@@ -37,7 +37,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     var $current_accademic_year;
-    var $api_service;
+    var $api_service, $app_service;
     public function __construct(ApiService $apiService)
     {
         # code...
@@ -192,7 +192,7 @@ class Controller extends BaseController
 
 
         // SEND SMS PROPER
-        SMSHelpers::sendSMS($message_text, $cleaned_contacts);
+        Self::_sendSMS($cleaned_contacts, $message_text);
 
         // foreach ($contacts as $key => $contact) {
         //     # code...
@@ -274,24 +274,16 @@ class Controller extends BaseController
 
     public function sendSMS($phone_number, $message)
     {
+        if($message == null){return "Message must not be empty";}
+        if($phone_number == null){return "Reciever IDs must not be empty";}
+        
+        return (new FocusTargetSms($phone_number, $message))->send();
+
+    }
 
 
-        /* //twilio implementation
-            $sid = getenv("TWILIO_SID");
-            $token = getenv("TWILIO_TOKEN");
-            $sender = getenv("TWILIO_PHONE");
-            $twilio = new Client($sid, $token);
-
-            $message = $twilio->messages
-                ->create("+237672908239", // to
-                        [
-                            "body" => "This is the ship that made the Kessel Run in fourteen parsecs?",
-                            "from" => $sender
-                        ]
-                );
-            return 'success';
-        */
-
+    public static function _sendSMS($phone_number, $message)
+    {
         if($message == null){return "Message must not be empty";}
         if($phone_number == null){return "Reciever IDs must not be empty";}
         

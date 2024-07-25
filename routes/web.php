@@ -238,54 +238,11 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 });
 
 
-Route::prefix('student')->name('student.')->middleware('isStudent')->group(function () {
+Route::prefix('student')->name('student.')->middleware(['isStudent', 'platform'])->group(function () {
     Route::get('', 'Student\HomeController@index')->name('home');
     Route::get('edit_profile', 'Student\HomeController@edit_profile')->name('edit_profile');
     Route::post('update_profile', 'Student\HomeController@update_profile')->name('update_profile');
-    Route::get('subject', 'Student\HomeController@subject')->name('subject');
-    Route::get('result/ca', 'Student\HomeController@result')->name('result.ca');
-    Route::post('result/ca', 'Student\HomeController@ca_result');
-    Route::get('result/ca/download', 'Student\HomeController@ca_result_download');
-    Route::get('result/exam', 'Student\HomeController@result')->name('result.exam');
-    Route::post('result/exam', 'Student\HomeController@exam_result');
-    Route::get('result/exam/download', 'Student\HomeController@exam_result_download');
-    Route::get('fee/tution', 'Student\HomeController@fee')->name('fee.tution');
-    Route::get('fee/others', 'Student\HomeController@other_incomes')->name('fee.other_incomes');
-    Route::get('fee/pay', 'Student\HomeController@pay_fee')->name('pay_fee');
-    Route::post('fee/pay', 'Student\HomeController@pay_fee_momo')->name('pay_fee');
-    Route::get('others/pay/{id?}', 'Student\HomeController@pay_other_incomes')->name('pay_others');
-    Route::post('others/pay/{id?}', 'Student\HomeController@pay_other_incomes_momo')->name('pay_others');
-    Route::get('subjects/{id}/notes', 'Student\HomeController@subjectNotes')->name('subject.notes');
-    Route::get('boarding_fees/details', 'Student\HomeController@boarding')->name('boarding');
-    Route::post('boarding_fees/details/', 'Student\HomeController@getBoardingFeesYear')->name('boarding_fees_details');
-    Route::prefix('courses')->name('courses.')->group(function(){
-        Route::get('registration', 'Student\HomeController@course_registration')->name('registration');
-        Route::post('registration', 'Student\HomeController@register_courses');
-        Route::get('registered', 'Student\HomeController@registered_courses')->name('registered');
-        Route::get('form_b', 'Student\HomeController@form_b')->name('form_b');
-        Route::get('drop', 'Student\HomeController@drop_course')->name('drop');
-        Route::get('add', 'Student\HomeController@add_course')->name('add');
-        Route::get('content/{subject_id}', 'Student\HomeController@course_content_index')->name('content');
-    });
-    Route::get('note/index/{course_id}', 'Student\HomeController@course_notes')->name('note.index');
-    Route::get('assignment/index/{course_id}', 'Student\HomeController@assignment')->name('assignment.index');
-    Route::get('notification/index/{course_id}', 'Student\HomeController@notification')->name('notification.index');
-    Route::get('notification/show/{course_id}', 'Student\HomeController@show_notification')->name('notification.show');
-    Route::prefix('notification')->name('notification.')->group(function(){
-        Route::get('/', 'Student\HomeController@_notifications_index')->name('home');
-        Route::get('/class/{class_id}/{campus_id}', 'Student\HomeController@_class_notifications')->name('class');
-        Route::get('/department/{department_id}/{campus_id}', 'Student\HomeController@_department_notifications')->name('department');
-        Route::get('/program/{program_id}/{campus_id}', 'Student\HomeController@_program_notifications')->name('program');
-        Route::get('/school/{campus_id?}', 'Student\HomeController@_school_notifications')->name('school');
-        Route::get('/view/{id}', 'Student\HomeController@_program_notifications_show')->name('view');
-    });
-    Route::prefix('material')->name('material.')->group(function(){
-        Route::get('/', 'Student\HomeController@_notifications_index')->name('home');
-        Route::get('/class/{class_id}/{campus_id}', 'Student\HomeController@_class_material')->name('class');
-        Route::get('/department/{department_id}/{campus_id}', 'Student\HomeController@_department_material')->name('department');
-        Route::get('/program/{program_id}/{campus_id}', 'Student\HomeController@_program_material')->name('program');
-        Route::get('/school/{campus_id?}', 'Student\HomeController@_school_material')->name('school');
-    });
+    
     Route::get('resit/registration', 'Student\HomeController@resit_registration')->name('resit.registration');
     Route::post('resit/registration', 'Student\HomeController@register_resit');
     Route::post('resit/registration/payment', 'Student\HomeController@resit_payment')->name('resit.registration.payment');
@@ -305,8 +262,9 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->group(funct
     Route::get('reset_password', 'Controller@reset_password')->name('reset_password');
     Route::post('reset_password', 'Controller@reset_password_save')->name('reset_password');
 
-    Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay');
-    Route::post('charges/pay', 'Student\HomeController@pay_charges_save')->name('charge.pay')->withoutMiddleware('isStudent');
+    Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->withoutMiddleware('platform');
+    Route::post('charges/pay', 'Student\HomeController@pay_charges_save')->name('charge.pay')->withoutMiddleware('platform');
+    
     Route::get('result/pay', 'Student\HomeController@pay_semester_results')->name('result.pay');
     Route::get('transcript/pay', 'Student\HomeController@pay_transcript_charges')->name('transcript.pay');
 
@@ -332,10 +290,15 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->group(funct
     Route::get('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete'])->name('application.payment.complete');
     Route::post('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete']);
 });
-// Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
-Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->middleware('isStudent');
-Route::get('student/charges/complete_transaction/{ts_id}', 'Student\HomeController@complete_charges_transaction')->name('student.charges.complete');
-Route::get('student/charges/failed_transaction/{ts_id}', 'Student\HomeController@failed_charges_transaction')->name('student.charges.failed');
+
+Route::middleware('isStudent')->group(function(){
+    Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
+    Route::get('student/platform/pay', 'Student\HomeController@pay_platform_charges')->name('student.platform_charge.pay');
+    Route::get('student/charges/complete_transaction/{ts_id}', 'Student\HomeController@complete_charges_transaction')->name('student.charges.complete');
+    Route::get('student/charges/failed_transaction/{ts_id}', 'Student\HomeController@failed_charges_transaction')->name('student.charges.failed');
+    Route::get('student/tranzak/processing', 'Student\HomeController@tranzak_payment_processing')->name('student.tranzak.processing');
+    Route::post('student/tranzak/complete', 'Student\HomeController@tranzak_complete')->name('student.tranzak.complete');
+});
 
 Route::get('section-children/{parent}', 'HomeController@children')->name('section-children');
 Route::get('section-subjects/{parent}', 'HomeController@subjects')->name('section-subjects');

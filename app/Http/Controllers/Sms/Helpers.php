@@ -20,7 +20,8 @@ class Helpers extends Controller
     }
 
     //send sms to a phone number
-    public static function sendSMS($message, $phoneNumber)
+    
+    public static function _sendSMS($message, $phoneNumber)
     {
         //check if message length is greater than 160 characters
         if (strlen($message) > 160) {

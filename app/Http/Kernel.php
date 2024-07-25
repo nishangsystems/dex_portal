@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'isStudent' => \App\Http\Middleware\StudentMiddleware::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'permission' => \App\Http\Middleware\PermissionMiddleware::class,
+        'platform' => \App\Http\Middleware\PlatformChargeMiddleware::class,
     ];
 }

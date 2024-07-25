@@ -1006,5 +1006,6 @@ return [
     'application_bypass'=>'application bypass',
     'current_program'=>'current program',
     'new_program'=>'new program',
+    'inst_tapplication_form'=>'HIMS Application Form',
     ''
 ];

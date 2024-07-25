@@ -12,7 +12,7 @@
                                 <select name="degree_id" class="form-control text-primary"  oninput="setDegreeTypes(event)" required>
                                     <option>{{ __('text.word_degree') }}</option>
                                     @foreach ($degrees as $degree)
-                                        <option value="{{ $degree->id }}" {{ $application->degree_id == $degree->id ? 'selected' : '' }}>{{ $degree->name }}</option>  
+                                        <option value="{{ $degree->id }}" {{ $application->degree_id == $degree->id ? 'selected' : '' }}>{{ $degree->deg_name }}</option>  
                                     @endforeach
                                 </select>
                             </div>
@@ -209,6 +209,17 @@
                                 <input type="text" class="form-control text-primary"  name="sponsor_address" value="{{ $application->sponsor_address }}" required>
                             </div>
                         </div>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+                            <label class="text-secondary  text-capitalize">{{ __('text.entry_qualification') }}</label>
+                            <div class="">
+                                <select class="form-control text-primary"  name="entry_qualification" value="{{ $application->sponsor_address }}" required>
+                                    <option><option>
+                                    @foreach ($certificates as $key => $cert)
+                                        <option value="{{ $cert->id }}" {{ old('entry_qualification', $application->entry_qualification) == $cert->id ? 'selected' : '' }}>{{ $cert->certi??'----' }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
@@ -357,8 +368,8 @@
                             <div class="">
                                 <select class="form-control text-capitalize text-primary" disabled >
                                     <option></option>
-                                    @foreach(\App\Models\Degree::all() as $degree)
-                                        <option value="{{ $degree->id }}" {{ $application->degree_id == $degree->id ? 'selected' : '' }}>{{ $degree->name }}</option>
+                                    @foreach($degrees as $degree)
+                                        <option value="{{ $degree->id }}" {{ $application->degree_id == $degree->id ? 'selected' : '' }}>{{ $degree->deg_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -369,8 +380,8 @@
                             <div class="">
                                 <select class="form-control text-capitalize text-primary" name="program" required >
                                     <option></option>
-                                    @foreach($application->degree->programs as $program)
-                                        <option value="{{ $program->id }}" {{ $application->program == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
+                                    @foreach($programs as $program)
+                                        <option value="{{ $program->id }}" {{ old('program', $application->program) == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -523,6 +534,12 @@
                                     <label class="form-control text-primary border-0">{{ $application->sponsor_address ?? '' }}</label>
                                 </div>
                             </div>
+                            <div class="py-2 col-sm-6 col-md-4 col-lg-3">
+                                <label class="text-secondary  text-capitalize">{{ __('text.entry_qualification') }}</label>
+                                <div class="">
+                                    <label class="form-control text-primary border-0">{{ $certificates->where('id', $application->entry_qualification)->first()->certi ?? '' }}</label>
+                                </div>
+                            </div>
 
                         <!-- STAGE 3 -->
                             <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 3: {{ __('text.academic_records') }} : <a href="{{ route('student.application.start', [3, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 3</a></h4>
@@ -626,7 +643,7 @@
                             <div class="col-sm-12 col-md-6 col-lg-6">
                                 <label class="text-secondary text-capitalize">{{ __('text.word_program') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0">{{ $application->_program->name ?? '' }}</label>
+                                    <label class="form-control text-primary border-0">{{ $programs->where('id', $application->program)->first()->name ?? '' }}</label>
                                 </div>
                             </div>
 
@@ -650,28 +667,23 @@
                         <input type="hidden" value="1" name="submitted">
                         <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
                             <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
-                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ $application->degree->amount }} CFA for application fee
-                                </div>
-                                <div class="py-4 text-secondary text-center ">To Pay: 
-                                    <div>Dial <span class="text-dark" style="font-weight:700;">*126*4*309082*amount#</span>. Merchant Name: <span class="text-dark" style="font-weight:700;">Higher Institute of Management Studies (HIMS-Buea)</span></div>
-                                    <div>Get the <span class="text-dark" style="font-weight:700;">transaction ID</span> and <span class="text-dark" style="font-weight:700;">Number used in Paying</span> input in the form below and send</div>
-                                </div>
+                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ $application->degree->amount }} CFA for application fee</div>
                                 
                                 <div class="py-3">
-                                    <label class="text-secondary text-capitalize">{{ __('text.momo_number_used_in_payment') }} (<span class="text-danger">{{ __('text.without_country_code') }}</span>)</label>
+                                    <label class="text-secondary text-capitalize">@lang('text.momo_number')(<span class="text-danger">{{ __('text.without_country_code') }}</span>)</label>
                                     <div class="">
                                         <input type="tel" class="form-control text-primary"  name="momo_number" value="{{ $application->momo_number }}">
                                     </div>
                                 </div>
                                 <div class="py-3">
-                                    <label class="text-secondary text-capitalize">Transaction ID </label>
+                                    <label class="text-secondary text-capitalize">@lang('text.word_amount')</label>
                                     <div class="">
-                                        <input type="text" min="10" max="10" class="form-control text-primary"  name="transaction_id" value="{{ $application->transaction_id }}">
+                                        <input type="text" class="form-control text-primary"  name="amount" value="{{ $degrees->where('id', $application->degree_id)->first()->amount??'' }}">
                                     </div>
                                 </div>
                                 <div class="py-5 d-flex justify-content-center">
-                                    <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-xs btn-danger">{{ __('text.word_back') }}</a>
-                                    <input type="submit" class="px-4 py-1 btn btn-xs btn-primary" value="{{ __('text.save_and_continue') }}">
+                                    <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-sm rounded text-capitalize btn-danger">{{ __('text.word_back') }}</a>
+                                    <input type="submit" class="px-4 py-1 btn btn-sm rounded btn-primary text-capitalize" value="{{ __('text.make_payment') }}">
                                 </div>
                             </div>
                         </div>

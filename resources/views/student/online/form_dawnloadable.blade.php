@@ -229,9 +229,9 @@
                     </thead>
                     <tbody>
                         <tr class="border-top border-bottom py-2">
-                            <td class="border-left border-right py-4">{{ $application->_program->type }}</td>
-                            <td class="border-left border-right py-4">{{ $application->degree->name }}</td>
-                            <td class="border-left border-right py-4">{{ $application->_program->name }}</td>
+                            <td class="border-left border-right py-4">{{ $department->department }}</td>
+                            <td class="border-left border-right py-4">{{ $degree->deg_name }}</td>
+                            <td class="border-left border-right py-4">{{ $program->name }}</td>
                         </tr>
                         <tr  class="py-2">
                             <td colspan="2" class="text-capitalize py-1 px-3" >

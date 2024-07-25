@@ -28,8 +28,6 @@ class StudentMiddleware
             return redirect(route('login'));
           }
 
-
-
         return $next($request);
     }
 }

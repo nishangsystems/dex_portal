@@ -2,18 +2,18 @@
 @section('section')
     <div class="w-100">
         <div id="accordion" class="accordion-style1 panel-group">
-            @foreach ($degrees as $degree)
+            @foreach ($programs as $key => $program_group)
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$degree->id}}">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$key}}">
                                 <i class="ace-icon fa fa-angle-down bigger-110" data-icon-hide="ace-icon fa fa-angle-down" data-icon-show="ace-icon fa fa-angle-right"></i>
-                                &nbsp;{!! $degree->name !!}
+                                &nbsp;{{ $key }}
                             </a>
                         </h4>
                     </div>
                     
-                    <div class="panel-collapse collapse" id="collapse_{{$degree->id}}">
+                    <div class="panel-collapse collapse" id="collapse_{{$key}}">
                         <div class="">
                             <div class="itemdiv dialogdiv">
                                 <table>
@@ -24,10 +24,10 @@
                                     </tr></thead>
                                     <tbody>
                                     @php($k = 1)
-                                        @foreach ($degree->programs??[] as $program)
+                                        @foreach ($program_group as $program)
                                         <tr class="border-bottom">  
                                             <td class="border-left border-right">{{ $k++ }}</td>
-                                            <td class="border-left border-right"><span class="text-danger">{{ $program->type }}</span> / {{ $program->name }}</td>
+                                            <td class="border-left border-right"><span class="text-danger">{{ $program->degree }}</span> / {{ $program->name }}</td>
                                             {{-- <td class="border-left border-right">{{  $program->degree_type  }}</td> --}}
                                         </tr>
                                         @endforeach
