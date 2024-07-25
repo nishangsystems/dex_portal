@@ -193,9 +193,9 @@ class HomeController extends Controller
     {
         try {
 
-            if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('submitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
-                return redirect(route('student.home'))->with('error', "You are allowed to submit only one application form per year");
-            }
+            // if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('submitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
+            //     return redirect(route('student.home'))->with('error', "You are allowed to submit only one application form per year");
+            // }
 
             // check if application is open now
             if(!(Helpers::instance()->application_open())){
@@ -211,7 +211,9 @@ class HomeController extends Controller
                 $application->year_id = Helpers::instance()->getCurrentAccademicYear();
                 $application->save();
             }
-
+            if($application->degree_id != null and $application->tranzak_transaction->payment_id != $application->degree_id and $step != 0 ){
+                $data['step'] = 6;
+            }
             $data['certificates'] = collect(json_decode($this->api_service->certificates())->data);
             $data['application'] = $application;
             if($application->entry_qualification != null){
@@ -301,6 +303,10 @@ class HomeController extends Controller
             return back()->with('error', $validity->errors()->first());
         }
         // return $request->all();
+        $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+        if($application->degree_id != null and $application->tranzak_transaction->payment_id != $application->degree_id and $step != 7){
+            goto SKIP;
+        }
 
         // persist data
         $data = $request->all();
@@ -329,6 +335,7 @@ class HomeController extends Controller
         }elseif($step == 7){
             $tk_counter = 0;
             $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+            if($application->degree_id == null){ goto SKIP;}
             $tranzak_credentials = TranzakCredential::where('campus_id', $application->campus_id)->first();
             if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
                 // get and cache different token
@@ -380,12 +387,14 @@ class HomeController extends Controller
                 goto REQUEST_TOKEN;
             }
 
-        }
-        else{
+        }else{
             // $data = $request->all();
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
+        
+        SKIP:
+
         $step = $request->step;
         
         return redirect(route('student.application.start', [$step, $application_id]));
@@ -394,7 +403,7 @@ class HomeController extends Controller
     public function pending_payment(Request $request, $application_id)
     {
         # code...
-        
+        // dd(123);
         // check if application is open now
         if(!(Helpers::instance()->application_open())){
             return redirect(route('student.home'))->with('error', 'Application closed for '.Helpers::instance()->getYear()->name);
@@ -412,7 +421,7 @@ class HomeController extends Controller
     {
         # code...
         try {
-            
+            // dd(123);
             // check if application is open now
             if(!(Helpers::instance()->application_open())){
                 return redirect(route('student.home'))->with('error', 'Application closed for '.Helpers::instance()->getYear()->name);
@@ -424,9 +433,25 @@ class HomeController extends Controller
                 case 'SUCCESSFUL':
                     # code...
                     // save transaction and update application_form
-                    $transaction = ['request_id'=>$transaction_status->requestId, 'amount'=>$transaction_status->amount, 'currency_code'=>$transaction_status->currencyCode, 'purpose'=>"application fee", 'mobile_wallet_number'=>$transaction_status->mobileWalletNumber, 'transaction_ref'=>$transaction_status->mchTransactionRef, 'app_id'=>$transaction_status->appId, 'transaction_time'=>$transaction_status->transactionTime, 'payment_method'=>((object)($transaction_status->payer))->paymentMethod, 'payer_user_id'=>((object)($transaction_status->payer))->userId, 'payer_name'=>((object)($transaction_status->payer))->name, 'payer_account_id'=>((object)($transaction_status->payer))->accountId, 'merchant_fee'=>((object)($transaction_status->merchant))->fee, 'merchant_account_id'=>((object)($transaction_status->merchant))->accountId, 'net_amount_recieved'=>((object)($transaction_status->merchant))->netAmountReceived];
-                    $transaction_instance =  Transaction::updateOrInsert(['transaction_id'=>$transaction_status->transactionId], $transaction);
-                    $transaction_instance = Transaction::where(['transaction_id'=>$transaction_status->transactionId])->first();
+                    $pending = \App\Models\PendingTranzakTransaction::where('requestId', $transaction_status->requestId)->first();
+                    
+                    $transaction = [
+                        'request_id'=>$request->requestId??'', 'payment_id'=>$pending->payment_id, 
+                        'amount'=>$request->amount??'', 'currency_code'=>$request->currencyCode??'', 
+                        'purpose'=>$request->payment_purpose??'APPLICATION', 'mobile_wallet_number'=>$request->mobileWalletNumber??'', 
+                        'transaction_ref'=>$request->mchTransactionRef??'', 'app_id'=>$request->appId??'', 
+                        'transaction_time'=>$request->transactionTime??'', 
+                        'payment_method'=>$request->payer['paymentMethod']??'', 
+                        'payer_user_id'=>$request->payer['userId']??'', 
+                        'payer_name'=>$request->payer['name']??'', 
+                        'payer_account_id'=>$request->payer['accountId']??'', 
+                        'merchant_fee'=>$request->merchant['fee']??'', 
+                        'merchant_account_id'=>$request->merchant['accountId']??'', 
+                        'net_amount_recieved'=>$request->merchant['netAmountReceived']??''
+                    ];
+                    
+                    \App\Models\TranzakTransaction::insert($transaction);
+                    $transaction_instance =  \App\Models\TranzakTransaction::where($transaction)->first();
     
                     $appl = ApplicationForm::find($appl_id);
                     $appl->transaction_id = $transaction_instance->id;
@@ -763,7 +788,8 @@ class HomeController extends Controller
                     # code...
                     // save transaction and update application_form
                     DB::beginTransaction();
-                    $transaction = ['request_id'=>$request->requestId??'', 'amount'=>$request->amount??'', 'currency_code'=>$request->currencyCode??'', 'purpose'=>$request->payment_purpose??'', 'mobile_wallet_number'=>$request->mobileWalletNumber??'', 'transaction_ref'=>$request->mchTransactionRef??'', 'app_id'=>$request->appId??'', 'transaction_id'=>$request->transactionId??'', 'transaction_time'=>$request->transactionTime??'', 'payment_method'=>$request->payer['paymentMethod']??'', 'payer_user_id'=>$request->payer['userId']??'', 'payer_name'=>$request->payer['name']??'', 'payer_account_id'=>$request->payer['accountId']??'', 'merchant_fee'=>$request->merchant['fee']??'', 'merchant_account_id'=>$request->merchant['accountId']??'', 'net_amount_recieved'=>$request->merchant['netAmountReceived']??''];
+                    $pending = \App\Models\PendingTranzakTransaction::where('requestId', $request->requestId)->first();
+                    $transaction = ['request_id'=>$request->requestId??'', 'payment_id'=>$pending->payment_id, 'amount'=>$request->amount??'', 'currency_code'=>$request->currencyCode??'', 'purpose'=>$request->payment_purpose??'', 'mobile_wallet_number'=>$request->mobileWalletNumber??'', 'transaction_ref'=>$request->mchTransactionRef??'', 'app_id'=>$request->appId??'', 'transaction_id'=>$request->transactionId??'', 'transaction_time'=>$request->transactionTime??'', 'payment_method'=>$request->payer['paymentMethod']??'', 'payer_user_id'=>$request->payer['userId']??'', 'payer_name'=>$request->payer['name']??'', 'payer_account_id'=>$request->payer['accountId']??'', 'merchant_fee'=>$request->merchant['fee']??'', 'merchant_account_id'=>$request->merchant['accountId']??'', 'net_amount_recieved'=>$request->merchant['netAmountReceived']??''];
                     if(\App\Models\TranzakTransaction::where($transaction)->count() == 0){
                         $transaction_instance = new \App\Models\TranzakTransaction($transaction);
                         $transaction_instance->save();
@@ -773,7 +799,6 @@ class HomeController extends Controller
     
                     $trans = json_decode(session()->get('processing_tranzak_transaction_details'));
                     // $payment_data = session()->get(config('tranzak.platform_data'));
-                    $pending = \App\Models\PendingTranzakTransaction::where('requestId', $request->requestId)->first();
                     // dd(config('tranzak.platform_data'));
                     // dd($transaction_instance);
                     $data = ['student_id'=>$pending->student_id, 'year_id'=>$pending->year_id, 'type'=>$pending->purpose, 'item_id'=>$pending->payment_id, 'amount'=>$transaction_instance->amount, 'financialTransactionId'=>$transaction_instance->transaction_id, 'used'=>1];

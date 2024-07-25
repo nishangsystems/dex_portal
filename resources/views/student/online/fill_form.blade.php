@@ -400,6 +400,7 @@
                     @csrf
                     <div class="py-2 row text-capitalize bg-light">
                         <!-- hidden field for submiting application form -->
+                        <input type="hidden" name="submitted" value="1">
                         <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 5: {{ __('text.preview_and_submit_form_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->name ?? '' }} PROGRAM</span></h4>
                         
                         <!-- STAGE 1 PREVIEW -->
@@ -651,7 +652,7 @@
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 mt-5 d-flex justify-content-center text-uppercase">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
                             @if ($application->can_submit())
-                                <button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.save_and_continue') }}</button>
+                                <button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.word_submit') }}</button>
                             @else
                                 <a href="{{ route('student.application.start', [0, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.complete_form') }}</a>
                             @endif
@@ -664,10 +665,9 @@
                 <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [7, $application->id]) }}">
                     @csrf
                     <div class="py-2 row bg-light border-top shadow">
-                        <input type="hidden" value="1" name="submitted">
                         <div class="col-sm-12 col-md-12 col-lg-12 d-flex">
                             <div class="col-sm-10 col-md-8 col-lg-6 rounded bg-white py-5 my-3 shadow mx-auto">
-                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ $application->degree->amount }} CFA for application fee</div>
+                                <div class="py-4 text-info text-center ">You are about to make a payment of {{ $degree->amount }} CFA for application fee</div>
                                 
                                 <div class="py-3">
                                     <label class="text-secondary text-capitalize">@lang('text.momo_number')(<span class="text-danger">{{ __('text.without_country_code') }}</span>)</label>

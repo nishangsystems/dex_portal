@@ -67,4 +67,16 @@ class ApplicationForm extends Model
         return $this->belongsTo(Program::class, 'program');
     }
 
+    public function tranzak_transaction()
+    {
+        # code...
+        return $this->belongsTo(TranzakTransaction::class, 'transaction_id');
+    }
+
+    public function transaction()
+    {
+        # code...
+        return $this->belongsTo(Transaction::class, 'transaction_id');
+    }
+
 }
