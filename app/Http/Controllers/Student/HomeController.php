@@ -117,7 +117,6 @@ class HomeController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|min:8',
             'phone' => 'required|min:9|max:15',
         ]);
 
@@ -128,11 +127,11 @@ class HomeController extends Controller
 
         $data['success'] = 200;
         $user = auth('student')->user();
-        $user->email = $request->email;
+        $user->email = $request->email??null;
         $user->phone = $request->phone;
         $user->save();
         $data['user'] = auth('student')->user();
-        return redirect()->back()->with(['s' => 'Phone Number and Email Updated Successfully']);
+        return redirect()->back()->with(['s' => 'Updated Successful']);
     }
 
 
@@ -160,7 +159,7 @@ class HomeController extends Controller
         # code...
         if(
             Students::where([
-                'email' => $request->email, 'phone' => $request->phone
+                'email' => $request->email??null, 'phone' => $request->phone
             ])->count() > 0 && (auth('student')->user()->phone != $request->phone || auth('student')->user()->email != $request->email)
         ){
             return back()->with('error', __('text.validation_phrase1'));
@@ -195,7 +194,7 @@ class HomeController extends Controller
         try {
 
             if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('submitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
-                return back()->with('error', "You are allowed to submit only one application form per year");
+                return redirect(route('student.home'))->with('error', "You are allowed to submit only one application form per year");
             }
 
             // check if application is open now
@@ -262,7 +261,7 @@ class HomeController extends Controller
             case 3:
                 # code...
                 $validity = Validator::make($request->all(), [
-                    "residence"=>'required', "phone"=>'required', "email"=>'required|email', "guardian"=>'required', "guardian_phone"=>'required', 
+                    "residence"=>'required', "phone"=>'required',  "guardian"=>'required', "guardian_phone"=>'required', 
                     "guardian_address"=>'required', "sponsor"=>'required', "sponsor_phone"=>'required', "sponsor_address"=>'required'
                 ]);
                 break;

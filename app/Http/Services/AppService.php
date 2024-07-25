@@ -72,7 +72,6 @@ class AppService{
             $data['matric_sn'] = substr($appl->matric, -3);
             $data['department'] = $department->name??'-------';
             $data['fee'] = $fees[0]??$fees;
-            $data['page2'] = AdmissionLetterPage2::where('program_id', $program->id??0)->first();
             $data['start_of_lectures'] = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first()->start_of_lectures??'';
             // dd($program);
             if($data['degree'] ==  null){

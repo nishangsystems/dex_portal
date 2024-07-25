@@ -101,13 +101,10 @@ class Controller extends BaseController
     public function createAccount(Request $request){
         
         $request->validate([
-            'name'=>'required', 'email'=>'required|email', 'phone'=>'required',
+            'name'=>'required', 'phone'=>'required',
             'cpassword'=>'required',
             'password'=>'required_with:cpassword|same:cpassword|',
         ]);
-        if(Students::where('email', $request->email)->count() > 0){
-            return back()->with('error', __('text.error_email_exist'));
-        }
         if(Students::where('phone', $request->phone)->count() > 0){
             return back()->with('error', __('text.error_phone_exist'));
         }

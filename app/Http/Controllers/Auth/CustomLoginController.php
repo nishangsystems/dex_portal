@@ -50,13 +50,13 @@ class CustomLoginController extends Controller
     public function createAccount(Request $request){
         if (Students::where('matric', $request->username)->exists()) {  
             $update['phone'] = $request->phone;
-            $update['email'] = $request->email;
+            $update['email'] = $request->email??null;
             $update['password'] = Hash::make($request->password);
             
             $up = Students::where('matric', $request->username)->update($update);
              if (User::where('username', $request->username)->exists()) {  
             $update1['name'] = $request->name;
-            $update1['email'] = $request->email;
+            $update1['email'] = $request->email??null;
             $update1['username'] = $request->username;
             $update1['type'] = 'student';
             $update1['password'] = Hash::make($request->password);
@@ -64,7 +64,7 @@ class CustomLoginController extends Controller
             $up1 = User::where('username', $request->username)->update($update1);
              }else{
                  $insert['name'] = $request->name;
-                $insert['email'] = $request->email;
+                $insert['email'] = $request->email??null;
                 $insert['username'] = $request->username;
                 $insert['type'] = 'student';
                 $insert['gender'] = '';
@@ -113,7 +113,7 @@ class CustomLoginController extends Controller
         //Attempt to log the user in
 
         // return $request->all();
-        if( (Auth::guard('student')->attempt(['email'=>$request->username,'password'=>$request->password], $request->remember)) || (Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember))){
+        if(Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember)){
             // return "Spot 1";
             return redirect()->intended(route('student.home'));
         }else{

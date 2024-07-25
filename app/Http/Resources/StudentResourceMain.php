@@ -21,7 +21,7 @@ class StudentResourceMain extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
+            'email' => $this->email??null,
             'phone'=>$this->phone,
             'show_link' => route('admin.student.show',[$this->id]),
             'edit_link' => route('admin.student.edit', [$this->id]),

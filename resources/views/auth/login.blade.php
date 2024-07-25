@@ -99,7 +99,7 @@
 
 	<body class="login-layout" id="frame">
 		<div class="main-container px-5" style="padding-inline: 2rem;">
-			<div class="py-5 mx-5 w-100" style="padding: 2rem;">
+			<div class="py-5 mx-5 w-100 text-center" style="padding: 2rem;">
 				<h4> <span style="color:#DBA622; text-transform: uppercase">{{__('text.stlo_portal')}}</span></h4>
 			</div>
 			<div class="main-content">
@@ -139,7 +139,7 @@
 											@csrf
 												<fieldset style="color: black;">
 													<label class="block clearfix">
-														<span class="text-capitalize">{{__('text.word_email')}} / {{ __('text.phone_number') }}</span>
+														<span class="text-capitalize">{{ __('text.phone_number') }}</span>
 														<span class="block input-icon input-icon-right" style="background-color: white !important;">
 															<input type="text" required class="form-control" value="{{old("username")}}" name="username" style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
 														</span>

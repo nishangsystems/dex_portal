@@ -104,7 +104,7 @@
 
 	<body class="login-layout" id="frame">
 		<div class="main-container px-5" style="padding-inline: 2rem;">
-			<div class="py-5 mx-5 w-100" style="padding: 2rem;">
+			<div class="py-5 mx-5 w-100 text-center" style="padding: 2rem;">
 				<h4> <span style="color:#DBA622; text-transform: uppercase">{{__('text.stlo_portal')}}</h4>
 			</div>
 			<div class="main-content">
@@ -139,7 +139,7 @@
 														</span>
 													@enderror
 												</label>
-												<label class="block clearfix">
+												{{-- <label class="block clearfix">
 													<span class="text-capitalize">{{__('text.word_email')}}</span>
 													<span class="block input-icon input-icon-right">
 														<input type="email" required class="form-control" placeholder="{{ __('text.word_email') }}" name="email"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
@@ -150,7 +150,7 @@
 															<strong>{{ $message }}</strong>
 														</span>
 													@enderror
-												</label>
+												</label> --}}
 												<label class="block clearfix">
 													<span class="text-capitalize">{{__('text.phone_number')}}</span>
 													<span class="block input-icon input-icon-right">
