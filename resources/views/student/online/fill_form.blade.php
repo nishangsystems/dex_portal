@@ -710,6 +710,7 @@
                 setLevels("{{ $application->program_first_choice }}");
             }
         });
+
         // momo preview generator
         let momoPreview = function(event){
             let file = event.target.files[0];
@@ -718,19 +719,14 @@
                 $('#momo_image_preview').attr('src', url);
             }
         }
+        
         // Add and drop previous trainings form table rows
         let addTraining = function(){
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
             let html = `<tr class="text-capitalize">
                             <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropTraining(event)">{{ __('text.word_drop') }}</span></td>
                             <td class="border">
-                                <select class="form-control text-primary"  name="gce_ol_record[subject][${key}]" required onchange="check_specify(event)">
-                                    <option>subject</option>
-                                    @foreach (\App\Models\Subject::orderBy('name', 'ASC')->get() as $subj)
-                                        <option value="{{ $subj->name }}">{{ $subj->name }}</option>
-                                    @endforeach
-                                    <option value="__SPECIFY__">SUBJECT NOT FOUND</option>
-                                <select>
+                                <input class="form-control text-primary"  name="gce_ol_record[subject][${key}]" required">
                             </td>
                             <td class="border">
                                 <select class="form-control text-primary"  name="gce_ol_record[grade][${key}]" required value="">
@@ -759,19 +755,14 @@
                 training.remove();
             }
         }
+        
         // Add and drop AL subjects form table rows
         let addEmployment = function(){
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
             let html = `<tr class="text-capitalize">
                             <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropEmployment(event)">{{ __('text.word_drop') }}</span></td>
                             <td class="border">
-                                <select class="form-control text-primary"  name="gce_al_record[subject][${key}]" required onchange="check_specify(event)">
-                                    <option>subject</option>
-                                    @foreach (\App\Models\Subject::orderBy('name', 'ASC')->get() as $subj)
-                                        <option value="{{ $subj->name }}">{{ $subj->name }}</option>
-                                    @endforeach
-                                    <option value="__SPECIFY__">SUBJECT NOT FOUND</option>
-                                </select>
+                                <input class="form-control text-primary"  name="gce_al_record[subject][${key}]" required>
                             </td>
                             <td class="border">
                                 <select class="form-control text-primary"  name="gce_al_record[grade][${key}]" required>
