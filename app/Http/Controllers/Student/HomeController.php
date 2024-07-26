@@ -288,10 +288,7 @@ class HomeController extends Controller
                 ]);
                 break;
                 
-            case 6:
-                return redirect(route('student.application.start', [$step, $application_id]));
-                # code...
-                break;
+
             case 7:
                 $validity = Validator::make($request->all(), ['momo_number'=>'required', 'amount'=>'required']);
                 # code...
@@ -383,6 +380,10 @@ class HomeController extends Controller
         SKIP:
 
         $step = $request->step;
+
+        if($step == 6){
+            return redirect(route("student.home"))->with('success', "Application completed successfully");
+        }
         
         return redirect(route('student.application.start', [$step, $application_id]));
     }
