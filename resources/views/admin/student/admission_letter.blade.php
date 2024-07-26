@@ -1,18 +1,15 @@
 @extends('admin.printable2')
 @section('section')
-    <div class="py-2" style="line-height: 2.3rem; font-size:larger;">
-        <span class="d-block py-2 text-capitalize">{!! __('text.admission_letter_phrase1', ['name'=>$name]) !!}</span>
-        <span class="d-block py-2">{!! __('text.admission_letter_phrase2', ['campus'=>$campus->name, 'program'=>$program->name, 'matric'=>$matric]) !!}</span>
-        <ul style="list-style-type:disc;margin-block:2rem;">
-            <li><span class="d-block py-2">{!! __('text.admission_letter_phrase3') !!}</span></li>
-            <li><span class="d-block py-2">{!! __('text.admission_letter_phrase4', ['date1'=>$fee1_dateline->format('dS \of F Y'), 'date2'=>$fee2_dateline->format('dS \of F Y')]) !!}</span></li>
-            <li><span class="d-block py-2">{!! __('text.admission_letter_phrase5') !!}</span></li>
-        </ul>
-        <span class="d-block py-3">{!! __('text.admission_letter_phrase6', ['email'=>$help_email]) !!}</span>
-        <span class="d-block py-3">{!! __('text.admission_letter_phrase7', ['matric'=>$matric]) !!}</span>
-        <div class="d-flex justify-content-around py-3 text-capitalize">
-            <span class="text-center d-block py-4" style="font-weight: 700;">{!! __('text.the_director') !!}<br>{!! $director_name !!}</span>
-            <span class="text-center d-block py-4" style="font-weight: 700;">{!! __('text.the_dean_of_studies') !!}<br>{!! $dean_name !!}</span>
-        </div>
+    <div class="py-2" style="line-height: 2.3rem; font-size:larger; border-block: 2px solid gray;">
+        
+        <div class="my-2">Our Ref: .....................<span class="text-uppercase">PRE/REC/REG/BU/{{ now()->format('m/Y') }}</span></div>
+        <div class="my-2">Your Ref: .....................<span class="text-uppercase"></span></div>
+        <div class="my-4 text-uppercase"><b><h4>{{ $name }}<br>{{ $matric }}</h4></b></div>
+        <div class="my-4"><h4>Dear <b class="text-uppercase">{{ $first_name }}</b>,</h4></div>
+        <div class="my-4 text-center font-semibold"><h3>OFFER OF ADMISSION INTO THE 16THBATCH OF HND PROGRAM FOR THE ACADEMIC YEAR 2023/2024</h3></div>
+        <p class="py-2 text-capitalize text-justify">We are delighted to inform you that the Higher Institute of Management Studies Buea has admitted you for the <b>{{ $batch }} Batch</b> of its <b>One Year Full- time {{ $degree }}</b> Program in {{ $program }} which will commerce on the {{ $start_of_lextures }}. Effective lectures will begin on that same date at 7:30Am.This is the beginning of an important Life-Changing Journey. You are therefore strongly advised to attend our orientation sessions when the dates are fixed so that you would be enlightened on important issues concerning the Institution, your chosen course of study and your career.</p>
+        <p class="py-2 text-capitalize text-justify">You will be issued a copy of ‘‘HIMS Student Handbook’’ and a ‘‘fee payment schedule’’. Take time to read through these documents as they will help you understand how we function.  </p>
+        <p class="py-2 text-capitalize text-justify">Once again congratulations on your Admission. We look forward to welcoming you into the ‘‘TOP MOST BUSINESS SCHOOL’’ in the Central Africa Region. <br>Sincerely</p>
+        <span class="d-block  my-4 py-2">{!! Registrar !!}</span>
     </div>
 @endsection

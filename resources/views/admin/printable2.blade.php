@@ -83,7 +83,9 @@
 <body class="no-skin">
     <div class="" style="background-color: white;">
         <img src="{{ asset('assets/images/header.png') }}" style="width: 100%; max-height: 28rem; margin-bottom: 1rem;">
-        <div class="text-center text-black h3 py-2">{{$title ?? ''}}</div>
+        @isset($title)
+            <div class="text-center text-black h3 py-2">{{$title ?? ''}}</div>
+        @endisset
         @yield('section')
         <img src="{{ asset('assets/images/footer.png') }}" style="width: 100%; max-height: 20rem; margin-top: 1rem;">
     </div>

@@ -189,13 +189,13 @@
                 <b class="arrow"></b>
             </li>
 
-            {{-- <li>
+            <li>
                 <a href="{{route('student.payment.data')}}">
                     <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
                     <span class="menu-text text-capitalize">{{__('text.payment_data')}}</span>
                 </a>
                 <b class="arrow"></b>
-            </li> --}}
+            </li>
 
             <li>
                 <a href="{{route('student.application.start', 0)}}">
@@ -221,8 +221,17 @@
                 <b class="arrow"></b>
             </li>
 
+            
+            <li>
+                <a href="{{route('student.application.admission_letter.download')}}">
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-certificate"></i>
+                    <span class="menu-text text-capitalize">{{__('text.admission_letter')}}</span>
+                </a>
+                <b class="arrow"></b>
+            </li>
 
-           <li>
+
+            <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <i  style="color: {{$bg1}};" class="menu-icon fa fa-book"></i>
                     <span class="menu-text">{{__('text.accounts_and_users')}}</span>

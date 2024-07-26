@@ -211,9 +211,9 @@ class HomeController extends Controller
                 $application->year_id = Helpers::instance()->getCurrentAccademicYear();
                 $application->save();
             }
-            // if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 0 ){
-            //     $data['step'] = 6;
-            // }
+            if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 0 ){
+                $data['step'] = 6;
+            }
             $data['certificates'] = collect(json_decode($this->api_service->certificates())->data);
             $data['application'] = $application;
             if($application->entry_qualification != null){
@@ -304,9 +304,9 @@ class HomeController extends Controller
         }
         // return $request->all();
         $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
-        // if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 7){
-        //     goto SKIP;
-        // }
+        if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 7){
+            goto SKIP;
+        }
 
         // persist data
         $data = $request->all();
@@ -829,5 +829,23 @@ class HomeController extends Controller
             return back();
         }
     }
+
+    
+    public function download_admission_letter()
+    {
+        # code...
+        $data['title'] = "Download Admission Letter";
+        $data['_this'] = $this;
+        $data['applications'] = auth('student')->user()->applicationForms->where('admitted', 1);
+        // $data['applications'] = ApplicationForm::whereNotNull('matric')->get();
+        // return $data;
+        return view('student.online.admission_letter', $data);
+    }
+
+    public function download_admission_letter_save(Request $request, $appl_id)
+    {
+        return $this->app_service->admission_letter($appl_id);
+    }
+
 
 }
