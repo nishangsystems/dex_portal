@@ -211,9 +211,9 @@ class HomeController extends Controller
                 $application->year_id = Helpers::instance()->getCurrentAccademicYear();
                 $application->save();
             }
-            if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 0 ){
-                $data['step'] = 6;
-            }
+            // if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 0 ){
+            //     $data['step'] = 6;
+            // }
             $data['certificates'] = collect(json_decode($this->api_service->certificates())->data);
             $data['application'] = $application;
             if($application->entry_qualification != null){
@@ -304,32 +304,17 @@ class HomeController extends Controller
         }
         // return $request->all();
         $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
-        if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 7){
-            goto SKIP;
-        }
+        // if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 7){
+        //     goto SKIP;
+        // }
 
         // persist data
         $data = $request->all();
         if($step == 4){
-            $data_p1=[];
-            $_data = $request->gce_ol_record;
-            // return $_data;
-            if($_data != null){
-                foreach ($_data['subject'] as $key => $value) {
-                    $data_p1[] = ['subject'=>$value, 'grade'=>$_data['grade'][$key]];
-                }
-                $data['gce_ol_record'] = json_encode($data_p1);
-                // return $data;
-            }
-            $data_p2 = [];
-            $e_data = $request->gce_al_record??null;
-            if($e_data != null){
-                foreach ($e_data['subject'] as $key => $value) {
-                    $data_p2[] = ['subject'=>$value, 'grade'=>$e_data['grade'][$key]];
-                }
-                $data['gce_al_record'] = json_encode($data_p2);
-                // return $data;
-            }
+            // dd($request->collect());
+            $data['gce_ol_record'] = json_encode(array_values($request->gce_ol_record));
+            $data['gce_al_record'] = json_encode(array_values($request->gce_al_record));
+                
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }elseif($step == 7){

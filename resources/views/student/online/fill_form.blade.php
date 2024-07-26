@@ -1,4 +1,8 @@
 @extends('student.layout')
+@php
+    $ol_key = time().random_int(1000, 1099);
+    $al_key = time().random_int(2000, 2099);
+@endphp
 @section('section')
     <div class="py-4">
         @switch($step)
@@ -281,11 +285,21 @@
                                     <tr>
                                 </thead>
                                 <tbody id="previous_trainings">
-                                    @foreach (json_decode($application->gce_ol_record)??[] as $key=>$record)
+                                    @foreach (json_decode($application->gce_ol_record)??[] as $key=>$result)
+                                        @php
+                                            $ol_key++;
+                                        @endphp
                                         <tr class="text-capitalize">
                                             <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropTraining(event)">{{ __('text.word_drop') }}</span></td>
-                                            <td class="border"><input class="form-control text-primary"  name="gce_ol_record[subject][$key]" required value="{{ $record->subject }}"></td>
-                                            <td class="border"><input class="form-control text-primary"  name="gce_ol_record[grade][$key]" required value="{{ $record->grade }}"></td>
+                                            <td class="border"><input class="form-control text-primary"  name="gce_ol_record[{{ $ol_key }}][subject]" required value="{{ $result->subject }}"></td>
+                                            <td class="border">
+                                                <select class="form-control text-primary input imput-sm"  name="gce_ol_record[{{ $ol_key }}][grade]">
+                                                    <option value=""></option>
+                                                    <option value="A" {{ $result->grade == 'A' ? 'selected' : '' }}>A</option>
+                                                    <option value="B" {{ $result->grade == 'B' ? 'selected' : '' }}>B</option>
+                                                    <option value="C" {{ $result->grade == 'C' ? 'selected' : '' }}>C</option>
+                                                </select>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -341,10 +355,22 @@
                                 </thead>
                                 <tbody id="employments">
                                     @foreach (json_decode($application->gce_al_record)??[] as $key=>$record)
+                                        @php
+                                            $al_key++;
+                                        @endphp
                                         <tr class="text-capitalize">
                                             <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropEmployment(event)">{{ __('text.word_drop') }}</span></td>
-                                            <td class="border"><input class="form-control text-primary"  name="gce_al_record[subject][$key]" required value="{{ $record->subject }}"></td>
-                                            <td class="border"><input class="form-control text-primary"  name="gce_al_record[grade][$key]" required value="{{ $record->grade }}"></td>
+                                            <td class="border"><input class="form-control text-primary"  name="gce_al_record[{{ $al_key }}][subject]" required value="{{ $record->subject }}"></td>
+                                            <td class="border">
+                                                <select class="form-control text-primary input imput-sm"  name="gce_al_record[{{ $al_key }}][grade]">
+                                                    <option value=""></option>
+                                                    <option value="A" {{ $record->grade == 'A' ? 'selected' : '' }}>A</option>
+                                                    <option value="B" {{ $record->grade == 'B' ? 'selected' : '' }}>B</option>
+                                                    <option value="C" {{ $record->grade == 'C' ? 'selected' : '' }}>C</option>
+                                                    <option value="D" {{ $record->grade == 'D' ? 'selected' : '' }}>D</option>
+                                                    <option value="E" {{ $record->grade == 'E' ? 'selected' : '' }}>E</option>
+                                                </select>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -722,14 +748,14 @@
         
         // Add and drop previous trainings form table rows
         let addTraining = function(){
-            let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
+            let key = `-6${ Date.now()}${Math.random()*1000000+1 }`;
             let html = `<tr class="text-capitalize">
                             <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropTraining(event)">{{ __('text.word_drop') }}</span></td>
                             <td class="border">
-                                <input class="form-control text-primary"  name="gce_ol_record[subject][${key}]" required">
+                                <input class="form-control text-primary"  name="gce_ol_record[${key}][subject]" required">
                             </td>
                             <td class="border">
-                                <select class="form-control text-primary"  name="gce_ol_record[grade][${key}]" required value="">
+                                <select class="form-control text-primary"  name="gce_ol_record[${key}][grade]" required value="">
                                     <option></option>
                                     @foreach (['A', 'B', 'C'] as $grd)
                                         <option value="{{ $grd }}">{{ $grd }}</option>
@@ -758,14 +784,14 @@
         
         // Add and drop AL subjects form table rows
         let addEmployment = function(){
-            let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
+            let _key = `-5${ Date.now()}${Math.random()*1000000+1 }`;
             let html = `<tr class="text-capitalize">
                             <td class="border"><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropEmployment(event)">{{ __('text.word_drop') }}</span></td>
                             <td class="border">
-                                <input class="form-control text-primary"  name="gce_al_record[subject][${key}]" required>
+                                <input class="form-control text-primary"  name="gce_al_record[${_key}][subject]" required>
                             </td>
                             <td class="border">
-                                <select class="form-control text-primary"  name="gce_al_record[grade][${key}]" required>
+                                <select class="form-control text-primary"  name="gce_al_record[${_key}][grade]" required>
                                     <option></option>
                                     @foreach (['A', 'B', 'C', 'D', 'E'] as $grd)
                                         <option value="{{ $grd }}">{{ $grd }}</option>
