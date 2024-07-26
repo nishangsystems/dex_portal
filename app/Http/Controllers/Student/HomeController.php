@@ -389,6 +389,10 @@ class HomeController extends Controller
         if($step == 6){
             if($application->degree_id != null and ($application->tranzak_transaction != null and $application->tranzak_transaction->payment_id == $application->degree_id)){
                 $application->update(['submitted'=>true]);
+                $batch = Batch::find(\App\Helpers\Helpers::instance()->getCurrentAccademicYear())->name;
+                $message = "Hello ".(auth('student')->user()->name??'').", You have successfully submitted application into HIMS for the ".$batch." academic year. Your application is under processing.";
+                $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
+                
                 return redirect(route("student.home"))->with('success', "Application completed successfully");
             }
         }
