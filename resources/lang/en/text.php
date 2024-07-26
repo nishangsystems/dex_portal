@@ -1009,5 +1009,6 @@ return [
     'inst_tapplication_form'=>'HIMS Application Form',
     'degree_certificates'=>'degree certificates',
     'configure_degree_certificates'=>'configure degree certificates',
+    'admission_letter'=>'admission letter',
     ''
 ];
