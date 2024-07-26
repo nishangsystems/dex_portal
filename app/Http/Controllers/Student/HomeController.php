@@ -386,6 +386,7 @@ class HomeController extends Controller
 
         $step = $request->step;
 
+        dd($application);
         if($step == 6){
             if($application->degree_id != null and ($application->tranzak_transaction != null and $application->tranzak_transaction->payment_id == $application->degree_id)){
                 $application->update(['submitted'=>true]);
