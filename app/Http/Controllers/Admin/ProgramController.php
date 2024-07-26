@@ -1490,4 +1490,32 @@ class ProgramController extends Controller
                 $rec->reason = str_replace('_', ' ', $rec->financialTransactionId);
             });
     }
+
+    public function degree_certificates($degree_id = null)
+    {
+        # code...
+        $data['title'] = __('text.configure_degree_certificates');
+        $data['degrees'] = json_decode($this->api_service->degrees())->data;
+        $data['certificates'] = json_decode($this->api_service->certificates())->data;
+        if($degree_id != null){
+            $data['degree_certificates'] = collect(json_decode($this->api_service->degree_certificates($degree_id))->data)->pluck('id')->toArray();
+        }
+        // dd($data);
+        return view('admin.setting.degree_certs', $data);
+    }
+
+    public function set_degree_certificates(Request $request, $degree_id)
+    {
+        # code...
+        $validator = Validator::make($request->all(), ['certificates'=>'required|array']);
+        if($validator->fails()){
+            return back()->with('error', $validator->errors()->first());
+        }
+        $certificate_ids = $request->certificates;
+        $response = json_decode($this->api_service->set_degree_certificates($degree_id, $certificate_ids));
+        if($response->status == 'success'){return back()->with('success', __('text.word_done'));}else{
+            return back()->with('error', $response->message);
+        }
+    }
+
 }

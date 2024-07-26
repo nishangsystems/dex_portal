@@ -233,7 +233,7 @@
 
                         <b class="arrow"></b>
                     </li>
-                    {{-- <li>
+                    <li>
                         <a href="{{route('admin.admission.programs.config')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{__('text.certificate_programs')}}
@@ -248,7 +248,15 @@
                         </a>
 
                         <b class="arrow"></b>
-                    </li> --}}
+                    </li>
+                    <li>
+                        <a href="{{route('admin.admission.degree.certificates')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.degree_certificates')}}
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
                 </ul>
             </li>
             @endif
