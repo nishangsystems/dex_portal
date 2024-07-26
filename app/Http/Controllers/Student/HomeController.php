@@ -312,7 +312,9 @@ class HomeController extends Controller
         $data = $request->all();
         if($step == 4){
             // dd($request->collect());
+            if($request->gce_ol_record)
             $data['gce_ol_record'] = json_encode(array_values($request->gce_ol_record));
+            if($request->gce_al_record)
             $data['gce_al_record'] = json_encode(array_values($request->gce_al_record));
                 
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
