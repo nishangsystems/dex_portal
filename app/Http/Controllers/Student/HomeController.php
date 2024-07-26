@@ -305,7 +305,7 @@ class HomeController extends Controller
             return back()->with('error', $validity->errors()->first());
         }
         // return $request->all();
-        $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+        $application = \App\Models\ApplicationForm::find($application_id);
         if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 7){
             goto SKIP;
         }
