@@ -193,9 +193,9 @@ class HomeController extends Controller
     {
         try {
 
-            // if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('submitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
-            //     return redirect(route('student.home'))->with('error', "You are allowed to submit only one application form per year");
-            // }
+            if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('submitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
+                return redirect(route('student.home'))->with('error', "You are allowed to submit only one application form per year");
+            }
 
             // check if application is open now
             if(!(Helpers::instance()->application_open())){
@@ -213,6 +213,8 @@ class HomeController extends Controller
             }
             if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 0 ){
                 $data['step'] = 6;
+            }elseif($application->degree_id != null and ($application->tranzak_transaction != null and $application->tranzak_transaction->payment_id == $application->degree_id) and $step == 6){
+                return redirect()->route('student.home')->with('error', "Payment has been made for this application instance");
             }
             $data['certificates'] = collect(json_decode($this->api_service->certificates())->data);
             $data['application'] = $application;
@@ -287,7 +289,10 @@ class HomeController extends Controller
                     'program'=>'required'
                 ]);
                 break;
-                
+            case 6:
+                # code...
+                $validity = Validator::make($request->all(), []);
+                break;
 
             case 7:
                 $validity = Validator::make($request->all(), ['momo_number'=>'required', 'amount'=>'required']);
@@ -382,7 +387,10 @@ class HomeController extends Controller
         $step = $request->step;
 
         if($step == 6){
-            return redirect(route("student.home"))->with('success', "Application completed successfully");
+            if($application->degree_id != null and ($application->tranzak_transaction != null and $application->tranzak_transaction->payment_id == $application->degree_id)){
+                $application->update(['submitted'=>true]);
+                return redirect(route("student.home"))->with('success', "Application completed successfully");
+            }
         }
         
         return redirect(route('student.application.start', [$step, $application_id]));
