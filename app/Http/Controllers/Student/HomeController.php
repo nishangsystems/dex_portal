@@ -467,7 +467,6 @@ class HomeController extends Controller
     
                     $appl = ApplicationForm::find($appl_id);
                     $appl->transaction_id = $transaction_instance->id;
-                    $appl->submitted = 1;
                     $appl->save();
     
                     return redirect(route('student.application.start', ['id'=>$appl->id, 'step'=>1]))->with('success', "Payment successful.");
