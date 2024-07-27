@@ -306,7 +306,7 @@ class HomeController extends Controller
         }
         // return $request->all();
         $application = \App\Models\ApplicationForm::find($application_id);
-        if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 7){
+        if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and !in_array($step, [1, 7])){
             goto SKIP;
         }
 
