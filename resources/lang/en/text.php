@@ -1,6 +1,6 @@
 <?php
 return [
-    'app_name'=>'ssp',
+    'app_name'=>'HIMS',
     'word_username'=>'username',
     'word_password'=>'password',
     'word_login'=>'login',

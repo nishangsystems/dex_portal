@@ -807,10 +807,11 @@ class HomeController extends Controller
                     $instance->save();
                     $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($pending->purpose??'')." for ".($transaction_instance->year->name??'')." HIMS.";
                     $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
-                    
+
                     ($pending = \App\Models\PendingTranzakTransaction::where('requestId', $request->requestId)->first()) != null ? $pending->delete() : null;
                     DB::commit();
-                    return redirect(route('student.home'))->with('success', "Payment successful.");
+             
+                    return redirect(route('student.application.start', ['step'=>0]))->with('success', "Payment successful.");
                     break;
                 
                 case 'CANCELLED':
