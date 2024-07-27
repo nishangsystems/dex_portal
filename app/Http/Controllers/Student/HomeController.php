@@ -362,7 +362,7 @@ class HomeController extends Controller
                 $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
                 if($_response->status() == 200){
                     
-                    $_data = $_response->collect();
+                    $_data = $_response->collect()['data'];
                     dd($_data);
                     session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
                     session()->put('tranzak_credentials', json_encode($tranzak_credentials));
