@@ -11,14 +11,14 @@ class TranzakPaymentFollower extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'tranzak_payment_follower';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Run a check for all pending tranzak transaction';
 
     /**
      * Create a new command instance.
