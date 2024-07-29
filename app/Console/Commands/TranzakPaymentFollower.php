@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 
 class TranzakPaymentFollower extends Command
 {
@@ -18,7 +19,7 @@ class TranzakPaymentFollower extends Command
      *
      * @var string
      */
-    protected $description = 'Run a check for all pending tranzak transaction';
+    protected $description = 'Run a check for all pending tranzak transactions and run necessary updates';
 
     /**
      * Create a new command instance.
@@ -37,6 +38,8 @@ class TranzakPaymentFollower extends Command
      */
     public function handle()
     {
-        return 0;
+        \App\Models\PendingTranzakTransaction::each(function($record){
+            $response = Http::get();
+        })
     }
 }

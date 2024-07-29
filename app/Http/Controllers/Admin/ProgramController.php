@@ -1154,7 +1154,7 @@ class ProgramController extends Controller
             $data['title'] = "Admit Student";
             $data['_this'] = $this;
             $data['action'] = __('text.word_admit');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('submitted', 1)->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
         if(!$request->has('matric') or ($request->matric == null)){
@@ -1317,15 +1317,16 @@ class ProgramController extends Controller
         if($validity->fails()){
             return back()->with('error', $validity->errors()->first());
         }
-        $data = ['program_first_choice'=>$request->new_program, 'level'=>$request->level];
-        ApplicationForm::find($id)->update($data);
+        $data = ['program'=>$request->new_program, 'level'=>$request->level];
+        // ApplicationForm::find($id)->update($data);
 
+        // cacche('program_change_data', $data);
         // UPDATE STUDENT IN SCHOOL SYSTEM.
         // 
         // GENERATE MATRICULE
         $application = ApplicationForm::find($id);
         if(($programs = json_decode($this->api_service->programs())->data) != null){
-            $program = collect($programs)->where('id', $application->program_first_choice)->first()??null;
+            $program = collect($programs)->where('id', $request->new_program)->first()??null;
             if($program != null){
 
                 $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
@@ -1348,6 +1349,7 @@ class ProgramController extends Controller
                     $data['application'] = $application;
                     $data['program'] = $program;
                     $data['matricule'] = $student_matric;
+                    $data['level'] = $request->level;
                     $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
                     return view('admin.student.confirm_change_program', $data);
                 }
@@ -1373,8 +1375,7 @@ class ProgramController extends Controller
         if($resp != null){
             if($resp->status ==1){
                 // $application->matric = $request->matric;
-                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
-
+                $application->update(['matric'=>$request->matric, 'program'=>$request->program, 'level'=>$request->level, 'admitted'=>1]);
                 // Send sms/email notification
                 return redirect(route('admin.applications.admit'))->with('success', "Program changed successfully.");
             }else

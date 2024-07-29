@@ -4,6 +4,8 @@
         <form method="post" action="{{ route('admin.applications._change.program', $application->id) }}">
             @csrf
             <input type="hidden" name="matric" value="{{ $matricule }}">
+            <input type="hidden" name="program" value="{{ $program->id }}">
+            <input type="hidden" name="level" value="{{ $level }}">
             <div class="col-sm-12 col-md-11 col-lg-9 mx-auto">
                 <div class="row text-capitalize">
                     <div class="col-sm-8 col-md-5 col-lg-5">
