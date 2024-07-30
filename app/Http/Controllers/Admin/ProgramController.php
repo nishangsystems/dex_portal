@@ -1465,7 +1465,7 @@ class ProgramController extends Controller
         foreach ($data as $key => $appl) {
             # code...
             fputcsv($file_writer, [
-                $appl->name, "{$appl->dob}", $appl->gender, $appl->nationality, "{$appl->phone}", $programs->where('id', $appl->program)->first()->name??'';
+                $appl->name, "{$appl->dob}", $appl->gender, $appl->nationality, "{$appl->phone}", $programs->where('id', $appl->program)->first()->name??''
             ]);
         }
         fclose($file_writer);
