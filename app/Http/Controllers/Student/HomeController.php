@@ -808,11 +808,7 @@ class HomeController extends Controller
                     }else{
                         $transaction_instance = \App\Models\TranzakTransaction::where($transaction)->first();
                     }
-    
-                    $trans = json_decode(session()->get('processing_tranzak_transaction_details'));
-                    // $payment_data = session()->get(config('tranzak.platform_data'));
-                    // dd(config('tranzak.platform_data'));
-                    // dd($transaction_instance);
+                        
                     $data = ['student_id'=>$pending->student_id, 'year_id'=>$pending->year_id, 'type'=>$pending->purpose, 'item_id'=>$pending->payment_id, 'amount'=>$transaction_instance->amount, 'financialTransactionId'=>$transaction_instance->transaction_id, 'used'=>1];
                     $instance = new \App\Models\Charge($data);
                     $instance->save();
