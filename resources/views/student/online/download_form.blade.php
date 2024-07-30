@@ -14,7 +14,7 @@
                     <tr class="border-bottom">
                         <td class="border-left border-right">{{ $k++ }}</td>
                         <td class="border-left border-right">{{ $appl->year->name }}</td>
-                        <td class="border-left border-right">{{ $programs->where('id', $appl->id)->first()->name??'' }}</td>
+                        <td class="border-left border-right">{{ $programs->where('id', $appl->program)->first()->name??'' }}</td>
                         <td class="border-left border-right d-flex flex-wrap">
                             <form method="post" action="{{ route('student.application.form.download', $appl->id) }}" target="new">@csrf
                                 <input type="submit" class="btn btn-xs btn-primary mx-2" value="{{ __('text.word_download') }}">
