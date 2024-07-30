@@ -23,7 +23,7 @@
                             <td class="border-left border-right">{{ $appl->email == null ? $appl->student->email : $appl->email }}</td>
                             <td class="border-left border-right">{{ $appl->phone == null ? $appl->student->phone : $appl->phone }}</td>
                             <td class="border-left border-right">{{ $appl->degree->name??null }}</td>
-                            <td class="border-left border-right">{{ $appl->_program->name??null }}</td>
+                            <td class="border-left border-right">{{ $programs->where('id', $appl->program)->first()->name??'' }}</td>
                             <td class="border-left border-right">
                                 @if(isset($action))
                                     <a href="{{ Request::url().'/'.$appl->id }}" class="btn mt-1 btn-xs btn-primary">{{ $action }}</a>

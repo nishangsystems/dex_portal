@@ -1011,6 +1011,7 @@ class ProgramController extends Controller
             $data['title'] = "Print Student Application Form";
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->get();
             return view('admin.student.applications', $data);
         }
@@ -1061,6 +1062,7 @@ class ProgramController extends Controller
             $data['title'] = "Edit Student Information";
             $data['_this'] = $this;
             $data['action'] = __('text.word_edit');
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
@@ -1099,6 +1101,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_show');
             // $data['bypass'] = 'bypass form';
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             $data['applications'] = ApplicationForm::whereNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             // return $data;
             return view('admin.student.applications', $data);
@@ -1124,6 +1127,7 @@ class ProgramController extends Controller
             $data['title'] = "Download Application Form";
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 1)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
@@ -1155,6 +1159,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_admit');
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('submitted', 1)->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             return view('admin.student.applications', $data);
         }
         if(!$request->has('matric') or ($request->matric == null)){
@@ -1276,6 +1281,7 @@ class ProgramController extends Controller
             $data['title'] = "Change Student Program";
             $data['_this'] = $this;
             $data['action'] = __('text.change_program');
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             $data['applications'] = ApplicationForm::where('admitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }

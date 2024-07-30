@@ -529,6 +529,7 @@ class HomeController extends Controller
         $data['title'] = "Download Application Form";
         $data['_this'] = $this;
         $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id')->where('submitted', true);
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         return view('student.online.download_form', $data);
     }
 
