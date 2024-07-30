@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Twilio\Rest\Client;
+use App\Http\Services\AppService;
 
 /**
  * Summary of Controller
@@ -38,10 +39,11 @@ class Controller extends BaseController
 
     var $current_accademic_year;
     var $api_service, $app_service;
-    public function __construct(ApiService $apiService)
+    public function __construct(ApiService $apiService, AppService $appService)
     {
         # code...
         $this->api_service = $apiService;
+        $this->app_service = $appService;
         $this->current_accademic_year = Helpers::instance()->getCurrentAccademicYear();
         ini_set('max_execution_time', 360);
     }

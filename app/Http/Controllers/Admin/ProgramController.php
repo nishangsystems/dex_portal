@@ -39,6 +39,7 @@ class ProgramController extends Controller
         return view('admin.units.sections')->with($data);
     }
 
+
     public static function subunitsOf($id){
         $s_units = [];
         $direct_sub = DB::table('school_units')->where('parent_id', '=', $id)->get()->pluck('id')->toArray();
@@ -1001,8 +1002,6 @@ class ProgramController extends Controller
         
     }
 
-
-
     
     public function print_application_form(Request $request, $id = null)
     {
@@ -1016,42 +1015,10 @@ class ProgramController extends Controller
             return view('admin.student.applications', $data);
         }
 
-        // $application = ApplicationForm::find($id);
-        // // $data['campuses'] = json_decode($this->api_service->campuses())->data;
-        // $data['application'] = ApplicationForm::find($id);
-        // $data['degree'] = $application->degree;
-        // // $data['campus'] = $application->;
-        // $data['certs'] = json_decode($this->api_service->certificates())->data;
-        
-        // $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
-        // $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
-        // $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
-        // $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
-        
-        // // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-        // $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
-        // $data['title'] = $title;
-
-        // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
-        // // return view('student.online.form_dawnloadable', $data);
-        // $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
-        // $filename = $title.' - '.$application->name.'.pdf';
-        // return $pdf->download($filename);
-
         try{
-            $application = ApplicationForm::find($id);
-            $data['application'] = $application;
-            
-            $title = "APPLICATION FORM FOR ".$application->degree->name;
-            $data['title'] = $title;
-
-            // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
-            // return view('student.online.form_dawnloadable', $data);
-            $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
-            $filename = $title.' - '.$application->name.'.pdf';
-            return $pdf->download($filename);
+            return $this->app_service->application_form($id);
         }catch(Throwable $th){
-            if(in_array(null, array_values($data))){ return back()->with('message', $th->getMessage());}
+            return back()->with('message', $th->getMessage());
         }
     }
 
