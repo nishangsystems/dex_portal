@@ -586,7 +586,7 @@ class HomeController  extends Controller
             'net_amount_recieved'=>0, 'payment_id'=>$application->degree_id
         ];
         $transaction = \App\Models\TranzakTransaction::create($data);
-        $application->update(['transaction_id'=>$transaction->id, 'submitted'=>1]);
+        $application->update(['transaction_id'=>$transaction->id]);
         return redirect()->to(route('admin.bypass.application'))->with('success', "Done");
         
     }
