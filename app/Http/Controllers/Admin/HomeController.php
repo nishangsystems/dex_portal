@@ -572,9 +572,20 @@ class HomeController  extends Controller
         if($validity->fails()){
             return back()->with('error', $validity->errors()->first());
         }
-        $data = ['request_id'=>rand(10000000000, 1000000000000), 'amount'=>0, 'currency_code'=>'---', 'purpose'=>'PLATFORM', 'mobile_wallet_number'=>'0000000000', 'transaction_ref'=>str_replace(' ', '_', $request->bypass_reason??'------'), 'app_id'=>0, 'transaction_id'=>-1000000000, 'transaction_time'=>now(), 'payment_method'=>'BYPASS', 'payer_user_id'=>0, 'payer_name'=>'---', 'payer_account_id'=>0, 'merchant_fee'=>0, 'merchant_account_id'=>auth()->id(), 'net_amount_recieved'=>0];
-        $transaction = \App\Models\TranzakTransaction::create($data);
         $application = \App\Models\ApplicationForm::find($application_id);
+        $data = [
+            'request_id'=>rand(10000000000, 1000000000000), 
+            'amount'=>0, 'currency_code'=>'---', 
+            'purpose'=>'PLATFORM', 'mobile_wallet_number'=>'0000000000', 
+            'transaction_ref'=>str_replace(' ', '_', $request->bypass_reason??'------'), 
+            'app_id'=>0, 'transaction_id'=>-1000000000, 
+            'transaction_time'=>now(), 'payment_method'=>'BYPASS', 
+            'payer_user_id'=>0, 'payer_name'=>'---', 
+            'payer_account_id'=>0, 'merchant_fee'=>0, 
+            'merchant_account_id'=>auth()->id(), 
+            'net_amount_recieved'=>0, 'payment_id'=>$application->degree_id
+        ];
+        $transaction = \App\Models\TranzakTransaction::create($data);
         $application->update(['transaction_id'=>$transaction->id, 'submitted'=>1]);
         return redirect()->to(route('admin.bypass.application'))->with('success', "Done");
         

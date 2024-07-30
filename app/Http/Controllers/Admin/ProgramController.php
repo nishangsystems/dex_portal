@@ -1373,7 +1373,7 @@ class ProgramController extends Controller
         $resp = json_decode($this->api_service->update_student($application->matric, ['program'=>$application->program_first_choice, 'level'=>$application->level, 'matric'=>$request->matric]))->data??null;
         // dd($resp);
         if($resp != null){
-            if($resp->status ==1){
+            if(is_array($resp) && $resp['status'] ==1){
                 // $application->matric = $request->matric;
                 $application->update(['matric'=>$request->matric, 'program'=>$request->program, 'level'=>$request->level, 'admitted'=>1]);
                 // Send sms/email notification
