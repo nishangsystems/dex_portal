@@ -1458,7 +1458,7 @@ class ProgramController extends Controller
         $headings = ['Name', 'Date of Birth','Gender', 'Nationality', 'Phone number', 'Program'];
         fputcsv($file_writer, $headings, ',');
         $programs = collect(json_decode($this->api_service->programs())->data);
-        $data = ApplicationForm::where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+        $data = ApplicationForm::where('year_id', Helpers::instance()->getCurrentAccademicYear())->where('submitted', 1)->whereNotNull('transaction_id')->get();
         if($prog_id != null){
             $data = $data->where('program', $prog_id);
         }
