@@ -1457,6 +1457,7 @@ class ProgramController extends Controller
         $file_writer = fopen($file, 'w');
         $headings = ['Name', 'Date of Birth','Gender', 'Nationality', 'Phone number', 'Program'];
         fputcsv($file_writer, $headings, ',');
+        $programs = collect(json_decode($this->api_service->programs())->data);
         $data = ApplicationForm::where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
         if($prog_id != null){
             $data = $data->where('program', $prog_id);
@@ -1464,7 +1465,7 @@ class ProgramController extends Controller
         foreach ($data as $key => $appl) {
             # code...
             fputcsv($file_writer, [
-                $appl->name, "{$appl->dob}", $appl->gender, $appl->nationality, "{$appl->phone}", $appl->_program->name
+                $appl->name, "{$appl->dob}", $appl->gender, $appl->nationality, "{$appl->phone}", $programs->where('id', $appl->program)->first()->name??'';
             ]);
         }
         fclose($file_writer);
