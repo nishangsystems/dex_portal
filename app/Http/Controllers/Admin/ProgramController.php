@@ -1446,6 +1446,7 @@ class ProgramController extends Controller
     {
         # code...
         $data['title'] = "Download Application List";
+        $data['current_year'] = \App\Helpers\Helpers::instance()->getCurrentAccademicYear();
         $data['programs'] = Program::all();
         return view('admin.student.download_forms', $data);
     }
