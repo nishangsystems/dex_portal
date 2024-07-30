@@ -498,6 +498,7 @@
             @endif
         
             
+            @if (\Auth::user()->hasPermissionTo('bypass_application_fee'))
             <li>
                 <a href="{{ route('admin.bypass.application') }}" class="text-capitalize">
                     <i  style="color: {{$bg1}};" class="fa fa-key menu-icon   "></i>
@@ -505,8 +506,10 @@
                 </a>
                 <b class="arrow"></b>
             </li>
+            @endif
         
             
+            @if (\Auth::user()->hasPermissionTo('bypass_platform_charge'))
             <li>
                 <a href="{{ route('admin.bypass.platform') }}" class="text-capitalize">
                     <i  style="color: {{$bg1}};" class="fa fa-key menu-icon   "></i>
@@ -514,6 +517,7 @@
                 </a>
                 <b class="arrow"></b>
             </li>
+            @endif
             
             <li>
                 <a href="{{route('admin.reset_password')}}" class="text-capitalize">

@@ -983,7 +983,7 @@ class ProgramController extends Controller
         # code...
         $data['title'] = "All Application Forms";
         $data['_this'] = $this;
-        $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->get();
+        $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('submitted', 1)->get();
         return view('admin.student.applications', $data);
     }
 
@@ -1011,7 +1011,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('submitted', 1)->get();
             return view('admin.student.applications', $data);
         }
 
@@ -1030,7 +1030,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_edit');
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where(['year_id'=> Helpers::instance()->getCurrentAccademicYear(), 'submitted'=>1])->get();
             return view('admin.student.applications', $data);
         }
 
