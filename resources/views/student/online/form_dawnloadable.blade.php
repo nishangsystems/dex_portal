@@ -136,42 +136,45 @@
                                     @endswitch
                                 </tr>
                             @endforeach
-                            <tr>
-                                <th class="border border-2 border-dark text-center text-uppercase" colspan="5">GCE A/L or equivalent</th>
-                            </tr>
-                            <tr>
-                                <th class="border-left border-right border-2 border-dark">Subject attempted</th>
-                                <th class="border-left border-right border-2 border-dark">Grade</th>
-                                <th class="border-left border-right w-25 text-center" colspan="3">School where the qualification was earned</th>
-                            </tr>
-                            @php $k = 0; @endphp
-                            @foreach (json_decode($application->gce_al_record) as $rec)
-                                @php $k++; @endphp
-                                <tr class="border border-2">
-                                    <td class="border border-2 border-dark">{{ $rec->subject }}</td>
-                                    <td class="border border-2 border-dark">{{ $rec->grade }}</td>
-                                    @switch($k)
-                                        @case(1)
-                                            <td class="border text-center" colspan="3">{{ $application->high_school }}</td>
-                                            @break
-                                        @case(2)
-                                            <th class="border-left border-right">Exam Center</th>
-                                            <th class="border-left border-right">Candidate No</th>
-                                            <th class="border-left border-right">Year</th>
-                                            @break
-                                        @case(3)
-                                            <td class="border">{{ $application->high_school_exam_center }}</td>
-                                            <td class="border">{{ $application->high_school_candidate_number }}</td>
-                                            <td class="border">{{ $application->high_school_exam_year }}</td>
-                                            @break
-                                        @default
-                                            <td class="border"></td>
-                                            <td class="border"></td>
-                                            <td class="border"></td>
-                                            @break;
-                                    @endswitch
+
+                            @if(json_decode($application->gce_al_record) != null)
+                                <tr>
+                                    <th class="border border-2 border-dark text-center text-uppercase" colspan="5">GCE A/L or equivalent</th>
                                 </tr>
-                            @endforeach
+                                <tr>
+                                    <th class="border-left border-right border-2 border-dark">Subject attempted</th>
+                                    <th class="border-left border-right border-2 border-dark">Grade</th>
+                                    <th class="border-left border-right w-25 text-center" colspan="3">School where the qualification was earned</th>
+                                </tr>
+                                @php $k = 0; @endphp
+                                @foreach (json_decode($application->gce_al_record) as $rec)
+                                    @php $k++; @endphp
+                                    <tr class="border border-2">
+                                        <td class="border border-2 border-dark">{{ $rec->subject }}</td>
+                                        <td class="border border-2 border-dark">{{ $rec->grade }}</td>
+                                        @switch($k)
+                                            @case(1)
+                                                <td class="border text-center" colspan="3">{{ $application->high_school }}</td>
+                                                @break
+                                            @case(2)
+                                                <th class="border-left border-right">Exam Center</th>
+                                                <th class="border-left border-right">Candidate No</th>
+                                                <th class="border-left border-right">Year</th>
+                                                @break
+                                            @case(3)
+                                                <td class="border">{{ $application->high_school_exam_center }}</td>
+                                                <td class="border">{{ $application->high_school_candidate_number }}</td>
+                                                <td class="border">{{ $application->high_school_exam_year }}</td>
+                                                @break
+                                            @default
+                                                <td class="border"></td>
+                                                <td class="border"></td>
+                                                <td class="border"></td>
+                                                @break;
+                                        @endswitch
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
