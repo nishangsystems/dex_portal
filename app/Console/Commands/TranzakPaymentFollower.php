@@ -42,21 +42,21 @@ class TranzakPaymentFollower extends Command
     public function handle()
     {
         $tranzak_credentials = \App\Models\TranzakCredential::where('campus_id', 0)->first();
-        if(cache($tranzak_credentials->cache_token_key) == null or now()->parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
-            GEN_TOKEN:
-            $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
-            if($response->status() == 200){
-                cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
-                cache([$tranzak_credentials->cache_token_expiry_key=>now()->createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
-            }
-        }
-
+        
         \App\Models\PendingTranzakTransaction::each(function($record)use($tranzak_credentials){
+            if(cache($tranzak_credentials->cache_token_key) == null or now()->parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
+                GEN_TOKEN:
+                $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
+                if($response->status() == 200){
+                    cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
+                    cache([$tranzak_credentials->cache_token_expiry_key=>now()->createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
+                }
+            }
 
             try{
                 if(\App\Models\TranzakTransaction::where('request_id', $record->requestId)->count() > 0){ 
                     $record->delete();
-                    continue;
+                    return;
                 }
     
                 if(cache($tranzak_credentials->cache_token_key) == null or now()->parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){goto GEN_TOKEN;}
@@ -119,7 +119,7 @@ class TranzakPaymentFollower extends Command
                             break;
 
                         case "PAYMENT_IN_PROGRESS":
-                            continue;
+                            return;
                             break;
 
                         default: 
