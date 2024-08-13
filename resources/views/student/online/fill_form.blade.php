@@ -132,8 +132,8 @@
                                     <option value=""></option>
                                     <option value="POSTER OR NEWS PAPER" {{ $application->referer== 'POSTER OR NEWS PAPER' ? 'selected' : '' }}>POSTER OR NEWS PAPER</option>
                                     <option value="FLYER OR BANNER" {{ $application->referer== 'FLYER OR BANNER' ? 'selected' : '' }}>FLYER OR BANNER</option>
-                                    <option value="HIMS STUDENT OR EX-STUDENT" {{ $application->referer== 'HIMS STUDENT OR EX-STUDENT' ? 'selected' : '' }}>HIMS STUDENT OR EX-STUDENT</option>
-                                    <option value="HIMS STAFF" {{ $application->referer== 'HIMS STAFF' ? 'selected' : '' }}>HIMS STAFF</option>
+                                    <option value="STUDENT OR EX-STUDENT" {{ $application->referer== 'STUDENT OR EX-STUDENT' ? 'selected' : '' }}>STUDENT OR EX-STUDENT</option>
+                                    <option value="STAFF" {{ $application->referer== 'STAFF' ? 'selected' : '' }}>STAFF</option>
                                     <option value="INTERNET OR ADVERTISEMENT" {{ $application->referer== 'INTERNET OR ADVERTISEMENT' ? 'selected' : '' }}>INTERNET OR ADVERTISEMENT</option>
                                     <option value="OTHERS" {{ $application->referer== 'OTHERS' ? 'selected' : '' }}  >OTHERS</option>
                                 </select>

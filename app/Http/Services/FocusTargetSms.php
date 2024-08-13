@@ -14,13 +14,14 @@ class FocusTargetSms implements ShouldQueue{
     private $api_base = "https://smsvas.com/bulk/public/index.php/api/v1/sendsms";
     private $api_password = 'test2371';
     private $api_user = 'nishang@gmail.com';
-    private $sender_id = 'HIMS';
+    private $sender_id = '';
     
     public function __construct($recipients, string $message)
     {
         # code...
         $this->message = $message;
         $this->recipients = is_array($recipients) ? implode(',', $recipients) : $recipients;
+        $this->sender_id = \App\Models\School::first()->name??'';
     }
 
     /**
