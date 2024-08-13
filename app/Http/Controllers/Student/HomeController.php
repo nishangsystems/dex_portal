@@ -229,7 +229,7 @@ class HomeController extends Controller
             return view('student.online.fill_form', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            return back()->with('error', $th->getMessage());
+            return back()->with('error', $th->getTraceAsString());
         }
     }
 
