@@ -219,7 +219,7 @@ class HomeController extends Controller
             $data['certificates'] = collect(json_decode($this->api_service->certificates())->data);
             $data['application'] = $application;
             if($application->entry_qualification != null){
-                $data['programs'] = collect(json_decode($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification))->data);
+                $data['programs'] = collect(json_decode($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification))->data??[]);
             }
             $data['aux_programs'] = \App\Models\Program::where('type', 'auxiliary')->get();
             $data['degrees'] = collect(json_decode($this->api_service->degrees())->data);
@@ -229,8 +229,7 @@ class HomeController extends Controller
             return view('student.online.fill_form', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            $string = \App\models\File::where('name', 'api_root')->first()->path;
-            return back()->with('error', $string);
+            return back()->with('error', $th->getMessage());
         }
     }
 
