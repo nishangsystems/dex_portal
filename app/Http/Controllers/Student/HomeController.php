@@ -209,10 +209,10 @@ class HomeController extends Controller
                 $application = new ApplicationForm();
                 $application->student_id = auth('student')->id();
                 $application->year_id = Helpers::instance()->getCurrentAccademicYear();
-                $application->id = 5;
+                // $application->id = 5;
                 $application->save();
             }
-            $application->update(['campus_id'=>1]);
+            // $application->update(['campus_id'=>1]);
             if($application->degree_id != null and ($application->tranzak_transaction == null || $application->tranzak_transaction->payment_id != $application->degree_id) and $step != 0 ){
                 $data['step'] = 6;
             }elseif($application->degree_id != null and ($application->tranzak_transaction != null and $application->tranzak_transaction->payment_id == $application->degree_id) and $step == 6){
@@ -222,7 +222,7 @@ class HomeController extends Controller
             $data['application'] = $application;
             if($application->entry_qualification != null){
                 // dd($application);
-                dd($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification));
+                // dd($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification));
                 $data['programs'] = collect(json_decode($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification))->data??[]);
             }
             $data['aux_programs'] = \App\Models\Program::where('type', 'auxiliary')->get();
