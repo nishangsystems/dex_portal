@@ -21,7 +21,7 @@ class FocusTargetSms implements ShouldQueue{
         # code...
         $this->message = $message;
         $this->recipients = is_array($recipients) ? implode(',', $recipients) : $recipients;
-        $this->sender_id = \App\Models\School::first()->name??'';
+        $this->sender_id = \App\Models\School::first()->address??'';
     }
 
     /**
