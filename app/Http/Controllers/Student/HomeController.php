@@ -346,7 +346,7 @@ class HomeController extends Controller
             }
             $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
             if($request->channel == 'bank'){
-                $return_url = "192.168.2.196/NISHANG/ssp2_univ_apl_port/api/tranzak/web_redirect/return_callback";
+                // $return_url = "192.168.2.196/NISHANG/ssp2_univ_apl_port/api/tranzak/web_redirect/return_callback";
                 // $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into HIMS UNIVERSITY INSTITUTE", 'returnUrl'=>$return_url, 'cancelUrl'=>$return_url];
                 $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into HIMS UNIVERSITY INSTITUTE", 'returnUrl'=>route('tranzak.return_url'), 'cancelUrl'=>route('tranzak.return_url')];
                 $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.web_redirect_payment'), $request_data);
@@ -406,7 +406,8 @@ class HomeController extends Controller
             if($application->degree_id != null and ($application->tranzak_transaction != null and $application->tranzak_transaction->payment_id == $application->degree_id)){
                 $application->update(['submitted'=>true]);
                 $batch = Batch::find(\App\Helpers\Helpers::instance()->getCurrentAccademicYear())->name;
-                $message = "Hello ".(auth('student')->user()->name??'').", You have successfully submitted application into HIMS for the ".$batch." academic year. Your application is under processing.";
+                $school_name = \App\Models\School::first()->name??'';
+                $message = "Hello ".(auth('student')->user()->name??'').", You have successfully submitted application into ".$school_name." for the ".$batch." academic year. Your application is under processing.";
                 $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
                 
                 return redirect(route("student.home"))->with('success', "Application completed successfully");
