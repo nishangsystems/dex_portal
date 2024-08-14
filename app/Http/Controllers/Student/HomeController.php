@@ -219,7 +219,8 @@ class HomeController extends Controller
             $data['certificates'] = collect(json_decode($this->api_service->certificates())->data);
             $data['application'] = $application;
             if($application->entry_qualification != null){
-                $data['programs'] = collect(json_decode($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification))->data??[]);
+                return $this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification);
+                $data['programs'] = collect(json_decode($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification))->data);
             }
             $data['aux_programs'] = \App\Models\Program::where('type', 'auxiliary')->get();
             $data['degrees'] = collect(json_decode($this->api_service->degrees())->data);
