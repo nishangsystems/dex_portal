@@ -221,7 +221,7 @@ class HomeController extends Controller
             if($application->entry_qualification != null){
                 // dd(\App\Models\TranzakCredential::all());
                 // dd($application);
-                $data['programs'] = collect(json_decode($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification))->data);
+                $data['programs'] = collect(json_decode($this->api_service->campusDegreeCertificatePrograms($application->campus_id, $application->degree_id, $application->entry_qualification))->data??[]);
             }
             $data['aux_programs'] = \App\Models\Program::where('type', 'auxiliary')->get();
             $data['degrees'] = collect(json_decode($this->api_service->degrees())->data);
