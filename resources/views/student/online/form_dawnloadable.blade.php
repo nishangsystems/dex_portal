@@ -202,7 +202,7 @@
     <div class="py-2">
         <div class="bg-white px-3 py-1">
             <h4 class="text-uppercase py-1" style="font-weight: 700;">Source of information</h4>
-            <h5>Where did you learn of admission into HIMS Buea.</h5>
+            <h5>Where did you learn of admission into DEX University.</h5>
             <label class="border fs-4 text-center w-100 " style="font-weight : 600; padding: 0.5rem 1rem;">{{ $application->referer }}</label>
             {{-- <table>
                 <thead>
