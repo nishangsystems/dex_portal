@@ -15,7 +15,7 @@
                         <tr class="border-bottom">
                             <td class="border-left border-right">{{ $k++ }}</td>
                             <td class="border-left border-right">{{ $prog->name }}</td>
-                            <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('program_first_choice', $prog->id)->count() }}</td>
+                            <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('program', $prog->id)->count() }}</td>
                             <td class="border-left border-right"><a class="btn btn-sm btn-primary text-capitalize" href="{{ route('admin.applications.by_program', ['id'=>$prog->id]) }}">{{ __('text.word_all') }}</a></td>
                         </tr>
                     @endforeach
@@ -42,7 +42,7 @@
                             <td class="border-left border-right">{{ $appl->email }}</td>
                             <td class="border-left border-right">{{ $progs->where('id', $appl->program_first_choice)->first()->name }}</td>
                             <td class="border-left border-right">{{ $progs->where('id', $appl->program_second_choice)->first()->name }}</td>
-                            <td class="border-left border-right">{{ $appl->transaction->created_at }}</td>
+                            <td class="border-left border-right">{{ optional($appl->transaction)->created_at??'' }}</td>
                         </tr>
                     @endforeach
                 </tbody>

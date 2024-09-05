@@ -1091,7 +1091,7 @@ class ProgramController extends Controller
     {
         # code...
         if($id == null){
-            $data['title'] = "Download Application Form";
+            $data['title'] = "Download Admission Letter";
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
