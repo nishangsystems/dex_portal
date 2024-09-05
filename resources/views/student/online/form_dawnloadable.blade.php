@@ -1,14 +1,11 @@
 @extends('student.printable')
 @section('section')
-    <div class="py-3">
+    {{-- <div class="py-3">
         <div class="bg-white px-3 py-1">
             <div style="border-radius: 2.3rem;" class="w-75 mx-auto my-3 border border-2 border-dark py-4 px-3 text-center">Admission Number:_______________________________________</div>
             <div style="width: 90%; border-radius: 8rem 8rem 0 0;" class="mx-auto py-5 px-3">
-                <div class="w-75 mx-auto my-3 py-3 px-3 shadow text-center" style="border-radius: 7rem 7rem 0 0; font-size: 2rem; font-weight: 700;">
-                    <span class="text-uppercase">in affiliation with the university of bamenda</span> (UBa)
-                </div>
+                
                 <div class="text-center py-3">
-                    <span class="d-block" style="font-size: 1.4rem">PO BOX 462 BUEA</span>
                     <span class="d-block" style="font-size: 1.2rem">South West Region, Republic of Cameroon</span>
                     <span class="d-block" style="font-size: 1rem">Tel +237 679 821 672 / 677 962 333</span>
                     <span class="d-block mt-3 text-primary" style="font-size: 1rem">E-mail: info@himsbuea.org/registrar@himsbuea.org</span>
@@ -33,8 +30,8 @@
                 </span>
             </div>
         </div>
-    </div>
-    <div class="py-2">
+    </div> --}}
+    {{-- <div class="py-2">
         <div class="bg-white px-3 py-1">
             <h4 class="text-uppercase py-1" style="font-weight: 700;">admission requirements</h4>
             <h4 class="text-capitalize" style="font-weight: 700;">Ensure to attach the following documents:</h4>
@@ -58,7 +55,7 @@
                 <li class="text-capitalize">photocopy of valid national ID card</li>
             </ul>
         </div> 
-    </div>
+    </div> --}}
     <h5 style="font-weight: 700; font-style: italic;">NB: upon admission, candidate(s) may be required to present originals for the purpose of authentification.</h5>
     <div class="py-2 mt-4">
         <div class="bg-white px-3 py-1 d-flex justify-content-between">
@@ -238,8 +235,8 @@
                         </tr>
                         <tr  class="py-2">
                             <td colspan="2" class="text-capitalize py-1 px-3" >
-                                <h4 class="text-uppercase py-1" style="font-weight: 700;">student admission number:</h4>
-                                <label  class="form-control w-75 mx-auto"></label>
+                                {{-- <h4 class="text-uppercase py-1" style="font-weight: 700;">student admission number:</h4>
+                                <label  class="form-control w-75 mx-auto"></label> --}}
                             </td>
                             <td class="text-capitalize py-1 px-3">
                                 <div class="text-center py-3">

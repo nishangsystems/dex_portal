@@ -108,6 +108,7 @@ class Controller extends BaseController
             'password'=>'required_with:cpassword|same:cpassword|',
         ]);
         if(Students::where('phone', $request->phone)->count() > 0){
+            // return Students::where('phone', $request->phone)->count();
             return back()->with('error', __('text.error_phone_exist'));
         }
         $account = new Students($request->all());

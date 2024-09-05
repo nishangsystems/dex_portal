@@ -189,13 +189,13 @@
                 <b class="arrow"></b>
             </li>
 
-            <li>
+            {{-- <li>
                 <a href="{{route('student.payment.data')}}">
                     <i  style="color: {{$bg1}};" class="menu-icon fa fa-dollar"></i>
                     <span class="menu-text text-capitalize">{{__('text.payment_data')}}</span>
                 </a>
                 <b class="arrow"></b>
-            </li>
+            </li> --}}
 
             <li>
                 <a href="{{route('student.application.start', 0)}}">
@@ -220,7 +220,7 @@
                 </a>
                 <b class="arrow"></b>
             </li>
-
+{{-- 
             
             <li>
                 <a href="{{route('student.application.admission_letter.download')}}">
@@ -228,7 +228,7 @@
                     <span class="menu-text text-capitalize">{{__('text.admission_letter')}}</span>
                 </a>
                 <b class="arrow"></b>
-            </li>
+            </li> --}}
 
 
             <li>
@@ -276,7 +276,7 @@
                 <div>
                     <div id="user-profile-1" class="user-profile row">
                         <div style="width:100%; padding-block:1.5rem; font-size:2rem; font-weight:600; padding-inline:2rem;" class="shadow bg-light mx-1">
-                            <span class="d-block w-100 text-danger text-center">PLEASE REMEMBER TO SUBMIT YOUR FORM AT THE END OF THIS PROCESS. PRINT OUT YOUR FORM AND DEPOSIT THEM AT THE SECRETARIAT <span class="text-dark">NEED HELP? CALL - </span>:<span class="text-primary">678439969</span></span>
+                            <span class="d-block w-100 text-danger text-center">PLEASE REMEMBER TO SUBMIT YOUR FORM AT THE END OF THIS PROCESS. PRINT OUT YOUR FORM AND DEPOSIT THEM AT THE SECRETARIAT <span class="text-dark">NEED HELP? CALL - </span>:<span class="text-primary">682721110</span></span>
                             {{-- <span class="d-block w-100 text-danger text-center"><span class="text-primary">MOMO NUMBER -</span><span class="text-secondary"> NUMÉRO MOMO</span> :6 71 98 92 92 | MOMO NAME - <span class="text-secondary">NON SUR MOMO</span> :<span class="text-dark">EMELIE BERINYUY ASHUMBENG</span> | UNDERGRADUATE APPLICATION FEE - :<span class="text-primary">5,000 XAF</span> BACHELOR APPLICATION FEE - :<span class="text-primary">10,000 XAF </span> MASTERS APPLICATION FEE - :<span class="text-primary">20,000 XAF </span></span> --}}
                         </div>
                     </div>
