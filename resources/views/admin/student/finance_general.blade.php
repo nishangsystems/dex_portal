@@ -19,7 +19,7 @@
                         <td class="border-left border-right">{{ $appl->phone }}</td>
                         <td class="border-left border-right">{{ optional($appl->transaction)->amount??'' }}</td>
                         <td class="border-left border-right">{{ optional($appl->transaction)->created_at??'' }}</td>
-                        <td class="border-left border-right">{{ optional($appl->transaction)->amount??'' > 0 ? "Momo Payment" : 'Bypassed by '.( \App\Models\User::find($appl->transaction->request_id)->name??'') }}</td>
+                        <td class="border-left border-right">{{ optional($appl->transaction)->amount??'' > 0 ? "Momo Payment" : 'Bypassed by '.( \App\Models\User::find(optional($appl->transaction)->request_id??0)->name??'') }}</td>
                     </tr>
                 @endforeach
             </tbody>
