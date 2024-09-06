@@ -664,7 +664,7 @@
                             <div class="col-sm-12 col-md-6 col-lg-6">
                                 <label class="text-secondary  text-capitalize">{{ __('text.degree_type') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0">{{ $application->degree->name ?? '' }}</label>
+                                    <label class="form-control text-primary border-0">{{ $degree->deg_name ?? '' }}</label>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6 col-lg-6">
