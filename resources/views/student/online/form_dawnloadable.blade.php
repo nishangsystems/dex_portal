@@ -223,7 +223,7 @@
                     <thead>
                         <tr>
                             <th class="border">SCHOOL</th>
-                            <th class="border">DEGREE</th>
+                            <th class="border">OPTION</th>
                             <th class="border">PROGRAM</th>
                         </tr>
                     </thead>
