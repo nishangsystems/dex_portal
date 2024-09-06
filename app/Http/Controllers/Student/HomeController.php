@@ -348,7 +348,7 @@ class HomeController extends Controller
             if($request->channel == 'bank'){
                 // $return_url = "192.168.2.196/NISHANG/ssp2_univ_apl_port/api/tranzak/web_redirect/return_callback";
                 // $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into HIMS UNIVERSITY INSTITUTE", 'returnUrl'=>$return_url, 'cancelUrl'=>$return_url];
-                $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into HIMS UNIVERSITY INSTITUTE", 'returnUrl'=>route('tranzak.return_url'), 'cancelUrl'=>route('tranzak.return_url')];
+                $request_data = ['mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into DEX UNIVERSITY", 'returnUrl'=>route('tranzak.return_url'), 'cancelUrl'=>route('tranzak.return_url')];
                 $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.web_redirect_payment'), $request_data);
                 if($_response->status() == 200){
                     \Illuminate\Support\Facades\Log::info("_____________REQUEST_TO_PAY___".json_encode($_response->collect()->toArray())."______________.");
@@ -362,7 +362,7 @@ class HomeController extends Controller
                     return redirect()->to(route('student.application.payment.processing', $application_id)."?payment_url=".$payment_url);
                 }
             }else{
-                $request_data = ['mobileWalletNumber'=>str_replace('+', '', strlen($request->momo_number) == 9 ? '237'.$request->momo_number : $request->momo_number), 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into HIMS"];
+                $request_data = ['mobileWalletNumber'=>str_replace('+', '', strlen($request->momo_number) == 9 ? '237'.$request->momo_number : $request->momo_number), 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into DEX UNIVERSITY"];
                 $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
                 if($_response->status() == 200){
                     
@@ -754,7 +754,7 @@ class HomeController extends Controller
 
         $tel = strlen($request->tel) >= 12 ? $request->tel : '237'.$request->tel;
         $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
-        $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - HIMS UNIVERSITY INSTITUTE OF BUEA."];
+        $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - DEX UNIVERSITY."];
         $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
         // dd($_response->collect());
         if($_response->collect()['success'] == true){
@@ -817,7 +817,7 @@ class HomeController extends Controller
                     $data = ['student_id'=>$pending->student_id, 'year_id'=>$pending->year_id, 'type'=>$pending->purpose, 'item_id'=>$pending->payment_id, 'amount'=>$transaction_instance->amount, 'financialTransactionId'=>$transaction_instance->transaction_id, 'used'=>1];
                     $instance = new \App\Models\Charge($data);
                     $instance->save();
-                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($pending->purpose??'')." for ".($transaction_instance->year->name??'')." HIMS.";
+                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($pending->purpose??'')." for ".($transaction_instance->year->name??'')." DEX UNIVERSITY.";
                     $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
 
                     ($pending = \App\Models\PendingTranzakTransaction::where('requestId', $request->requestId)->first()) != null ? $pending->delete() : null;

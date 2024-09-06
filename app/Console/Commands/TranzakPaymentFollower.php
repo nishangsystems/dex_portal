@@ -105,7 +105,7 @@ class TranzakPaymentFollower extends Command
                                     $instance = new \App\Models\Charge($data);
                                     $instance->save();
                                     $student = Students::find($record->student_id);
-                                    $message = "Hello ".($student->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($record->purpose??'')." for ".($transaction_instance->year->name??'')." HIMS.";
+                                    $message = "Hello ".($student->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($record->purpose??'')." for ".($transaction_instance->year->name??'')." DEX UNIVERSITY.";
                                     $this->sendSmsNotificaition($message, [$student->phone]);
         
                                     $record->delete();

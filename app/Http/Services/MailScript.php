@@ -15,7 +15,7 @@ class MailScript{
         $fromName = 'St. Louis Application Portal'; 
          
         // Email subject 
-        $subject = 'HIMS Student Application Form';  
+        $subject = 'DEX University Student Application Form';  
          
         // Attachment file 
         // $file = "../../pdf/student_application_form_".$your_id.".pdf"; 
