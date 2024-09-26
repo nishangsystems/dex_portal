@@ -87,7 +87,7 @@
     <script src="{{asset('libs')}}/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="{{asset('libs')}}/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
 
-    <script>
+    {{-- <script>
         $(function () {
             $('.table , .adv-table table').DataTable({
                 responsive: true,
@@ -149,7 +149,7 @@
 
         });
 
-    </script>
+    </script> --}}
 
     <script src="{{ asset('libs')}}/datatables.net/js/dataTables.buttons.min.js"></script>
     <script src="{{ asset('libs')}}/datatables.net/js/jszip.min.js"></script>
