@@ -48,7 +48,8 @@ class AppService{
             // $data['degree'] = ($program->deg_name??null) == null ? ("NOT SET") : $program->deg_name;
             // $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
             $data['degree'] = optional(collect(json_decode($this->api_service->degrees())->data??[])->where('id', $appl->degree_id)->first())->deg_name??'SET DEGREE';
-            $data['program'] = optional($programs->where('id', $appl->program)->first())->name??'SET PROGRAM';
+            $_program = optional($programs->where('id', $appl->program)->first())->name??'SET PROGRAM';
+            $data['program'] = str_replace($data['degree'], ' ', $_program);
             
             $data['_program'] = $program;
             $data['matric_sn'] = substr($appl->matric, -3);
