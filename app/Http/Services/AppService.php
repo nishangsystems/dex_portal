@@ -41,7 +41,7 @@ class AppService{
             $data['first_name'] = explode(' ', $appl->name)[0];
             $data['matric'] =  $appl->matric;
             $data['auth_no'] =  time().'/'.random_int(150553, 998545).'/XGS4';
-            $data['batch'] = \App\Models\Batch::find(\App\Helpers\Helpers::instance()->getCurrentAccademicYear())->name;
+            $data['batch'] = \App\Models\Batch::find($appl->year_id ?? \App\Helpers\Helpers::instance()->getCurrentAccademicYear())->name;
             $data['fee2_dateline'] = $config->fee2_latest_date;
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
@@ -51,13 +51,13 @@ class AppService{
             $data['matric_sn'] = substr($appl->matric, -3);
             $data['department'] = $department->name??'-------';
             $data['start_of_lectures'] = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first()->start_of_lectures??'';
-            // dd($program);
+            // dd($data);
             if($data['degree'] ==  null){
                 session()->flash('error', 'Program Degree Name not set');
                 return back()->withInput();
             }
     
-            return view('admin.student.admission_letter', $data);
+            // return view('admin.student.admission_letter', $data);
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);
             return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');            
         }

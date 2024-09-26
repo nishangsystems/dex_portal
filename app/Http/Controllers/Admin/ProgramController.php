@@ -1099,23 +1099,9 @@ class ProgramController extends Controller
             return view('admin.student.applications', $data);
         }
         // print admission letter
-        $appl = ApplicationForm::find($id);
-        $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
-        $data['title'] = "ADMISSION LETTER";
-        $data['name'] = $appl->name;
-        $data['matric'] = $appl->matric;
-        $data['director_name'] = $config->director??'';
-        $data['dean_name'] = $config->dean??'';
-        $data['fee1_dateline'] = $config->fee1_latest_date??'';
-        $data['fee2_dateline'] = $config->fee2_latest_date??'';
-        $data['help_email'] = $config->help_email??"admission@slui.org";
         
-        // $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first();
-        $data['program'] = Program::find($appl->program);
-        return view('admin.student.admission_letter', $data);
-        $pdf = Pdf::loadView('admin.student.admission_letter', $data);
+        return $this->app_service->admission_letter($id);
 
-        return $pdf->download("Admission_Letter_{$appl->matric}.pdf");
     }
 
     public function admit_application_form(Request $request, $id=null)
