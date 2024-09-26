@@ -45,8 +45,11 @@ class AppService{
             $data['fee2_dateline'] = $config->fee2_latest_date;
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
-            $data['degree'] = ($program->deg_name??null) == null ? ("NOT SET") : $program->deg_name;
-            $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
+            // $data['degree'] = ($program->deg_name??null) == null ? ("NOT SET") : $program->deg_name;
+            // $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
+            $data['degree'] = optional(collect(json_decode($this->api_service->degrees())->data??[])->where('id', $appl->degree_id)->first())->deg_name??'SET DEGREE';
+            $data['program'] = optional($programs->where('id', $appl->program)->first())->name??'SET PROGRAM';
+            
             $data['_program'] = $program;
             $data['matric_sn'] = substr($appl->matric, -3);
             $data['department'] = $department->name??'-------';
@@ -69,12 +72,12 @@ class AppService{
             $data['campuses'] = json_decode($this->api_service->campuses())->data;
             $data['application'] = ApplicationForm::find($application_id);
             $data['degree'] = collect(json_decode($this->api_service->degrees())->data??[])->where('id', $data['application']->degree_id)->first();
+            $data['program'] = $programs->where('id', $data['application']->program)->first();
             $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
             $data['certs'] = json_decode($this->api_service->certificates())->data;
             
             $data['department'] = collect(json_decode($this->api_service->school_program_structure())->data)->where('program_id', $application->program)->first();
             $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
-            $data['program'] = $programs->where('id', $data['application']->program)->first();
             
             $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
             $title = __('text.inst_tapplication_form', ['degree'=>$data['degree']->deg_name]);
