@@ -1,15 +1,22 @@
 @extends('admin.printable2')
 @section('section')
-    <div class="py-2" style="line-height: 2.3rem; font-size:larger; border-block: 2px solid gray;">
-        
-        <div class="my-2">Our Ref: .....................<span class="text-uppercase">PRE/REC/REG/BU/{{ now()->format('m/Y') }}</span></div>
-        <div class="my-2">Your Ref: .....................<span class="text-uppercase"></span></div>
-        <div class="my-4 text-uppercase"><b><h4>{{ $name }}<br>{{ $matric }}</h4></b></div>
-        <div class="my-4"><h4>Dear <b class="text-uppercase">{{ $first_name??exlode($name, ' ')[0] }}</b>,</h4></div>
-        <div class="my-4 text-center font-semibold"><h3>OFFER OF ADMISSION INTO THE 16THBATCH OF HND PROGRAM FOR THE ACADEMIC YEAR 2023/2024</h3></div>
-        <p class="py-2 text-capitalize text-justify">We are delighted to inform you that the Higher Institute of Management Studies Buea has admitted you for the <b>{{ $batch }} Batch</b> of its <b>One Year Full- time {{ $degree }}</b> Program in {{ $program }} which will commerce on the {{ $start_of_lectures }}. Effective lectures will begin on that same date at 7:30Am.This is the beginning of an important Life-Changing Journey. You are therefore strongly advised to attend our orientation sessions when the dates are fixed so that you would be enlightened on important issues concerning the Institution, your chosen course of study and your career.</p>
-        <p class="py-2 text-capitalize text-justify">You will be issued a copy of DEX Student Handbook’’ and a ‘‘fee payment schedule’’. Take time to read through these documents as they will help you understand how we function.  </p>
-        <p class="py-2 text-capitalize text-justify">Once again congratulations on your Admission. We look forward to welcoming you into the ‘‘TOP MOST BUSINESS SCHOOL’’ in the Central Africa Region. <br>Sincerely</p>
-        <span class="d-block  my-4 py-2"> Registrar</span>
+    <div class="py-2" style="line-height: 2.3rem; font-size:larger;">
+        <tr>
+            <td>
+                <div class="my-2">Our Ref: .....................<!-- <span class="text-uppercase">PRE/REC/REG/BU/{{ now()->format('m/Y') }}</span> --></div>
+            </td>
+            <td>
+                <div class="my-2 text-right">Admitted on: .....................<span class="text-uppercase"></span></div>
+            </td>
+        </tr>
+        {{-- <div class="my-4 text-uppercase"><b><h4>{{ $name }}<br>{{ $matric }}</h4></b></div> --}}
+        <div class="my-4"><h4>Dear <b class="text-uppercase">{{ $name }}</b>,</h4></div>
+        <div class="my-4 text-center font-semibold"><h3><b>ADMISSION LETTER</b></h3></div>
+        <p class="py-2 text-justify mb-3">We are pleased to offer you admission for the <b>{{ $batch }}</b> academic year into the <b>{{$degree}}</b> program in, <b>{{$program??'PROGRAM'}}</b> at DEX UNIVERSITY.</p>
+        <p class="py-2 text-justify mb-3">At DEX University, you will be given the opportunity to attain your goals and objectives of becoming an expert in your chosen field of studies and becoming nationally and internationally outstanding. </p>
+        <p class="py-2 text-justify mb-3">You are expected to pay the first installment of your fees on or before October 15th, 2024. All financial transactions are done at <b>UBA Bank, Account Number: 16078000013-14, Account Name: Dex Higher Institute of Biomedical, Management and Technology.</b>   Ensure to submit the copy of the bank slip at the Finance office within five (05) working days. </p>
+        <p class="py-2 text-justify mb-3">Kindly stop by the Admissions Office and collect your students’ Code of Conduct, Fee Structure and Calendar of activities for the academic year {{$batch}} </p>
+        <p class="py-2 text-justify mb-3">We heartily welcome you to the DEX UNIVERSITY family and hope that you will help us make your stay at the university fruitful and pleasant. </p>
+        <span class="d-block  my-4 py-2"> Sincerely,</span>
     </div>
 @endsection

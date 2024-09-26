@@ -220,6 +220,7 @@ class Helpers
     public function getHeader()
     {
         # code...
+        return asset('assets/images/header.png');
         $lt = File::where('name','=', 'letter-head');
         if ($lt->count() > 0) {
             # code...
