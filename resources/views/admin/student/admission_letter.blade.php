@@ -1,16 +1,8 @@
 @extends('student.printable')
 @section('section')
     <div class="py-2" style="line-height: 2.3rem; font-size:larger;">
-        {{-- <table>
-            <thead>
-                <td>
-                    <div class="my-2">Our Ref: .....................<!-- <span class="text-uppercase">PRE/REC/REG/BU/{{ now()->format('m/Y') }}</span> --></div>
-                </td>
-                <td>
-                    <div class="my-2 text-right">Admitted on: .....................<span class="text-uppercase"></span></div>
-                </td>
-            </thead>
-        </table> --}}
+        <div class="mt-2">Our Ref: .....................<!-- <span class="text-uppercase">PRE/REC/REG/BU/{{ now()->format('m/Y') }}</span> --></div>
+        <div class="mb-2 text-right">Admitted on: .....................<span class="text-uppercase"></span></div>
         {{-- <div class="my-4 text-uppercase"><b><h4>{{ $name }}<br>{{ $matric }}</h4></b></div> --}}
         <div class="my-4"><h4>Dear <b class="text-uppercase">{{ $name }}</b>,</h4></div>
         <div class="my-4 text-center font-semibold"><h3><b>ADMISSION LETTER</b></h3></div>
