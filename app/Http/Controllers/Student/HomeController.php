@@ -193,7 +193,7 @@ class HomeController extends Controller
     {
         try {
 
-            if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('submitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
+            if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->whereNotNull('submitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
                 return redirect(route('student.home'))->with('error', "You are allowed to submit only one application form per year");
             }
 
@@ -259,9 +259,7 @@ class HomeController extends Controller
                 // return $request->all();
                 $validity = Validator::make($request->all(), [
                     "name"=>'required', "dob"=>'required|date', "pob"=>'required',
-                    "gender"=>'required', "id_card_number"=>'required', 
-                    "id_date_of_issue"=>'required|date', "id_place_of_issue"=>'required', 
-                    "nationality"=>'required', "region"=>'required', 
+                    "gender"=>'required', "nationality"=>'required', "region"=>'required', 
                     "country_of_birth"=>'required', "referer"=>'required'
                 ]);
                 break;
@@ -404,7 +402,7 @@ class HomeController extends Controller
         $application = \App\Models\ApplicationForm::find($application_id);
         if($step == 6){
             if($application->degree_id != null and ($application->tranzak_transaction != null and $application->tranzak_transaction->payment_id == $application->degree_id)){
-                $application->update(['submitted'=>true]);
+                $application->update(['submitted'=>now()]);
                 $batch = Batch::find(\App\Helpers\Helpers::instance()->getCurrentAccademicYear())->name;
                 $school_name = \App\Models\School::first()->name??'';
                 $message = "Hello ".(auth('student')->user()->name??'').", You have successfully submitted application into ".$school_name." for the ".$batch." academic year. Your application is under processing.";
@@ -510,7 +508,7 @@ class HomeController extends Controller
         if(!(Helpers::instance()->application_open())){
             return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Helpers::instance()->getYear())->name);
         }
-        $applications = auth('student')->user()->currentApplicationForms()->where('submitted', 0)->get();
+        $applications = auth('student')->user()->currentApplicationForms()->whereNull('submitted')->get();
         $data['title'] = "Submit Application";
         $data['applications'] = $applications;
         return view('student.online.submit_form', $data);
@@ -533,7 +531,7 @@ class HomeController extends Controller
         # code...
         $data['title'] = "Download Application Form";
         $data['_this'] = $this;
-        $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id')->where('submitted', true);
+        $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id')->whereNotNull('submitted');
         $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         return view('student.online.download_form', $data);
     }
@@ -865,7 +863,7 @@ class HomeController extends Controller
         # code...
         $data['title'] = "Download Admission Letter";
         $data['_this'] = $this;
-        $data['applications'] = auth('student')->user()->applicationForms->where('admitted', 1);
+        $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('admitted');
         // $data['applications'] = ApplicationForm::whereNotNull('matric')->get();
         // return $data;
         return view('student.online.admission_letter', $data);

@@ -77,7 +77,7 @@
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.ID_card_number') }}</label>
                             <div class="">
-                                <input type="number" class="form-control text-primary"  name="id_card_number" value="{{ $application->id_card_number }}" required>
+                                <input type="number" class="form-control text-primary"  name="id_card_number" value="{{ $application->id_card_number }}">
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
@@ -97,8 +97,8 @@
                             <div class="">
                                 <select class="form-control text-primary"  name="nationality" required>
                                     <option></option>
-                                    @foreach(config('all_countries.list') as $key=>$value)
-                                        <option value="{{ $value['name'] }}" {{ $application->nationality== $value['name'] ? 'selected' : ($value['name'] == 'Cameroon' ? 'selected' : '') }}>{{ $value['name']}}</option>
+                                    @foreach(config('nationalities.list') as $key=>$value)
+                                        <option value="{{ $value['nationality'] }}" {{ $application->nationality== $value['nationality'] ? 'selected' : ($value['nationality'] == 'Cameroonian' ? 'selected' : '') }}>{{ $value['nationality']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -106,16 +106,17 @@
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.region_of_origin') }}</label>
                             <div class="">
-                                <select class="form-control text-primary"  name="region" required oninput="loadDivisions(event)">
+                                <input class="form-control text-primary"  name="region" required value="{{old('region')}}">
+                                {{-- <select class="form-control text-primary"  name="region" required oninput="loadDivisions(event)">
                                     <option value=""></option>
                                     @foreach(\App\Models\Region::all() as $value)
                                         <option value="{{ $value->id }}" {{ $application->region == $value->id ? 'selected' : '' }}>{{ $value->region }}</option>
                                     @endforeach
-                                </select>
+                                </select> --}}
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.country_of_birth') }}</label>
+                            <label class="text-secondary  text-capitalize">{{ __('text.country_of_origin') }}</label>
                             <div class="">
                                 <select class="form-control text-primary"  name="country_of_birth" required>
                                     <option></option>
@@ -482,7 +483,7 @@
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                                 <label class="text-secondary  text-capitalize">{{ __('text.region_of_origin') }}</label>
                                 <div class="">
-                                    <label class="form-control text-primary border-0 ">{{ $application->_region->region ?? '' }}</label>
+                                    <label class="form-control text-primary border-0 ">{{ $application->region ?? '' }}</label>
                                 </div>
                             </div>
                             <div class="py-2 col-sm-6 col-md-4 col-lg-3">

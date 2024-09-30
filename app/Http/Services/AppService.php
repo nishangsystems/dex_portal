@@ -23,14 +23,14 @@ class AppService{
         if($appl != null){
             $programs = collect(json_decode($this->api_service->programs())->data);
             $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
-            $program = $programs->where('id', $appl->program_first_choice)->first()??null;
+            $program = $programs->where('id', $appl->program)->first()??null;
             $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
             $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
             $department = collect(json_decode($this->api_service->school_program_structure())->data)->where('program_id', $appl->program)->first();
-            
+            // $n_levels = $this->api_service->campusProgramLevels($appl->campus_id, $appl->program);
+            $n_levels = collect(optional(json_decode($this->api_service->campusProgramLevels($appl->campus_id, $appl->program)))->data??null)->count();
            
-            // dd($fees);
-
+            // dd($n_levels);
             $data['platform_links'] = [];
            
             $data['year'] = substr($appl->year->name, -4);
@@ -45,15 +45,17 @@ class AppService{
             $data['fee2_dateline'] = $config->fee2_latest_date;
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
+            $data['admitted_on'] = $appl->admitted == null ? '----' : $appl->admitted->format('d/m/Y');
             // $data['degree'] = ($program->deg_name??null) == null ? ("NOT SET") : $program->deg_name;
             // $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
             $data['degree'] = optional(collect(json_decode($this->api_service->degrees())->data??[])->where('id', $appl->degree_id)->first())->deg_name??'SET DEGREE';
             $_program = optional($programs->where('id', $appl->program)->first())->name??'SET PROGRAM';
             $data['program'] = str_replace($data['degree'], ' ', $_program);
+            $data['program_duration'] = $n_levels  > 0 ? $n_levels : '----';
             
             $data['_program'] = $program;
             $data['matric_sn'] = substr($appl->matric, -3);
-            $data['department'] = $department->name??'-------';
+            $data['school'] = $department->school??'-------';
             $data['start_of_lectures'] = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first()->start_of_lectures??'';
             // dd($data);
             if($data['degree'] ==  null){

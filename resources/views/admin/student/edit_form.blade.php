@@ -58,7 +58,7 @@
                     <div class="py-2 col-sm-6 col-md-4 col-lg-3">
                         <label class="text-secondary  text-capitalize">{{ __('text.region_of_origin') }}</label>
                         <div class="">
-                            <label class="form-control text-primary border-0 ">{{ $application->_region->region ?? '' }}</label>
+                            <label class="form-control text-primary border-0 ">{{ $application->region ?? '' }}</label>
                         </div>
                     </div>
                     <div class="py-2 col-sm-6 col-md-4 col-lg-3">

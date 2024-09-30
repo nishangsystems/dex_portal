@@ -499,7 +499,7 @@ class HomeController  extends Controller
         switch($filter){
             case 'program':
                 $programs = collect(json_decode($this->api_service->programs())->data);
-                $data['programs'] = \App\Models\ApplicationForm::where(['submitted'=>1, 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'program', DB::raw("COUNT(*) as count")])
+                $data['programs'] = \App\Models\ApplicationForm::whereNotNull('submitted')->where(['year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'program', DB::raw("COUNT(*) as count")])
                     ->groupBy('program')->distinct()->get()->each(function($rec)use($programs){
                         $prog = $programs->where('id', $rec->program)->first();
                         $rec->filter_name = optional($prog)->name??null;
@@ -510,7 +510,7 @@ class HomeController  extends Controller
             default:
                 // filter by degree
                 $degrees = collect(json_decode($this->api_service->degrees())->data);
-                $data['programs'] = \App\Models\ApplicationForm::where(['submitted'=>1, 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'degree_id', DB::raw("COUNT(*) as count")])
+                $data['programs'] = \App\Models\ApplicationForm::whereNotNull('submitted')->where(['year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'degree_id', DB::raw("COUNT(*) as count")])
                     ->groupBy('degree_id')->distinct()->get()->each(function($rec)use($degrees){
                         $deg = $degrees->where('id', $rec->degree_id)->first();
                         $rec->filter_name = optional($deg)->deg_name??null;
@@ -531,7 +531,7 @@ class HomeController  extends Controller
         switch($filter){
             case 'program':
                 $programs = collect(json_decode($this->api_service->programs())->data);
-                $data['programs'] = \App\Models\ApplicationForm::where(['admitted'=>1, 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'program', DB::raw("COUNT(*) as count")])
+                $data['programs'] = \App\Models\ApplicationForm::whereNotNull('admitted')->where(['year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'program', DB::raw("COUNT(*) as count")])
                     ->groupBy('program')->distinct()->get()->each(function($rec)use($programs){
                         $prog = $programs->where('id', $rec->program)->first();
                         $rec->filter_name = optional($prog)->name??null;
@@ -542,7 +542,7 @@ class HomeController  extends Controller
             default:
                 // filter by degree
                 $degrees = collect(json_decode($this->api_service->degrees())->data);
-                $data['programs'] = \App\Models\ApplicationForm::where(['admitted'=>1, 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'degree_id', DB::raw("COUNT(*) as count")])
+                $data['programs'] = \App\Models\ApplicationForm::whereNotNull('admitted')->where(['year_id'=>Helpers::instance()->getCurrentAccademicYear()])->select(['id', 'degree_id', DB::raw("COUNT(*) as count")])
                     ->groupBy('degree_id')->distinct()->get()->each(function($rec)use($degrees){
                         $deg = $degrees->where('id', $rec->degree_id)->first();
                         $rec->filter_name = optional($deg)->deg_name??null;

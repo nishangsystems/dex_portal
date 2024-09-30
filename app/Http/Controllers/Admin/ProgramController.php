@@ -983,7 +983,7 @@ class ProgramController extends Controller
         # code...
         $data['title'] = "All Application Forms";
         $data['_this'] = $this;
-        $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('submitted', 1)->get();
+        $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('submitted')->get();
         return view('admin.student.applications', $data);
     }
 
@@ -1011,7 +1011,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('submitted', 1)->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('submitted')->get();
             return view('admin.student.applications', $data);
         }
 
@@ -1030,7 +1030,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_edit');
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where(['year_id'=> Helpers::instance()->getCurrentAccademicYear(), 'submitted'=>1])->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where(['year_id'=> Helpers::instance()->getCurrentAccademicYear()])->whereNotNull('submitted')->get();
             return view('admin.student.applications', $data);
         }
 
@@ -1095,7 +1095,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 1)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
         // print admission letter
@@ -1111,7 +1111,7 @@ class ProgramController extends Controller
             $data['title'] = "Admit Student";
             $data['_this'] = $this;
             $data['action'] = __('text.word_admit');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('submitted', 1)->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('submitted')->whereNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             return view('admin.student.applications', $data);
         }
@@ -1190,7 +1190,7 @@ class ProgramController extends Controller
             'admission_batch_id'=>$application->year_id??null,
             'fee_payer_name'=>$application->fee_payer_name??null, 
             'program_first_choice'=>$application->program??null, 
-            'region'=>$application->_region->name??null,
+            'region'=>$application->region??null,
             'fee_payer_tel'=>$application->fee_payer_tel??null, 
             'division'=>$application->_division->name??null,
             'level'=>$application->level??null
@@ -1199,7 +1199,7 @@ class ProgramController extends Controller
         // dd($resp);
         if($resp != null and !is_string($resp)){
            if($resp->status == 1){
-                $application->update(['matric'=>$request->matric, 'admitted'=>1, 'admitted_at'=>now()]);
+                $application->update(['matric'=>$request->matric, 'admitted'=>now(), 'admitted_at'=>now()]);
 
                 // Send sms/email notification
                 $phone_number = $application->phone;
@@ -1235,7 +1235,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.change_program');
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
-            $data['applications'] = ApplicationForm::where('admitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
 
@@ -1335,7 +1335,7 @@ class ProgramController extends Controller
         if($resp != null){
             if(is_array($resp) && $resp['status'] ==1){
                 // $application->matric = $request->matric;
-                $application->update(['matric'=>$request->matric, 'program'=>$request->program, 'level'=>$request->level, 'admitted'=>1]);
+                $application->update(['matric'=>$request->matric, 'program'=>$request->program, 'level'=>$request->level, 'admitted'=>now()]);
                 // Send sms/email notification
                 return redirect(route('admin.applications.admit'))->with('success', "Program changed successfully.");
             }else
@@ -1350,7 +1350,7 @@ class ProgramController extends Controller
         
 
         $application = ApplicationForm::find($id);
-        $application->update(['transaction_id'=>-1000000000, 'submitted'=>1]);
+        $application->update(['transaction_id'=>-1000000000, 'submitted'=>now()]);
         return redirect(route('admin.applications.uncompleted'))->with('success', __('text.word_done'));
     }
 
@@ -1413,7 +1413,7 @@ class ProgramController extends Controller
         $headings = ['Name', 'Date of Birth','Gender', 'Nationality', 'Phone number', 'Program'];
         fputcsv($file_writer, $headings, ',');
         $programs = collect(json_decode($this->api_service->programs())->data);
-        $data = ApplicationForm::where('year_id', Helpers::instance()->getCurrentAccademicYear())->where('submitted', 1)->whereNotNull('transaction_id')->get();
+        $data = ApplicationForm::where('year_id', Helpers::instance()->getCurrentAccademicYear())->whereNotNull('submitted')->whereNotNull('transaction_id')->get();
         if($prog_id != null){
             $data = $data->where('program', $prog_id);
         }

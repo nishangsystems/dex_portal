@@ -1011,5 +1011,6 @@ return [
     'configure_degree_certificates'=>'configure degree certificates',
     'admission_letter'=>'admission letter',
     'active_head_of_school'=>'active head of school',
+    'country_of_origin'=>'country of origin',
     ''
 ];
