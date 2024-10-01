@@ -13,7 +13,8 @@
                         </h4>
                     </div>
                     
-                    <div class="panel-collapse collapse" id="collapse_{{$key}}">
+                    <div class="panel-collapse" id="collapse_{{$key}}">
+                        
                         <div class="">
                             <div class="itemdiv dialogdiv">
                                 <table>

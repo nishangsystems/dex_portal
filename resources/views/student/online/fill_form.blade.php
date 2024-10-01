@@ -14,7 +14,7 @@
                             <div class="col-sm-12 col-md-9">
                                 <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_degree') }}</span></label>
                                 <select name="degree_id" class="form-control text-primary"  oninput="setDegreeTypes(event)" required>
-                                    <option>{{ __('text.word_degree') }}</option>
+                                    <option value=""></option>
                                     @foreach ($degrees as $degree)
                                         <option value="{{ $degree->id }}" {{ $application->degree_id == $degree->id ? 'selected' : '' }}>{{ $degree->deg_name }}</option>  
                                     @endforeach
