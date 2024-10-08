@@ -190,17 +190,6 @@
     </div>
     <div class="py-2">
         <div class="bg-white px-3 py-1">
-            <h4 class="text-uppercase py-1" style="font-weight: 700;">Declaration and signature</h4>
-            <div class=" py-2">
-                I <span style="font-weight : 700;">{{ $application->name }}</span>, certify that the information given in this application, to the best of my knowledge, is complete and accurate.
-                I further understand that falsification or failure to supply correct information may lead to disqualification of my application or my admission to the programme.
-                I confirm that I have adequate resources to meet the financial obligations throughout my studies.<br>
-                <span style="font-weight : 700; display: block; padding-block: 1rem;">Signature: _________________________ Date: __________________________ </span>
-            </div>
-        </div> 
-    </div>
-    <div class="py-2">
-        <div class="bg-white px-3 py-1">
             <h4 class="text-uppercase py-1" style="font-weight: 700;">Source of information</h4>
             <h5>Where did you learn of admission into DEX University.</h5>
             <label class="border fs-4 text-center w-100 " style="font-weight : 600; padding: 0.5rem 1rem;">{{ $application->referer }}</label>
@@ -232,6 +221,18 @@
                             <td class="border-left border-right py-4">{{ $department->department }}</td>
                             <td class="border-left border-right py-4">{{ $degree->deg_name }}</td>
                             <td class="border-left border-right py-4">{{ $program->name }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="py-2">
+                                <div class="bg-white px-3 py-1">
+                                    <h4 class="text-uppercase py-1" style="font-weight: 700;">Declaration and signature</h4>
+                                    <div class=" py-2">
+                                        I <span style="font-weight : 700;">{{ $application->name }}</span>, certify that the information given in this application, to the best of my knowledge, is complete and accurate.
+                                        I further understand that falsification or failure to supply correct information may lead to disqualification of my application or my admission to the programme.
+                                        I confirm that I have adequate resources to meet the financial obligations throughout my studies.<br>
+                                    </div>
+                                </div> 
+                            </td>
                         </tr>
                         <tr  class="py-2">
                             <td colspan="2" class="text-capitalize py-1 px-3" >
