@@ -891,8 +891,8 @@ class ProgramController extends Controller
         $validity = Validator::make($request->all(), ['start_date'=>'required|date', 'end_date'=>'required|date']);
         if($validity->fails()){return back()->with('error', $validity->errors()->first());}
 
-        // return $request->all();
-        $config = ['start_date'=>$request->start_date, 'end_date'=>$request->end_date];
+        // dd($request->all());
+        $config = ['start_date'=>$request->start_date, 'end_date'=>$request->end_date, 'fee1_latest_date'=>$request->fee1_latest_date];
         Config::updateOrInsert(['year_id'=>Helpers::instance()->getCurrentAccademicYear()], $config);
         return back()->with('success', __('text.word_done'));
     }

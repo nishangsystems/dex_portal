@@ -42,7 +42,7 @@ class AppService{
             $data['matric'] =  $appl->matric;
             $data['auth_no'] =  time().'/'.random_int(150553, 998545).'/XGS4';
             $data['batch'] = \App\Models\Batch::find($appl->year_id ?? \App\Helpers\Helpers::instance()->getCurrentAccademicYear())->name;
-            $data['fee2_dateline'] = $config->fee2_latest_date;
+            $data['fee2_dateline'] = $config->fee1_latest_date;
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
             $data['admitted_on'] = $appl->admitted == null ? '----' : $appl->admitted->format('d/m/Y');
