@@ -1,6 +1,6 @@
 @extends('student.printable')
 @section('section')
-    <div class="py-2" style="line-height: 2.3rem; font-size:larger;">
+    <div class="py-2" style="line-height: 2.1rem; font-size:larger;">
         <div class="mt-2">Our Ref: ....<span class="text-uppercase"><u> PRE/REC/REG/BU/{{ now()->format('m/Y') }} </u></span></div>
         <div class="mb-2 text-right">Admitted on: .....<u><i>{{$admitted_on}}</i></u></div>
         {{-- <div class="my-4 text-uppercase"><b><h4>{{ $name }}<br>{{ $matric }}</h4></b></div> --}}
