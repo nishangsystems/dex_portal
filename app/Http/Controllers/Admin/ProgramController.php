@@ -1217,8 +1217,9 @@ class ProgramController extends Controller
                 // $this->send_admission_letter($application->id);
 
                 return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
-           }else
-           return back()->with('error', $resp);
+           }else{
+               return back()->with('error', $resp);
+           }
        }else{
            return back()->with('error', $resp);
        }
