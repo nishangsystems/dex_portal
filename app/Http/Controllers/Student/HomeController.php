@@ -392,7 +392,7 @@ class HomeController extends Controller
         }else{
             // $data = $request->all();
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
-            if($step == 5){$data['level'] = "200";
+            if($step == 5){$data['level'] = "200";}
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
         
