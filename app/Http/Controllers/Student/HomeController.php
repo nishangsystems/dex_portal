@@ -409,7 +409,7 @@ class HomeController extends Controller
                 $message = "Hello ".(auth('student')->user()->name??'').", You have successfully submitted application into ".$school_name." for the ".$batch." academic year. Your application is under processing.";
                 $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
                 
-                return redirect(route("student.home"))->with('success', "Application completed successfully");
+                return redirect(route('student.application.form.download'))->with('success', "Application completed successfully");
             }
         }
         
