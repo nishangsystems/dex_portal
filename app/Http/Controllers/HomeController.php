@@ -139,7 +139,6 @@ class HomeController extends Controller
 
             // return DB::select($sql);
             $students  = DB::table('students')
-                ->join('student_classes', ['students.id' => 'student_classes.student_id'])
                 ->join('campuses', ['students.campus_id'=>'campuses.id'])
                 ->where(function($query)use($name){
                     $query->where('students.name', 'LIKE', "%$name%")
@@ -149,7 +148,7 @@ class HomeController extends Controller
                     \auth()->user()->campus_id != null ? $query->where('students.campus_id', '=', \auth()->user()->campus_id) : null;
                 })
                 ->distinct()->take(10)
-                ->get(['students.*', 'student_classes.class_id', 'campuses.name as campus'])
+                ->get(['students.*', 'campuses.name as campus'])
                 ->toArray();
             
             return \response()->json(StudentResourceMain::collection($students));
