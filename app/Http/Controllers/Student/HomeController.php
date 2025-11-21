@@ -543,19 +543,8 @@ class HomeController extends Controller
         try{
             $application = ApplicationForm::find($application_id);
             return $this->app_service->application_form($application_id);
-            // $data['application'] = $application;
-            
-            // $title = "APPLICATION FORM FOR ".$application->degree->name;
-            // $data['title'] = $title;
-
-            // // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
-            // // return view('student.online.form_dawnloadable', $data);
-            // $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
-            // $filename = $title.' - '.$application->name.'.pdf';
-            // return $pdf->download($filename);
         }catch(Throwable $th){
             throw $th;
-            // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
         }
     }
 
