@@ -1136,7 +1136,7 @@ class StudentController extends Controller
             $student_class->update(['bypass_result'=>true, 'bypass_result_reason'=>$request->bypass_result_reason, 'result_bypass_semester'=>$request->semester ?? Helpers::instance()->getSemester($student_class->first()->class_id)->id]);
             return back()->with('success', 'Done');
         }
-        else{return back()-with('error', 'Student has no class.');}
+        else{return back()->with('error', 'Student has no class.');}
     }
 
     public function reset_password(Request $request, $id=null)
@@ -1144,7 +1144,8 @@ class StudentController extends Controller
         $student = Students::find($id);
         if ($student != null) {
             # code...
-            $student->update(['password'=> Hash::make('12345678')]);
+            $student->password = Hash::make('12345678');
+            $student->save();
             return back()->with('success', 'Done. New password: 12345678');
         }
         return back()->with('error', 'Operation Failed. Student could not be resolved.');
