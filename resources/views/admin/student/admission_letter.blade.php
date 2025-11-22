@@ -21,7 +21,7 @@
         <p class="mt-3 pt-3">
             <label for="" class="text-capitalize">Ndeme Ndeme Alain Desire</label><br><strong>Registrar</strong>
             {{-- add a signature --}}<br>
-            <img src="{{ asset('assets/images/avatars/signature.png') }}" alt="signature" style="height: 60px; width: auto;">
+            <img src="{{ asset('assets/images/avatars/signature.png') }}" alt="signature" style="height: 60px; width: auto; margin-left: 2rem;">
         </p>
     </div>
 @endsection
