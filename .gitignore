@@ -14,8 +14,8 @@
 # /public/assets/images/header.jpg
 /assets/images/header.jpg
 /assets/images/letter-head.jpeg
-/storage/fonts/nunito_normal_a79d5d478ff144acb132596b30109135.ttf
-/storage/fonts/nunito_normal_a79d5d478ff144acb132596b30109135.ufm
+/storage/fonts/*
+/public/uploads/applications/*
 .env
 .env.backup
 env
