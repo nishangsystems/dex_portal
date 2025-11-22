@@ -1,6 +1,6 @@
 @extends('student.printable')
 @section('section')
-    <div class="py-2" style="line-height: 2.1rem; font-size:larger;">
+    <div class="py-2" style="line-height: 2rem; font-size:larger;">
         <div style="display: flex; justify-content: space-around;" class="my-1">
             <div>Our Ref: ....<span class="text-uppercase"><u> PRE/REC/REG/BU/{{ now()->format('m/Y') }} </u></span></div>
             <div class="text-right">Admitted on: .....<u><i>{{$admitted_on}}</i></u></div>
@@ -21,7 +21,7 @@
         <p class="mt-3 pt-3">
             <label for="" class="text-capitalize">Ndeme Ndeme Alain Desire</label><br><strong>Registrar</strong>
             {{-- add a signature --}}<br>
-            <img src="{{ asset('assets/images/avatars/signature.png') }}" alt="signature" style="height: 60px; width: auto; margin-left: 2rem;">
+            <img src="{{ asset('assets/images/avatars/signature.png') }}" alt="signature" style="height: 50px; width: auto; margin-left: 2rem;">
         </p>
     </div>
 @endsection
