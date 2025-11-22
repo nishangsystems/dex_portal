@@ -15,7 +15,7 @@
 /assets/images/header.jpg
 /assets/images/letter-head.jpeg
 /storage/fonts/*
-/public/uploads/applications/*
+/public/uploads/*
 .env
 .env.backup
 env
