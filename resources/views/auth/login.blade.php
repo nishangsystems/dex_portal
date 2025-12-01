@@ -119,18 +119,18 @@
 											<span style="font-size: small; margin-bottom: 1rem;">{{__('auth.auth_request')}}</span>
 
 											@if(Session::has('error'))
-												<div class="alert alert-danger"><em> {!! session('error') !!}</em>
+												<div class="alert alert-danger"><b><em> {!! session('error') !!}</em></b>
 												</div>
 											@endif
 
 
 											@if(Session::has('e'))
-												<div class="alert alert-danger"><em> {!! session('e') !!}</em>
+												<div class="alert alert-danger"><b><em> {!! session('e') !!}</em></b>
 												</div>
 											@endif
 
 											@if(Session::has('s'))
-												<div class="alert alert-success"><em> {!! session('s') !!}</em>
+												<div class="alert alert-success"><b><em> {!! session('s') !!}</em></b>
 												</div>
 											@endif
 											<div class="space-6"></div>
