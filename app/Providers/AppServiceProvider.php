@@ -28,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         View::share(['school_name'=>\App\Models\School::first()->name??'']);
+        View::share('lisense', \App\Models\AppLisense::first());
     }
 }

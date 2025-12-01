@@ -43,31 +43,7 @@ Route::get('/clear', function () {
 });
 
 // test mail sender
-Route::get('send_sms', [Controller::class, 'sendSMS']/*function(){
-    // $mailer = new MailService();
-    // $subject = "Form Submission Notification";
-    // $text = "Your application form has been submitted successfully";
-    // $data = ['name'=>"GERMANUS K", 'email'=>"germanuskeming@gmail.com"];
-    // if(@mail($data['email'], $subject, $text)){
-    //     return "success";
-    // }else{return "failed";}
-    // $mailer->sendPlainMail($subject, $text, $data);
-
-    // $basic  = new \Vonage\Client\Credentials\Basic("8d8bbcf8", "04MLvso1he1b8ANc");
-    // $client = new \Vonage\Client($basic);
-
-    // $response = $client->sms()->send(
-    //     new \Vonage\SMS\Message\SMS("237699131895", '+237672908239', 'A text message sent using the Nexmo SMS API')
-    // );
-    
-    // $message = $response->current();
-    
-    // if ($message->getStatus() == 0) {
-    //     echo "The message was sent successfully\n";
-    // } else {
-    //     echo "The message failed with status: " . $message->getStatus() . "\n";
-    // }
-}*/);
+Route::get('send_sms', [Controller::class, 'sendSMS']);
 
 Route::get('store_courses', function(){
     return view('store_courses');
@@ -121,7 +97,7 @@ Route::get('_api/root/create', [Controller::class, 'create_api_root'])->name('ap
 Route::post('_api/root/create', [Controller::class, 'save_api_root']);
 
 
-Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['isAdmin', 'lisense'])->group(function () {
 
     Route::get('', 'Admin\HomeController@index')->name('home');
     Route::get('home', 'Admin\HomeController@index')->name('home');
@@ -240,7 +216,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 });
 
 
-Route::prefix('student')->name('student.')->middleware(['isStudent', 'platform'])->group(function () {
+Route::prefix('student')->name('student.')->middleware(['isStudent', 'platform', 'lisense'])->group(function () {
     Route::get('', 'Student\HomeController@index')->name('home');
     Route::get('edit_profile', 'Student\HomeController@edit_profile')->name('edit_profile');
     Route::post('update_profile', 'Student\HomeController@update_profile')->name('update_profile');
@@ -315,15 +291,6 @@ Route::get('student-fee-search', 'HomeController@fee')->name('student-fee-search
 Route::get('student_rank', 'HomeController@rank')->name('student_rank');
 Route::post('student_rank', 'HomeController@rankPost')->name('student_rank');
 
-Route::prefix('course/notification')->name('course.notification.')->group(function(){
-    Route::get('{course_id}', 'Teacher\SubjectController@notifications')->name('index');
-    Route::get('{course_id}/create', 'Teacher\SubjectController@create_notification')->name('create');
-    Route::post('{course_id}/save', 'Teacher\SubjectController@save_notification')->name('save');
-    Route::get('{course_id}/edit/{id}', 'Teacher\SubjectController@edit_notification')->name('edit');
-    Route::post('{course_id}/update/{id}', 'Teacher\SubjectController@update_notification')->name('update');
-    Route::get('{course_id}/delete/{id}', 'Teacher\SubjectController@drop_notification')->name('drop');
-    Route::get('{course_id}/show/{id}', 'Teacher\SubjectController@show_notification')->name('show');
-});
 
 Route::name('faqs.')->prefix('faqs')->group(function(){
     Route::get('', 'FAQsController@index')->name('index');
@@ -337,34 +304,6 @@ Route::name('faqs.')->prefix('faqs')->group(function(){
     Route::get('delete/{id}', 'FAQsController@drop')->name('drop');
 });
 
-Route::name('material.')->prefix('{layer}/{layer_id}/material/{campus_id?}')->group(function(){
-    Route::get('', 'MaterialController@index')->name('index');
-    Route::get('create', 'MaterialController@create')->name('create');
-    Route::post('create', 'MaterialController@save')->name('save');
-    Route::get('edit/{id}', 'MaterialController@edit')->name('edit');
-    Route::get('download/{id}', 'MaterialController@download')->name('download');
-    Route::post('update/{id}', 'MaterialController@update')->name('update');
-    Route::get('show/{id}', 'MaterialController@show')->name('show');
-    Route::get('delete/{id}', 'MaterialController@drop')->name('drop');
-});
-
-// ALTERNATIVE NOTIFICATIONS AND MATERIAL APPRAOCH
-Route::name('notifications.')->prefix('{layer}/{layer_id}/notifications/{campus_id?}')->group(function(){
-    Route::get('/', 'NotificationsController@index')->name('index');
-    Route::get('/create', 'NotificationsController@create')->name('create');
-    Route::post('/create', 'NotificationsController@save')->name('save');
-    Route::get('/delete/{id}', 'NotificationsController@drop')->name('drop');
-    Route::get('/edit/{id}', 'NotificationsController@edit')->name('edit');
-    Route::post('/update/{id}', 'NotificationsController@update')->name('update');
-    Route::get('/show/{id}', 'NotificationsController@show')->name('show');
-});
-
-// Messages
-Route::name('messages.')->prefix('messages')->group(function(){
-    Route::get('create', [NotificationsController::class, 'create_message'])->name('create');
-    Route::post('create', [NotificationsController::class, 'create_message_save']);
-    Route::get('sent', [NotificationsController::class, 'sent_messages'])->name('sent');
-});
 
 Route::get('search/students/boarders/{name}', 'HomeController@getStudentBoarders')->name('getStudentBoarder');
 

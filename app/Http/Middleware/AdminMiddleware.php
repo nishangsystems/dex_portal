@@ -20,11 +20,8 @@ class AdminMiddleware
     {  
         // dd(auth()->user());
         if(Auth::user() == null){
-        return redirect(route('login'));
-      }elseif(Auth::user()->type != 'admin') //If user does //not have this permission
-            {
-                return redirect(route('login'));
-            }
+            return redirect(route('login'));
+        }
 
         return $next($request);
     }

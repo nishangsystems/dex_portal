@@ -4,6 +4,9 @@
 $user = auth('student')->user();
 $user = $user == null ? auth()->user() : $user;
 @endphp
+    @if(isset($lisense) and !$lisense->is_active())
+        <div class="container-fluid text-center py-5 my-5 h2 text-danger">@lang('text.lisense_expired_phrase')</div>
+    @endif
 <!-- <div>
     <div id="user-profile-1" class="user-profile row">
         <div style="width:90%; margin-block:1.5rem; padding-block:1.5rem; font-size:2rem; font-weight:600; padding-inline:2rem;" class="shadow bg-light mx-auto rounded">

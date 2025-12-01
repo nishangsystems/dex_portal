@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'permission' => \App\Http\Middleware\PermissionMiddleware::class,
         'platform' => \App\Http\Middleware\PlatformChargeMiddleware::class,
+        'lisense' => \App\Http\Middleware\AppLisenseMiddleware::class,
     ];
 }
