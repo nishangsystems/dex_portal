@@ -105,7 +105,7 @@ class CustomLoginController extends Controller
     public function login(Request $request){
          //return $request->all();
         //validate the form data
-        return redirect(route('login'))->with('error', 'Service is currently disabled. Please contact support.');
+        // return redirect(route('login'))->with('error', 'Service is currently disabled. Please contact support.');
         $this->validate($request, [
             'username' => 'required',
             'password' => 'required|min:2'
