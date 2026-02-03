@@ -1111,11 +1111,12 @@ class ProgramController extends Controller
             $data['title'] = "Admit Student";
             $data['_this'] = $this;
             $data['action'] = __('text.word_admit');
-            $data['applications'] = ApplicationForm::
-                whereNotNull('transaction_id')
+            $data['applications'] = ApplicationForm::all();
+                // whereNotNull('transaction_id')
                 // ->whereNotNull('submitted')
-                ->whereNull('admitted')
-                ->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+                // ->whereNull('admitted')
+                // ->where('year_id', Helpers::instance()->getCurrentAccademicYear())
+                // ->get();
             $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             return view('admin.student.applications', $data);
         }
